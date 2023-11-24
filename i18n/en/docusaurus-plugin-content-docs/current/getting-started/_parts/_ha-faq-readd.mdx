@@ -1,0 +1,39 @@
+All 3 control nodes will run critical services such as kube-apiserver and etcd. If one of the nodes encounters an etcd data inconsistency, the node can be reset and re-added to the cluster according to the following steps:
+
+```bash
+# create join token on another normal control node
+$ export KUBECONFIG=/etc/kubernetes/admin.conf
+$ ocadm token create --description "ocadm-playbook-node-joining-token" --ttl 90m
+2fmpbx.7zikd8sp5uhaxrjr
+
+# get control node authentication
+$ /opt/yunion/bin/ocadm init phase upload-certs | grep -v upload-certs
+6150f8da2dcdf3a8a730f407ddce9f1cb9f24b15ffa4e4b3680e16ed40201cf0
+
+##########  Note that the following commands need to be executed on the node that needs to be added/reset  ###########
+# if the node has been added to the cloud platform as a compute node before
+# it is necessary to back up the current /etc/yunion/host.conf file 
+[your-reset-node] $ cp /etc/yunion/host.conf /etc/yunion/host.conf.manual.bk
+
+# log in to the node that needs to be reset and reset the current kubernetes environment
+[your-reset-node] $ kubeadm reset -f
+
+# Assuming the current network card is bond0 (if not bonded, the physical network card is generally named eth0 or similar), the IP is 172.16.84.40, and needs to join the cluster 172.16.84.101:6443
+[your-reset-node] $ ocadm join \
+        --control-plane 172.16.84.101:6443 \ # target cluster to be joined
+        --token 2fmpbx.7zikd8sp5uhaxrjr --certificate-key 6150f8da2dcdf3a8a730f407ddce9f1cb9f24b15ffa4e4b3680e16ed40201cf0 --discovery-token-unsafe-skip-ca-verification \ # join authentication information
+        --apiserver-advertise-address 172.16.84.40 --node-ip 172.16.84.40 \ # IP address of the node
+        --as-onecloud-controller \ # as a cloudpods control node
+        --enable-host-agent \ # as a cloudpods compute node
+        --host-networks 'bond0/br0/172.16.84.40' \ # bridge network of the compute node, which means creating the br0 bridge, adding bond0 to it and configuring the IP of 172.16.84.40 to br0
+        --high-availability-vip 172.16.84.101 --keepalived-version-tag v2.0.25 # keepalived's VIP, ensuring the high availability of kube-apiserver
+
+# After joining is complete, restore the /etc/yunion/host.conf.manual.bk configuration
+[your-reset-node] $ cp /etc/yunion/host.conf.manual.bk /etc/yunion/host.conf
+
+# restart the host service
+$ kubectl get pods -n onecloud -o wide | grep host | grep $your-reset-node
+$ kubectl delete pods -n onecloud default-host-xxxx
+```
+
+The above manual steps reference the logic of ocboot join master-node and can be found at [https://github.com/yunionio/ocboot/blob/master/onecloud/roles/master-node/tasks/main.yml](https://github.com/yunionio/ocboot/blob/master/onecloud/roles/master-node/tasks/main.yml).

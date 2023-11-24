@@ -1,0 +1,75 @@
+---
+sidebar_position: 1
+edition: ce
+---
+
+# Quick Installation via Ocboot
+
+Use the [ocboot](https://github.com/yunionio/ocboot) deployment tool to quickly deploy Hybrid Cloud in an All in One manner.
+
+
+:::tip Note
+The content in this chapter is used to quickly set up Cloudpods with the deployment tool. If you want to deploy a high availability cluster in a production environment, please refer to: [High Availability Installation] (./ha-ce).
+:::
+
+## Environment Preparation
+
+### Machine Configuration Requirements
+
+import OcbootEnv from '../_parts/_quickstart-ocboot-env.mdx';
+
+<OcbootEnv />
+
+## Install Ansible and Git
+
+import OcbootAnsible from '../_parts/_quickstart-ocboot-ansible.mdx';
+
+<OcbootAnsible />
+
+## Install Cloudpods
+
+import OcbootInstallCloudpods from '../_parts/_quickstart-ocboot-install-cloudpods.mdx';
+
+<OcbootInstallCloudpods productVersion="full" />
+
+## Getting Started with Cloudpods
+
+### Create the First Private Cloud Virtual Machine
+
+import UseVirt from '../_parts/_quickstart-use-virt.mdx';
+
+<UseVirt />
+
+### Import Public Cloud or Other Private Cloud Platform Resources
+
+import UseCMP from '../_parts/_quickstart-use-cmp.mdx';
+
+<UseCMP />
+
+## FAQ
+
+### 1. After the All in One deployment is complete, there is no host in the host list?
+
+import FAQVirtHost from '../_parts/_quickstart-faq-virt-host.md';
+
+<FAQVirtHost />
+
+### 2. Cannot find the virtual machine interface?
+
+import FAQVirtVM from '../_parts/_quickstart-faq-virt-vm.md';
+
+<FAQVirtVM />
+
+### 3. Why does the service fail to start after changing the hostname of the node?
+
+Cloudpods uses Kubernetes to manage nodes at the underlying layer, and the Kubernetes node name depends on the hostname. Changing the hostname will cause the node to fail to register with the Kubernetes cluster, so do not modify the hostname. If modified, change back to the original name and the service will automatically recover.
+
+### 4. How to reinstall?
+
+import FAQReset from '../_parts/_quickstart-faq-reset.md';
+
+<FAQReset />
+
+### 5. Other issues?
+
+Other issues can be submitted through the Cloudpods GitHub issues page: [https://github.com/yunionio/cloudpods/issues](https://github.com/yunionio/cloudpods/issues), we will respond as soon as possible.

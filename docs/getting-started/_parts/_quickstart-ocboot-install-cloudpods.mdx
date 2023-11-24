@@ -1,0 +1,34 @@
+import OcbootClone from '@site/src/components/OcbootClone';
+
+部署的工具在 [https://github.com/yunionio/ocboot](https://github.com/yunionio/ocboot)，需要把该工具使用 `git clone` 下来，然后运行 `run.py` 脚本部署服务。操作步骤如下:
+
+<OcbootClone />
+
+接下来执行 `run.py` 部署服务。其中 **host_ip** 为部署节点的 IP 地址，该参数为可选项。如果不指定则选择默认路由出去的那张网卡部署服务。如果你的节点有多张网卡，可以通过指定 **host_ip** 选择对应网卡监听服务。
+
+import OcbootRun from '@site/src/components/OcbootRun';
+
+<OcbootRun productVersion={props.productVersion} />
+
+`./run.py` 脚本会调用 ansible 部署服务，如果部署过程中遇到问题导致脚本退出，可以重复执行该脚本进行重试。
+
+:::tip 注意
+如果是基于 CentOS 7 发行版部署，会因为安装内核导致一次重启。./run.py 脚本会中断，请等待操作系统重启后，重新执行一次 ./run.py 脚本，进行后续步骤的安装。
+:::
+
+## 部署完成
+
+```bash
+....
+# 部署完成后会有如下输出，表示运行成功
+# 浏览器打开 https://10.168.26.216 ，该 ip 为之前设置 <host_ip>
+# 使用 admin/admin@123 用户密码登录就能访问前端界面
+Initialized successfully!
+Web page: https://10.168.26.216
+User: admin
+Password: admin@123
+```
+
+然后用浏览器访问 https://10.168.26.216 ，用户名输入 `admin`，密码输入 `admin@123` 就会进入 Cloudpods 的界面。
+
+![登录页](../images/index.png)

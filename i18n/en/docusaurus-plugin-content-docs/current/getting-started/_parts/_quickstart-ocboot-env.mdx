@@ -1,0 +1,10 @@
+- Operating System: Supported distributions vary depending on CPU architecture. The current situation of supported distributions is as follows:
+    - [CentOS 7.6~7.9 Minimal](http://isoredirect.centos.org/centos/7/isos): Supports x86_64 and arm64
+    - [Debian 10/11](https://www.debian.org/distrib/): Supports x86_64 and arm64
+    - [Ubuntu 22.04](https://releases.ubuntu.com/jammy/): Supports only x86_64
+    - [Kylin V10 SP2/SP3](https://www.kylinos.cn/scheme/server/1.html): Supports x86_64 and arm64
+    - [Deepin UOS kongzi](https://www.chinauos.com/): Supports x86_64 and arm64
+- The operating system needs to be a clean version, as the deployment tool will build the specified version of Kubernetes cluster from scratch. Ensure that the system does not have container management tools such as Kubernetes and Docker installed, otherwise conflicts may occur and cause installation abnormalities.
+- Minimum system requirements: CPU 4 cores, 8GiB memory, 100GiB storage.
+- The storage paths used by virtual machines and services are both under **/opt** directory. Thus, it is recommended to set up a separate mount point for the **/opt** directory in an ideal environment.
+    - For example, create a separate partition for /dev/sdb1 and format it as ext4, then mount it to the /opt directory through /etc/fstab.

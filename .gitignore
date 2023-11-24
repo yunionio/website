@@ -1,0 +1,48 @@
+# Hugo default output directory
+/public
+/resources/_gen/
+
+## OS Files
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# OSX
+.DS_Store
+
+# npm
+node_modules
+package-lock.json
+
+# container run
+.ash_history
+
+# web storm
+.idea/
+
+*.o
+*.a
+*.so
+*.swp
+
+# hugo
+.hugo_build.lock
+.content
+.assets
+.static
+
+# convert results
+_output
+
+# python
+*.pyc
+__pycache__
+data/
+
+docs-old
+
+# docusaurus
+.docusaurus/
+build/

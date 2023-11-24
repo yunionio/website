@@ -1,0 +1,42 @@
+{
+  "version.label": {
+    "message": "3.10",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.Getting Started": {
+    "message": "Getting Started",
+    "description": "The label for category Getting Started in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Private Cloud": {
+    "message": "Private Cloud",
+    "description": "The label for category Private Cloud in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Common Problems": {
+    "message": "Common Problems",
+    "description": "The label for category Common Problems in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Multi-Cloud Management": {
+    "message": "Multi-Cloud Management",
+    "description": "The label for category Multi-Cloud Management in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Hybrid Cloud": {
+    "message": "Hybrid Cloud",
+    "description": "The label for category Hybrid Cloud in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Miscellaneous": {
+    "message": "Miscellaneous",
+    "description": "The label for category Miscellaneous in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.guides": {
+    "message": "guides",
+    "description": "The label for category guides in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.virt": {
+    "message": "virt",
+    "description": "The label for category virt in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.network": {
+    "message": "network",
+    "description": "The label for category network in sidebar tutorialSidebar"
+  }
+}

@@ -1,0 +1,34 @@
+import OcbootEnv from '../_parts/_quickstart-ocboot-env.mdx';
+
+<OcbootEnv />
+
+Assuming that there are 3 CentOS7 machines and 1 Mariadb/MySQL machine ready, the deployment is planned as follows:
+
+| role         | ip            | interface | note                                                        |
+| ------------ | ------------- | --------- | ----------------------------------------------------------- |
+| k8s primary  | 10.127.90.101 | eth0      | the first control node                                      |
+| k8s master 1 | 10.127.90.102 | eth0      | the second control node                                     |
+| k8s master 2 | 10.127.90.103 | eth0      | the third control node                                      |
+| k8s VIP      | 10.127.190.10 | -         | the VIP used by keepalived, which will be bound to the first of the three control nodes |
+| DB           | 10.127.190.11 | -         | independently deployed database node, pswd="0neC1oudDB#", port=3306 |
+
+The deployment of the DB is currently not managed by the ocboot deployment tool and needs to be manually deployed in advance. It is recommended to use MariaDB database and not to use MySQL 5.6 and earlier versions to prevent the "Index column size too large. The maximum column size is 767 bytes." bug. The corresponding MariaDB version for each distribution is as follows:
+
+- CentOS 7.6-7.9  Minimal(X86_64 and ARM64) installs MariaDB 5.5.68 by default
+- Debian 10-11 (X86_64 and ARM64) installs MariaDB 10.3.1 by default
+- Kylin V10 sp2 (X86_64 and ARM64) installs MariaDB 10.3.4 by default
+
+In addition, the deployment of a high availability database can also refer to the document: [Deploy Mariadb HA environment](../misc/db-ha).
+
+## NTP consistency of high availability cluster
+
+Before the installation, please ensure that the time of each node to be deployed is consistent, otherwise the certificate issuance step will fail.
+
+If it is installed online, you can refer to the following command to ensure that every server in the cluster is synchronized with Internet time:
+
+```bash
+# You can choose a more convenient and accessible time server.
+# If the ntpdate command is not available, use the corresponding package manager on the os to install it.
+# For example, on CentOS: yum install -y ntp && systemctl enable ntpd --now
+$ ntpdate -u edu.ntp.org.cn && hwclock -w && ntpdate -u -q edu.ntp.org.cn
+```

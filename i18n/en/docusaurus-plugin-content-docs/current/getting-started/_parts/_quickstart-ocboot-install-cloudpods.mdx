@@ -1,0 +1,34 @@
+import OcbootClone from '@site/src/components/OcbootClone';
+
+The deployment tool is available at [https://github.com/yunionio/ocboot](https://github.com/yunionio/ocboot). You need to clone the tool using `git clone` and then run the `run.py` script to deploy the service. The following is the operation steps:
+
+<OcbootClone />
+
+Next, execute the `run.py` script to deploy the service. The **host_ip** parameter is the IP address of the deployment node, which is optional. If not specified, the service will be deployed using the default route. If your node has multiple network cards, you can specify **host_ip** to select the corresponding network card to listen to the service.
+
+import OcbootRun from '@site/src/components/OcbootRun';
+
+<OcbootRun productVersion={props.productVersion} />
+
+The `./run.py` script will call the ansible to deploy the service. If the deployment process encounters problems that cause the script to exit, you can repeat the script to retry.
+
+:::tip Note
+If you are deploying based on the CentOS 7 distribution, there will be one restart caused by the kernel. The ./run.py script will be interrupted. Please wait for the operating system to restart, then execute the ./run.py script again to perform the subsequent steps.
+:::
+
+## Deployment Complete
+
+```bash
+....
+# After completing the deployment, the following output will be displayed, indicating a successful run
+# Open https://10.168.26.216 in the browser, where the ip is set to <host_ip>
+# You can access the front-end interface by logging in with admin/admin@123
+Initialized successfully!
+Web page: https://10.168.26.216
+User: admin
+Password: admin@123
+```
+
+Then use a browser to access https://10.168.26.216. Enter `admin` for username and `admin@123` for password to enter the Cloudpods interface.
+
+![login page](../images/index.png)
