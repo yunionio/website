@@ -24,7 +24,7 @@ baremetal-agent 通过 PXE 的方式管理物理机，如果物理机的 BMC 支
 
 ### 启用 baremetal-agent
 
-登陆控制节点，选择一个 node 启用 baremetal-agent。
+登陆控制节点，选择一个 node 启用 baremetal-agent(这里可以选择第一个 master 节点)。
 
 - $node_name: 为使用 `kubectl get nodes` 显示的节点名称，选择一个 node 来运行 baremetal-agent 服务。
 - $listen_interface: 指的是 baremetal-agent 服务监听的网卡名称，即 baremetal-agent 所在节点 ip 所在的网卡名称。
@@ -55,8 +55,24 @@ $ climc agent-list
 +--------------------------------------+--------------------------+----------------+-----------------------------+---------+------------+------------------------------------------+--------------------------------------+
 ```
 
+### 物理交换机配置DHCP Relay
 
-### 如何配置 host 服务启用 dhcp relay
+需要分别针对物理机的IPMI网段和管理网段配置DHCP Relay。
+
+不同厂家的物理交换机配置DHCP Relay的命令不同，以下配置仅供参考，请根据实际情况进行配置。
+
+```bash
+# 配置DHCP Relay，并Relay到baremetal-agent所在节点的IP上。
+interface Vlanif10
+description new_test_host_net
+ip address 10.168.222.1 255.255.255.0
+dhcp select relay
+dhcp relay binding server group baremetal-group
+dhcp relay server group baremetal-group
+server 10.168.222.150 0 
+```
+
+### 如何配置 host 服务启用 DHCP Relay
 
 :::warning
 如果在交换机上配置了 dhcp relay，则不需要在这里配置计算节点的 dhcp_relay 了，可以跳过这一步。
