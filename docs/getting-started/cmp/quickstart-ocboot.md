@@ -53,7 +53,7 @@ import FAQReset from '../_parts/_quickstart-faq-reset.md';
 
 ### 2. 创建云账号的时候没有想要管理的云平台?
 
-请参考 feature-config  ............... TODO
+请参考 [隐藏功能配置](../../operations/hidden-feature-config) 打开需要管理的云平台。
 
 ### 3. 其它问题？
 
