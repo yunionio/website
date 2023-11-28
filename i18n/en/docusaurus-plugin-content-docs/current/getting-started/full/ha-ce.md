@@ -35,7 +35,7 @@ $ ./ocboot.py install ./config-k8s-ha.yml
 
 After the deployment is complete, you can use a browser to access https://10.127.190.10 (VIP), enter the username `admin` and password `admin@123` to enter the front end.
 
-In addition, after the deployment is complete, you can add nodes to the existing cluster. Refer to the document: [Add a compute node](../virt/host). Note that when adding a node, do not use vip for the control node IP. Only the actual IP of the first control node can be used. Because the vip may float to other nodes, only the first node usually has the permission to log in other nodes via ssh without a password. Using other control nodes may cause ssh login failure.
+In addition, after the deployment is complete, you can add nodes to the existing cluster. Refer to the document: [Add a compute node](../onpremise/host). Note that when adding a node, do not use vip for the control node IP. Only the actual IP of the first control node can be used. Because the vip may float to other nodes, only the first node usually has the permission to log in other nodes via ssh without a password. Using other control nodes may cause ssh login failure.
 
 ## FAQ
 

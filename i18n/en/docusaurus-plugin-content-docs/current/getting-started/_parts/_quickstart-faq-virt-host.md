@@ -2,7 +2,7 @@ As shown in the figure below, if there is no host in the host list after the env
 
   ![](../images/nohost.png)
 
-1. To troubleshoot host issues on the control node, please refer to: [Troubleshooting Host Service Issues](../virt/faq/host)
+1. To troubleshoot host issues on the control node, please refer to: [Troubleshooting Host Service Issues](../onpremise/faq/host)
 
     1. If the log error message contains "register failed: try create network: find_matched == false", it means that the IP subnet containing the host has not been successfully created, resulting in host registration failure. Please create an IP subnet containing the host network segment.
 
