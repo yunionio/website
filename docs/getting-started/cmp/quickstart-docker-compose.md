@@ -153,17 +153,4 @@ $ python3 generate-compose.py > compose/docker-compose.yml
 
 ### 3. 如何升级服务?
 
-通过 docker compose 升级很方便，只用更新 docker-compose.yml 配置文件。
-
-比如 *ocboot/compose/docker-compose.yml* 更新了，就可以通过 git pull 最新的代码，然后重新启动就可以了，步骤如下：
-
-```bash
-# 使用 git pull 更新
-$ cd ocboot
-$ git pull
-
-# 重启 compose 服务
-$ cd compose
-$ docker compose down
-$ docker compose up -d
-```
+参考文档：[通过 docker compose 升级](../../operations/upgrading/docker-compose-upgrade) 。

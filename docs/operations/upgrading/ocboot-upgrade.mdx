@@ -1,0 +1,153 @@
+---
+edition: ce
+sidebar_position: 1
+---
+
+# 通过 ocboot 升级
+
+介绍如何通过 ocboot 升级服务版本到指定版本。
+
+:::tip
+ocboot 只能升级通过 ocboot 部署的环境，如果你的环境是通过 docker compose 部署的，请参考以下文档升级：
+
+- [通过 docker compose 升级](./docker-compose-upgrade)
+:::
+
+## 前提条件
+
+版本升级建议从相邻的版本升级，比如从 v3.8.x 升级到 v3.10.x 需要以下的步骤：
+
+1. v3.8.x => v3.9.x
+2. v3.9.x => v3.10.x
+
+总体来说，升级的步骤如下:
+
+使用我们编写的 [ocboot](https://github.com/yunionio/ocboot) 工具进行升级，这个工具主要是调用 ansible 来升级集群里面的所有节点。
+
+import ReleaseVersion from '@site/src/components/ReleaseVersion'
+
+1. 使用 git 拉取最新的 [ocboot](https://github.com/yunionio/ocboot) 代码，切换到 <ReleaseVersion /> 的 tag
+2. 使用 [ocboot](https://github.com/yunionio/ocboot) 里面的 `./ocboot.py upgrade` 命令进行版本升级
+
+## 查看当前版本
+
+可以使用 kubectl 查看当前集群的版本
+
+import GetClusterVersion from '@site/src/components/GetClusterVersion'
+
+<GetClusterVersion />
+
+## 拉取 ocboot 工具
+
+如果本地已经有 ocboot 工具可以跳过此步，只用把代码更新到对应的分支。
+
+```bash
+# 本地安装 ansible
+$ python3 -m pip install --upgrade pip setuptools wheel
+$ python3 -m pip install --upgrade ansible paramiko
+```
+
+下载 ocboot 工具到本地
+
+import OcbootClone from '@site/src/components/OcbootClone';
+
+<OcbootClone />
+
+## 更新 ocboot 代码
+
+import OcbootFetchCheckout from '@site/src/components/OcbootFetchCheckout';
+
+<OcbootFetchCheckout />
+
+## 升级服务组件
+
+### 前提
+
+更新服务的原理是通过本机 ssh 免密码远程登录到集群的第一个控制节点，获取所有节点的信息后，然后通过 ansible 执行 playbook 更新，所以有以下要求：
+
+1. 本机能够 ssh 远程登录 PRIMARY_MASTER_HOST
+2. PRIMARY_MASTER_HOST 能够 ssh 免密码登录集群中的其它节点
+
+如果没有设置免密码登录，请使用 *ssh-copy-id -i ~/.ssh/id_rsa.pub root@PRIMARY_MASTER_HOST* 命令把公钥下发到自己环境对应的节点。
+
+升级的版本号可以到 [CHANGELOG 3.10 页面](../../development/changelog/release-3.10/) 查询。
+
+### 执行升级命令
+
+下面命令使用 ocboot 相关服务升级到高版本，该步骤会因为拉取 docker 镜像等待较长时间，请耐心等待。
+
+import OcbootUpgrade from '@site/src/components/OcbootUpgrade';
+
+<OcbootUpgrade />
+
+另外可以使用 `./ocboot.py upgrade --help` 查看其它可选参数。
+
+- --user 可以指定其它 ssh 用户
+- --port 指定 ssh 端口
+- --key-file 指定另外的 ssh private key
+- --as-bastion 可以让 PRIMARY_MASTER_HOST 作为堡垒机部署在内网的宿主机
+
+### 查看升级过程
+
+可以在升级的过程中可以登录到 PRIMARY_MASTER_HOST， 使用 kubectl 查看对应 pods 的升级情况。
+
+```bash
+$ kubectl get pods -n onecloud --watch
+```
+
+## 降级相关
+
+如果升级后遇到功能不符合预期或者 bug 之类的问题，可以通过下面的命令降级回滚。
+
+:::warning
+- 一般小版本降级没有问题，比如从 v3.10.7 降级到 v3.10.6
+- 跨版本降级可能会有问题，比如从 v3.10.7 降级到 v3.9.15
+
+如果遇到问题请到 [GitHub 提 issue](https://github.com/yunionio/cloudpods/issues) 或者 [联系我们](/zh/docs/contact) 获取帮助。
+:::
+
+### 执行降级
+
+降级的原理是修改各个服务的 image version，比如现在的版本是 v3.10.7，然后想要降级到 v3.10.6。
+
+登录到第一个控制节点执行如下命令，会降级服务到 v3.10.6 。
+
+```bash
+$ /opt/yunion/bin/ocadm cluster update --version v3.10.6 --wait
+```
+
+降级会重新拉取新的镜像，可以再开一个窗口，登录第一个控制节点，使用下面的命令查看每个 pod 的更新情况。
+
+```bash
+$ kubectl -n onecloud get pods -w
+```
+
+## 回滚操作
+
+ocboot 从 v3.9.7 版本起，每次升级集群服务的时候，会把 operator 的 deployment 和 onecloudcluster 的 yaml 文件备份到 `/opt/yunion/ocboot/_upgrade/` 里面，方便以后手动回滚组件。
+
+当出现升级失败，或者升级后想要回退到升级前的版本，可以使用以下的操作：
+
+```bash
+# 查看 /opt/yunion/ocboot/_upgrade/ 目录里面的升级备份目录
+# 里面的子目录以升级前时间作为目录名
+$ ls  /opt/yunion/ocboot/_upgrade/
+2023.02.20-10:10:07
+
+# 比如想要回退到 2023.02.20-10:10:07 前的版本，就进行以下操作
+$ cd /opt/yunion/ocboot/_upgrade/2023.02.20-10\:10\:07/
+# 查看相关 yaml 文件
+$ ls -lh
+-rw-r--r-- 1 root root  61K Feb 20 10:10 oc.yml # oc.yaml 为 onecloudcluster 描述文件
+-rw-r--r-- 1 root root 3.9K Feb 20 10:10 operator.yml # operator.yaml 为 operator deployment 描述文件
+
+# 先回退 operator
+$ kubectl apply -f operator.yml
+deployment.extensions/onecloud-operator configured
+# 等到新创建的 operator 变成 Running，如果是 ContainerCreating 状态就等待一段时间
+$ kubectl get pods -n onecloud | grep operator
+onecloud-operator-5557d86d74-7s5sl                   1/1     Running   0          2s
+
+# 再回退 onecloudcluster 就可以了
+$ kubectl apply -f oc.yaml
+```
