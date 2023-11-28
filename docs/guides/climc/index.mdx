@@ -1,0 +1,31 @@
+---
+edition: ce
+sidebar_position: 1
+hide_table_of_contents: true
+---
+
+# 命令行工具
+
+介绍命令行工具 climc 的使用方法和技巧。
+
+云平台的命令行管理工具是 `climc`, 可以通过该工具向后端各个服务发送API请求, 实现对资源的操控。
+
+目前平台使用 climc 命令行工具的方法有以下的方式：
+
+- 通过 Web 前端控制台：目前Web控制台已支持cloudshell功能，可以在管理后台视图，单击web控制台右上角cloudshell图标，直接进入climc所在容器内使用climc命令。
+- 通过 ocboot 安装的环境，在第一个控制节点都会安装climc，可以登录第一个控制节点直接使用。
+- 如果是使用 docker compose 安装的环境，可以使用以下命令进入 climc 容器。
+
+    ```bash
+    $ docker exec -ti compose-climc-1 bash
+    ```
+- 如果是通过 helm 部署到 kubernetes 集群中的环境，可以通过以下命令进入 climc 容器。
+
+    ```bash
+    $ kubectl exec -ti -n onecloud $(kubectl get pods -n onecloud | grep climc | awk '{print $1}') -- /bin/bash
+    ```
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />
+
