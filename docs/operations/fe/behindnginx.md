@@ -49,6 +49,5 @@ server {
 
         proxy_read_timeout 86400;
     }
-
 }
 ```
