@@ -105,12 +105,15 @@ const config = {
           src: 'img/logo.png',
         },
         items: [
+          // { to: '/docs/getting-started', label: '快速开始', position: 'left' },
           {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
             label: '文档',
           },
+          { to: 'https://www.yunion.cn/subscription/index.html', label: '服务订阅', position: 'left' },
+          { to: 'https://apifox.com/apidoc/shared-f917f6a6-db9f-4d6a-bbc3-ea58c945d7fd', label: 'API', position: 'left' },
           // { to: '/blog', label: 'Blog', position: 'left' },
           {
             type: 'docsVersionDropdown',
