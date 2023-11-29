@@ -1,6 +1,6 @@
 ---
 edition: ce
-sidebar_position: 10
+sidebar_position: 25
 ---
 
 # 卸载

@@ -1,6 +1,6 @@
 ---
 edition: ce
-sidebar_position: 3
+sidebar_position: 22
 ---
 
 # 下线私有云计算节点

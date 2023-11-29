@@ -1,6 +1,6 @@
 ---
 edition: ce
-sidebar_position: 2
+sidebar_position: 20
 ---
 
 # 隐藏功能配置
