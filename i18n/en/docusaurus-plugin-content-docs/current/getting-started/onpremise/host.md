@@ -175,4 +175,4 @@ $ ssh root@10.20.30.254
 
 ## Common Problem Solving
 
-Please refer to [Host Service Issues](./faq/host) for common problem solving on compute nodes.
+Please refer to [Host Service Issues](../../guides/onpremise/host/troubleshooting) for common problem solving on compute nodes.

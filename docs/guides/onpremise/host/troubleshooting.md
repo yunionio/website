@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 6
 ---
 
 # 计算节点 Host 服务问题排查
@@ -163,3 +163,19 @@ ovs-vsctl add-port br0 bond0
 ### 存储介质识别不准，例如机械盘识别成固态
 
 例如用户使用SSD 做lvmcache 等情况，可能造成宿主机本地存储介质识别不准，可自行前往对应宿主机->存储->对应存储介质 修改属性，选择介质类型修改即可。
+
+### 禁用 dhcp 服务
+
+如果你看到了这样的提示：`dhcp: dhcp client is enabled before host agent start, please disable it.`
+
+说明你的机器之前启用过dhcp client.
+
+如何禁用 dhcp client：
+```bash
+# 一般 centos7 的 dhcp client 都是由 NetworkManager 启动的
+$ systemctl disable NetworkManager --now
+
+# 我们会检查 /var/run/dhclient-<nic>.pid 下是否有dhclient的pid文件来决定是否要输出 warning
+# 所以同时你需要清除 /var/run 下的 dhclient-<nic>.pid 文件, nic 需要替换成自己的网卡名，如 eth0
+$ rm -f /var/run/dhclient-<nic>.pid
+```
