@@ -1,5 +1,5 @@
 ---
-sidebar_position: 90
+sidebar_position: 4
 ---
 
 # 典型网络配置
@@ -10,7 +10,8 @@ sidebar_position: 90
 
 这种场景下，每个计算节点只有一个网口(可以为Bonding)，既做管理口，也做业务口。虚拟机之间的业务流量是由宿主机对接的三层交换机转发。
 
-import SingleportPNG from './singleport.png';
+
+import SingleportPNG from './images/singleport.png';
 
 <img src={SingleportPNG} width="400" />
 
@@ -46,7 +47,7 @@ networks:
 
 #### 宿主机管理口使用非1的VLAN ID，并且交换机不支持设置TRUNK口的默认VLAN ID，这种情况如何配置？
 
-import SingleportVlanPNG from "./singleportvlan.png";
+import SingleportVlanPNG from "./images/singleportvlan.png";
 
 <img src={SingleportVlanPNG} width="400" />
 
