@@ -137,47 +137,47 @@ const config = {
       },
       footer: {
         style: 'dark',
-        links: [
-          {
-            title: '文档',
-            items: [
-              {
-                label: 'Tutorial',
-                to: '/docs/getting-started',
-              },
-            ],
-          },
-          {
-            title: 'Community',
-            items: [
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              // {
-              //   label: 'Stack Overflow',
-              //   href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              // },
-              // {
-              //   label: 'Twitter',
-              //   href: 'https://twitter.com/docusaurus',
-              // },
-            ],
-          },
-          {
-            title: 'More',
-            items: [
-              // {
-              //   label: 'Blog',
-              //   to: '/blog',
-              // },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/yunionio/cloudpods',
-              },
-            ],
-          },
-        ],
+        // links: [
+        //   {
+        //     title: '文档',
+        //     items: [
+        //       {
+        //         label: '快速开始',
+        //         to: '/docs/getting-started',
+        //       },
+        //     ],
+        //   },
+        //   // {
+        //   //   title: 'Community',
+        //   //   items: [
+        //   //     {
+        //   //       label: 'Discord',
+        //   //       href: 'https://discordapp.com/invite/docusaurus',
+        //   //     },
+        //   //     // {
+        //   //     //   label: 'Stack Overflow',
+        //   //     //   href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+        //   //     // },
+        //   //     // {
+        //   //     //   label: 'Twitter',
+        //   //     //   href: 'https://twitter.com/docusaurus',
+        //   //     // },
+        //   //   ],
+        //   // },
+        //   {
+        //     title: '更多',
+        //     items: [
+        //       // {
+        //       //   label: 'Blog',
+        //       //   to: '/blog',
+        //       // },
+        //       {
+        //         label: 'GitHub',
+        //         href: 'https://github.com/yunionio/website',
+        //       },
+        //     ],
+        //   },
+        // ],
         copyright: `Copyright © ${new Date().getFullYear()} The Cloudpods Authors.`,
       },
       prism: {
