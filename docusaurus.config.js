@@ -58,15 +58,18 @@ const config = {
           // Remove this to remove the "edit this page" links.
           editUrl:
             // 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-            'https://github.com/yunionio/docs/tree/master',
+            'https://github.com/yunionio/website/tree/master',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            // 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-            'https://github.com/yunionio/docs/tree/master',
+          editUrl: 'https://github.com/yunionio/website/tree/master', //  'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          blogTitle: 'Cloudpods blog',
+          // blogDescription: 'A Docusaurus powered blog!',
+          postsPerPage: 'ALL',
+          blogSidebarTitle: 'All posts',
+          blogSidebarCount: 'ALL',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -112,9 +115,9 @@ const config = {
             position: 'left',
             label: '文档',
           },
+          { to: '/blog', label: '博客', position: 'left' },
           { to: 'https://www.yunion.cn/subscription/index.html', label: '服务订阅', position: 'left' },
           { to: 'https://apifox.com/apidoc/shared-f917f6a6-db9f-4d6a-bbc3-ea58c945d7fd', label: 'API', position: 'left' },
-          // { to: '/blog', label: 'Blog', position: 'left' },
           {
             type: 'docsVersionDropdown',
             position: 'right',
