@@ -1,0 +1,38 @@
+---
+sidebar_position: 6
+---
+
+# Kubernetes 管理
+
+## 功能概述
+
+平台对 Kubernetes 管理的支持情况如下：
+
+- 自建Kubernetes集群
+    - 支持基于内置私有云的虚拟机创建集群
+    - 支持基于Aws虚拟机创建集群，默认集成 aws vpc cni，csi和cloud-provider等原生插件
+- 管理已有的Kubernetes集群
+    - 通过导入已有Kubernetes集群的kubeconfig管理
+    - 通过云账号同步公有云集群，支持情况如下：
+        - Aws EKS
+        - 阿里云 ACK 
+        - Azure AKS 
+        - 腾讯云 AKS
+
+## Web 界面菜单开关
+
+:::tip
+从 3.9 版本开始，Web 界面默认只显示常用稳定功能的界面。容器管理使用频率较低，所以该功能默认是隐藏状态，Web 界面不会显示，如果需要显示该功能菜单，使用如下命令行打开或者关闭：
+:::
+
+```bash
+# 开启 k8s 容器集群管理菜单
+$ climc feature-config-k8s --switch on
+
+# 关闭 k8s 容器集群管理菜单
+$ climc feature-config-k8s --switch off
+```
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />
