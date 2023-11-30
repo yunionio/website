@@ -14,6 +14,8 @@ qemu 直接使用物理设备本身命令行是很简单的，关键在于事先
 
 单纯从 qemu 的命令行来看，其实和普通虚拟机启动就差了最后那个 `-device` 的选项。这个选项也比较容易理解，就是把主机上的设备 0000:00:01.0 传给了虚拟机使用。
 
+<!-- truncate -->
+
 ```bash
 $ qemu-system-x86_64 -m 4096 -smp 4 --enable-kvm \
   -drive file=~/guest/fedora.img \

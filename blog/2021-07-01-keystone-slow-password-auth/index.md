@@ -11,6 +11,8 @@ authors:
 
 有用户反馈keystone认证本地用户的接口性能很差，因此做了调研。
 
+<!-- truncate -->
+
 首先使用ab（apache benchmark）模拟用户认证，调用命令行如下：
 
 ```bash

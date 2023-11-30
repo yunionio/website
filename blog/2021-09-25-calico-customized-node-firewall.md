@@ -11,6 +11,8 @@ authors:
 
 Cloudpods的服务运行在一个Kubernetes集群之上，该Kubernets集群的网络方案采用了[Calico](https://docs.projectcalico.org/)。因此运行Cloudpods服务的节点的iptables规则被Calico接管。这就导致我们在Cloudpods服务节点上配置的防火墙规则会被Calico配置的iptables规则覆盖，导致防火墙规则不生效。本文介绍如何使用Calico的HostEndpoint和GlobalNetworkPolicy来设置主机节点的防火墙规则。
 
+<!-- truncate -->
+
 ## 1. 准备calicoctl工具
 
 下载二进制

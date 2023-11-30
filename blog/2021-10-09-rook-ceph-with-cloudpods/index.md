@@ -6,7 +6,6 @@ authors:
   - name: Zexi Li
     url: https://github.com/zexi
     image_url: https://github.com/zexi.png
-    title: Cloudpods maintainer
   - name: Jian Qiu
     url: https://github.com/swordqiu
     image_url: https://github.com/swordqiu.png
