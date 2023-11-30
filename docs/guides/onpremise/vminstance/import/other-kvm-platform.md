@@ -42,9 +42,9 @@ $ qemu-img convert -c -p -f raw -O qcow2  /dev/pve/vm-101-disk-0 /mnt/vm-101-dis
 若虚拟机存在多块磁盘，按上文方式，将多个disk 导出为qcow2，再导入为系统镜像，使用`climc guest-image-create` 将多个系统镜像合并创建为主机镜像，
 
 ```bash
-climc guest-image-create <name> --image <id_of_root_image> --image <id_of_data_image> --image ...
+$ climc guest-image-create <name> --image <id_of_root_image> --image <id_of_data_image> --image ...
 ```
 
 注意严格保证`--image`镜像顺序和pve 内顺序一致，ID为导入 cloudpods 的系统镜像UUID。
 
-创建主机镜像成功后，使用主机镜像创建虚拟机即可，参考：[制作主机镜像](./glance/guestimage/create/)
+创建主机镜像成功后，使用主机镜像创建虚拟机即可，参考：[制作主机镜像](../../glance/guestimage/create/)
