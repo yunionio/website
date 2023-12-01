@@ -20,7 +20,7 @@ climc 请求云平台后端服务的流程如下:
 
 - 通过用户名／密码认证
 - token认证 (目前cloudshell使用这种认证方式)
-- [通过Access Key／Secret认证](../../development/apisdk/01_api)
+- [通过Access Key／Secret认证](../../development/apisdk/api)
 
 
 :::warning

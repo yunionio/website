@@ -88,6 +88,7 @@ const config = {
         language: ['en', 'ja'],
         docsRouteBasePath: '/',
         indexBlog: false, // blog is disabled
+        ignoreFiles: [/\/docs\/development\/changelog\/.*/],
       }),
     ],
   ],
