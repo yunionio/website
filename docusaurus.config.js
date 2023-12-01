@@ -87,8 +87,8 @@ const config = {
         hashed: true,
         language: ['en', 'ja'],
         docsRouteBasePath: '/',
-        indexBlog: false, // blog is disabled
-        ignoreFiles: [/\/docs\/development\/changelog\/.*/],
+        indexBlog: true, // blog is disabled
+        ignoreFiles: [/docs\/development\/changelog\/.*/],
       }),
     ],
   ],
