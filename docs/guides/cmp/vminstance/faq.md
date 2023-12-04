@@ -17,8 +17,8 @@ sidebar_position: 10
 
 - 前端缓存
     1. 可通过刷新整个页面解决
-- 当前所选的域底下没有 **可用** 的云账号
-    1. [创建云账号](../../../../../web_ui/multiplecloud/cloudaccount/cloudaccount) 到所选域
+<!-- - 当前所选的域底下没有 **可用** 的云账号 -->
+<!--     1. [创建云账号](../../../../../web_ui/multiplecloud/cloudaccount/cloudaccount) 到所选域 -->
 - 云账号健康状态异常
     1. 查看 [健康检查](../cloudaccounts/health_check)
 - 没有可用套餐

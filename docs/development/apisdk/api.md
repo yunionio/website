@@ -6,7 +6,7 @@ sidebar_position: 1
 
 本章节介绍 API 的调用过程。
 
-[详细的API内容请参考API](/swagger/)。
+[详细的API内容请参考API](https://apifox.com/apidoc/shared-f917f6a6-db9f-4d6a-bbc3-ea58c945d7fd)。
 
 ## 1. 使用climc先创建aksk
 

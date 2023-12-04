@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# 查看服务日志
+# 通过Grafana查看
 
 通过Grafana + Loki 持久化保存后端服务日志。
 

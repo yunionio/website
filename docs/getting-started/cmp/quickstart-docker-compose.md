@@ -16,7 +16,7 @@ edition: ce
 
 另外 VMWare 目前也无法使用 Docker Compose 的方式管理，因为目前对 VMWare 的磁盘管理依赖依赖内核 nbd 模块，该模块无法在 docker compose 里面加载。如果是需要对 VMWare 管理，请使用 [Ocboot 快速安装](./quickstart-ocboot) 的方式部署。
 
-如果需要使用内置私有云，请使用 [私有云](../onpreimise) 的方式部署。
+如果需要使用内置私有云，请使用 [私有云](../onpremise/) 的方式部署。
 :::
 
 ## 环境准备
