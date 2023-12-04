@@ -1,17 +1,29 @@
 .PHONY: build
 
+docker-yarn:
+	./tools/run-in-docker.sh
+
 # check: https://docusaurus.io/docs/i18n/tutorial
 write-en-translation:
 	yarn write-translations --locale en
 
-serve:
+start:
 	npm run start
 
-serve-en:
+docker-start:
+	./tools/run-in-docker.sh start --host 0.0.0.0
+
+start-en:
 	npm run start -- --locale en
+
+docker-start-en:
+	./tools/run-in-docker.sh start --host 0.0.0.0 --locale en
 
 build:
 	yarn build
+
+docker-build:
+	./tools/run-in-docker.sh build
 
 build-serve: build
 	cd ./build/ && python3 -m http.server 8002
