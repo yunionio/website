@@ -27,7 +27,7 @@ default-victoria-metrics-6d6fcc68d5-q68mj            1/1     Running            
 现在集群里面同时存在 Influxdb 和 VictoriaMetrics 服务，用下面的命令可以查看 pod 运行情况：
 
 ```bash
-kubectl get pods -n onecloud | egrep 'victoria|influxdb'
+$ kubectl get pods -n onecloud | egrep 'victoria|influxdb'
 default-influxdb-5dcfc8964d-5csrw                    1/1     Running            0          23d
 default-victoria-metrics-6d6fcc68d5-q68mj            1/1     Running            0          25d
 ```
@@ -47,13 +47,13 @@ $ kubectl patch onecloudcluster -n onecloud default --type='json' -p='[{op: repl
 然后删除平台里面的 influxdb endpoint，操作如下：
 
 ```bash
-climc endpoint-list --service influxdb | awk '{print $2}' | xargs -I {} sh -c 'climc endpoint-update --disable {} && climc endpoint-delete {}'
+$ climc endpoint-list --service influxdb | awk '{print $2}' | xargs -I {} sh -c 'climc endpoint-update --disable {} && climc endpoint-delete {}'
 ```
 
 删除平台的 influxdb service，操作如下：
 
 ```bash
-climc service-update --disabled influxdb && climc service-delete influxdb
+$ climc service-update --disabled influxdb && climc service-delete influxdb
 ```
 
 ### 重启平台服务
@@ -69,7 +69,7 @@ $ climc endpoint-list --search victoria-metrics --details
 可以用下面的命令查看有没有 influxdb 类型的 endpoint。
 
 ```bash
-climc endpoint-list --search influxdb --details
+$ climc endpoint-list --search influxdb --details
 ```
 :::
 
@@ -134,7 +134,7 @@ $ mv ./vmctl-linux-amd64 /opt/yunion/bin
 编写下面的迁移脚本，假设控制节点的 ip 为 192.168.222.171，那么环境中 Influxdb 和 VictoriaMetrics 服务的地址就为：
 
 - Influxdb: https://192.168.222.171:30086
-- VictoriaMetrics: https://192.168.222.171:34795
+- VictoriaMetrics: https://192.168.222.171:30428
 
 将下面的 shell 脚本保存到 `./vm-mig.sh` 文件。
 
@@ -142,14 +142,15 @@ $ mv ./vmctl-linux-amd64 /opt/yunion/bin
 #!/bin/bash
 
 # 指定 Influxdb 和 VictoriaMetrics 的服务地址
-VM_URL="http://192.168.222.171:34795"
-INFLUX_URL="https://192.168.222.171:30086"
+IP=192.168.222.171
+VM_URL="https://$IP:30428"
+INFLUX_URL="https://$IP:30086"
 
 # 指定要迁移 Influxdb 迁移数据的起始时间段
 START_TIME='2023-11-10T00:00:00Z'
 END_TIME='2023-12-10T00:00:00Z'
 
-/opt/yunion/bin/vmctl-linux-amd64 influx \
+/opt/yunion/bin/vmctl-linux-amd64 influx -s \
         --influx-retention-policy 30day_only \
         --influx-addr $INFLUX_URL --influx-database telegraf \
         --influx-concurrency 4 \
@@ -161,7 +162,7 @@ END_TIME='2023-12-10T00:00:00Z'
 最后执行迁移脚本，迁移时间的长短取决于 Influxdb 里面的数据量。
 
 ```bash
-$ bash ./vm-mig.sh
+$ bash -x ./vm-mig.sh
 ```
 
 ## 删除 influxdb 服务
