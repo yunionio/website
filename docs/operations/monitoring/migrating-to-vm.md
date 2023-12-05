@@ -96,3 +96,78 @@ $ kubectl logs -n onecloud $(kubectl get pods -n onecloud | grep monitor | awk '
 ```
 [info 2023-12-04 07:01:53 datasource.(*dataSourceManager).setDataSource(datasource.go:116)] set TSDB data source "victoria-metrics": "https://default-victoria-metrics:30428"
 ```
+
+## 迁移 Influxdb 监控数据（可选）
+
+:::tip
+如果之前在 Influxdb 里面的监控数据不重要，可以不做数据的迁移。下面的操作适用于想要把 Influxdb 历史监控数据迁移到 VictoriaMetrics 的环境。
+
+另外迁移数据必须保证 Influxdb 和 VictoriaMetrics 两个服务同时运行。
+:::
+
+### 下载 vmctl 迁移工具
+
+主要是下载 vmctl 工具，用于把 Influxdb 的历史数据导入到 VictoriaMetrics，请根据自己的环境下载对应的版本，下载地址如下：
+
+- x86_64: [https://github.com/zexi/VictoriaMetrics/releases/download/v1.94.0-vmctl-https-import/vmctl-linux-amd64](https://github.com/zexi/VictoriaMetrics/releases/download/v1.94.0-vmctl-https-import/vmctl-linux-amd64)
+- arm64: [https://github.com/zexi/VictoriaMetrics/releases/download/v1.94.0-vmctl-https-import/vmctl-linux-arm64](https://github.com/zexi/VictoriaMetrics/releases/download/v1.94.0-vmctl-https-import/vmctl-linux-arm64)
+
+下面以 x86_64 环境举例：
+
+:::tip
+以下的所有命令都是登录到平台的控制节点上执行。
+:::
+
+```bash
+# 下载 vmctl-linux-amd64 工具
+$ wget https://github.com/zexi/VictoriaMetrics/releases/download/v1.94.0-vmctl-https-import/vmctl-linux-amd64
+
+# 添加可执行权限
+$ chmod a+x ./vmctl-linux-amd64
+
+# 放到 /opt/yunion/bin 目录
+$ mv ./vmctl-linux-amd64 /opt/yunion/bin
+```
+
+### 迁移数据
+
+编写下面的迁移脚本，假设控制节点的 ip 为 192.168.222.171，那么环境中 Influxdb 和 VictoriaMetrics 服务的地址就为：
+
+- Influxdb: https://192.168.222.171:30086
+- VictoriaMetrics: https://192.168.222.171:34795
+
+将下面的 shell 脚本保存到 `./vm-mig.sh` 文件。
+
+```bash
+#!/bin/bash
+
+# 指定 Influxdb 和 VictoriaMetrics 的服务地址
+VM_URL="http://192.168.222.171:34795"
+INFLUX_URL="https://192.168.222.171:30086"
+
+# 指定要迁移 Influxdb 迁移数据的起始时间段
+START_TIME='2023-11-10T00:00:00Z'
+END_TIME='2023-12-10T00:00:00Z'
+
+/opt/yunion/bin/vmctl-linux-amd64 influx \
+        --influx-retention-policy 30day_only \
+        --influx-addr $INFLUX_URL --influx-database telegraf \
+        --influx-concurrency 4 \
+        --influx-filter-time-start $START_TIME \
+        --influx-filter-time-end $END_TIME \
+        --vm-addr $VM_URL
+```
+
+最后执行迁移脚本，迁移时间的长短取决于 Influxdb 里面的数据量。
+
+```bash
+$ bash ./vm-mig.sh
+```
+
+## 删除 influxdb 服务
+
+使用 VictoriaMetrics 作为 TSDB 后，就可以删除 Influxdb 服务了，操作如下：
+
+```bash
+$ kubectl delete deployment -n onecloud default-influxdb
+```
