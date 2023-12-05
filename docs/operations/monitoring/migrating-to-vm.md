@@ -172,3 +172,7 @@ $ bash -x ./vm-mig.sh
 ```bash
 $ kubectl delete deployment -n onecloud default-influxdb
 ```
+
+## 访问 VictoriaMetrics 前端
+
+默认情况下，可以通过 `https://控制节点IP:30428/vmui/` 访问 VictoriaMetrics 前端 web 界面，可以查看下数据是否有上报上来。
