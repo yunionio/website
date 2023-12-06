@@ -39,7 +39,7 @@ jobs:
         publish_dir: ./build
         external_repository: yunionio/yunionio.github.io
         allow_empty_commit: true
-        cname: www.cloudpods.org
+        cname: v2.cloudpods.org
         publish_branch: master
 
     - name: Publish site to AWS s3
