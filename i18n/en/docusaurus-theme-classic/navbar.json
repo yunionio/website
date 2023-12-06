@@ -14,5 +14,11 @@
   "item.label.GitHub": {
     "message": "GitHub",
     "description": "Navbar item with label GitHub"
+  },
+  "item.label.博客": {
+    "message": "Blog"
+  },
+  "item.label.服务订阅": {
+    "message": "Subscription"
   }
 }

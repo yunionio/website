@@ -292,6 +292,108 @@
   "homepage.subtitle": {
     "message": "A cloud-native open-source unified cloud platform"
   },
+  "homepage.cloudpodsVirtDesc": {
+    "message": "Local virtualization&bare metal"
+  },
+  "homepage.cloudpodsCmpDesc": {
+    "message": "Unified management of public and private clouds"
+  },
+  "homepage.osSupport": {
+    "message": "System support: CentOS 7.6~7.9 Minimal, Debian 10/11, Ubuntu 22.04, Galaxy Kirin V10 SP2/SP3, Uni President UOS Kongzi"
+  },
+  "homepage.viewDocs": {
+    "message": "View deployment documentation"
+  },
+  "homepage.featureDesc": {
+    "message": "Cloudpods can not only manage local virtual and physical machine resources, but also manage multiple cloud platforms and cloud accounts. Cloudpods hides the differences in data models and APIs of these heterogeneous infrastructure resources, exposing a unified set of APIs to the outside world, allowing users to access multiple clouds as if they were using a single cloud. This greatly reduces the complexity of accessing multiple clouds and improves the efficiency of managing multiple clouds."
+  },
+  "homepage.featureServer": {
+    "message": "Cloud native"
+  },
+  "homepage.featureServerDesc": {
+    "message": "Runs in Kubernetes, manages and maintains using Kubernetes Operator"
+  },
+  "homepage.featurePrivateCloud": {
+    "message": "Private cloud"
+  },
+  "homepage.featurePrivateCloudDesc": {
+    "message": "A lightweight private cloud capable of managing massive KVM virtual machines"
+  },
+  "homepage.featureBaremetal": {
+    "message": "Bare metal"
+  },
+  "homepage.featureBaremetalDesc": {
+    "message": "A bare metal cloud capable of managing the entire lifecycle of physical machines"
+  },
+  "homepage.featureMultipleClouds": {
+    "message": "Multi cloud management"
+  },
+  "homepage.featureMultipleCloudsDesc": {
+    "message": "The function of managing multi cloud resources can manage most mainstream clouds, including private and public clouds"
+  },
+  "homepage.featureK8s": {
+    "message": "Multi cloud K8S"
+  },
+  "homepage.featureK8sDesc": {
+    "message": "Deploying and managing Kubernetes clusters in a multi cloud environment"
+  },
+  "homepage.featureIam": {
+    "message": "Multi Tenant IAM"
+  },
+  "homepage.featureIamDesc": {
+    "message": "A complete multi tenant authentication and access control system"
+  },
+  "homepage.featureSso": {
+    "message": "Multi cloud SSO"
+  },
+  "homepage.featureSsoDesc": {
+    "message": "Multi cloud SSO allows access to native consoles of various cloud platforms with a unified federated identity"
+  },
+  "homepage.featureClimc": {
+    "message": "CLIMC"
+  },
+  "homepage.featureClimcDesc": {
+    "message": "Efficient management of Cloudpods using command-line tool climc"
+  },
+  "homepage.featureApi": {
+    "message": "Unified API"
+  },
+  "homepage.featureApiDesc": {
+    "message": "A set of rich and consistent REST APIs and models to access the above cloud resources and functions"
+  },
+  "homepage.supportBrandTitle": {
+    "message": "Supported cloud platforms and technologies"
+  },
+  "homepage.cloudpodsUserTitle": {
+    "message": "Who is using Cloudpods?"
+  },
+  "homepage.cloudpodsUserDesc": {
+    "message": "Please view the Cloudpods user list on this {issueLink}"
+  },
+  "homepage.orgTitle": {
+    "message": "Organizational contributors"
+  },
+  "homepage.orgDesc": {
+    "message": "Thank you to the following organizations for their contributions to the development of Cloudpods"
+  },
+  "homepage.question": {
+    "message": "Question"
+  },
+  "homepage.createIssue": {
+    "message": "Please submit an issue on GitHub"
+  },
+  "homepage.contribute": {
+    "message": "Welcome to contribute"
+  },
+  "homepage.createPr": {
+    "message": "Please submit a Pull Request on GitHub"
+  },
+  "homepage.createPr2": {
+    "message": "to contribute code to Cloudpods"
+  },
+  "homepage.contact": {
+    "message": "Welcome to contact us"
+  },
   "OcbootClone.downloadComment": {
     "message": "# Use git clone the ocboot deployment tool locally",
     "description": "locally download comment"
