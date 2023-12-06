@@ -1,4 +1,4 @@
-import SiteCustomField from "@site/src/components/SiteCustomField";
+import SiteCustomField from "./SiteCustomField";
 
 export default function ReleaseTag() {
   return (
