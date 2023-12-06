@@ -1,0 +1,41 @@
+.footerItemsWrapper{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.footerItem {
+  width: 30%;
+}
+
+.footerItemTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.footerItemIcon {
+  color: #fff;
+  margin-right: 5px;
+  font-size: 1.2rem;
+}
+
+.footerItemText {
+  color: #fff;
+  font-size: 0.9em;
+  margin-bottom: 0.5rem;
+}
+.footerItemText:hover {
+  color: #fff;
+}
+
+.footerItemImg {
+  width: 5rem;
+}
+
+.copyRight {
+  color: #fff;
+  font-size: 0.9em;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
