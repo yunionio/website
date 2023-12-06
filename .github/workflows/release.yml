@@ -22,10 +22,14 @@ jobs:
         cache: yarn
 
     - name: "Install dependencies"
-      run: yarn install --frozen-lockfile
+      shell: bash
+      run: |
+        yarn install --frozen-lockfile
 
     - name: Build public site
+      shell: bash
       run: |
+        echo $PWD
         yarn build
 
     - name: Publish site to yunionio/yunionio.github.io
