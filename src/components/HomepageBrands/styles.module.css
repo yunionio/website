@@ -1,0 +1,39 @@
+.section {
+  padding: 1rem 0 2rem 0;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.sectionSubTitle {
+  text-align: center;
+  width: 100%;
+}
+
+.providerWrapper {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.providerImg {
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, .2);
+  margin: 10px;
+  border-radius: 2px;
+  width: calc((100% - 70px) / 8);
+  max-width: 200px;
+}
+
+.providerImg:hover {
+  transform: scale(1.05);
+  transform-origin: 50% 50%;
+}
+
+
