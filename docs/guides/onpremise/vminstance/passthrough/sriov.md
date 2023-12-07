@@ -233,7 +233,21 @@ ovs_offload_nics:
 - bond0
 ```
 
-### 常见问题
+## 虚拟机配置
+
+SR-IOV透传到虚拟机后，对虚拟机表现为同型号的物理网卡，对于Mellanox的网卡，也建议安装官方的OFED驱动。
+
+```
+$ wget https://content.mellanox.com/ofed/MLNX_OFED-5.8-1.1.2.1/MLNX_OFED_LINUX-5.8-1.1.2.1-rhel7.9-x86_64.iso
+$ mount -o loop MLNX_OFED_LINUX-5.8-1.1.2.1-rhel7.9-x86_64.iso /mnt
+$ cd /mnt
+$ ./mlnxofedinstall
+$ dracut -f
+$ /etc/init.d/openibd restart
+$ reboot
+```
+
+## 常见问题
 
 #### 如何验证一个PCI设备支持SR-IOV？
 

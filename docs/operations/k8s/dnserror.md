@@ -38,7 +38,12 @@ calicoctl patch felixconfig default -p '{"spec":{"vxlanEnabled":true}}'
 calicoctl patch ippool default-ipv4-ippool -p '{"spec":{"ipipMode":"Never", "vxlanMode":"Always"}}'   ## wait for the vxlan.calico interface to be created and traffic to be routed through it
 calicoctl patch felixconfig default -p '{"spec":{"ipipEnabled":false}}'
 ```
+如果需要调整MTU，请用如下命令：
 
+```bash
+calicoctl patch felixconfig default -p '{"spec":{"ipipMtu":1430}}'
+calicoctl patch felixconfig default -p '{"spec":{"vxlanMtu":1430}}'
+```
 
 ## 原因排查
 
