@@ -146,9 +146,13 @@ climc service-config-edit <service_name>
 
 ## Host Agent的服务配置
 
-和其他服务的服务配置相比，Host Agent的服务配置有一些特殊。首先，Host Agent的服务配置没有实现从keystone获取服务配置的功能，只支持从命令行参数和配置文件加载配置项。其次，Host Agent的文件配置分为两部分：一部分个是公共配置，位于/etc/yunion/common/common.conf，一部分是每台宿主机的个性化配置，位于/etc/yunion/host.conf。
+和其他服务的服务配置相比，Host Agent的服务配置有一些特殊。首先，Host Agent的服务配置没有实现从keystone获取服务配置的功能，只支持从命令行参数和配置文件加载配置项。其次，Host Agent的文件配置分为三部分：
 
-对于Kubernetes中部署的HostAgent服务，公共配置存储在 onecloud 命名空间下的名称为 default-host 的 configmap 中。个性化配置存储在每台宿主机的 /etc/yunion/host.conf 的配置文件中。
+* 缺省host配置文件，通过--config参数指定，默认位置为 /etc/yunion/host.conf。改配置为host服务默认加载，位置在每个计算节点的/etc/yunion/host.conf。该文件中的配置项最先加载。
+* 公共host配置文件，通过--common-config-file参数指定，默认位置为/etc/yunion/common/common.conf。当部署在Kubernetes中，common.conf内容通过挂载configmap default-host实现。因此通过修改configmaps default-host的内容可以统一修改所有计算节点的host服务配置。该文件中的配置会覆盖host.conf的配置。
+* 公共host配置的个性化配置文件，通过--local-config-file参数指定，默认位置为/etc/yunion/host_local.conf。这个配置用于个性化在common.conf中定义的配置项。该文件中的配置会覆盖common.conf的配置。
+
+对于Kubernetes中部署的HostAgent服务，公共配置存储在 onecloud 命名空间下的名称为 default-host 的 configmap 中。个性化配置存储在每台宿主机的 /etc/yunion/host.conf 的配置文件中。本地化的公共配置存储在每台宿主机的 /etc/yunion/host_local.conf 的配置文件中。
 
 常见的 HostAgent 公共配置项如下：
 
