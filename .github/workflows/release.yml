@@ -3,11 +3,11 @@ name: Release website to github pages and buckets
 on:
   push:
     branches:
-      # - release/3.10  # Set a branch to deploy
       # - release/*  # Set a branch to deploy
-      - main  # Set a branch to deploy
-    tags:
-      - v3.*
+      - release/3.10  # Set a branch to deploy
+      # - main  # Set a branch to deploy
+    # tags:
+    #   - v3.*
 
 jobs:
   build:
