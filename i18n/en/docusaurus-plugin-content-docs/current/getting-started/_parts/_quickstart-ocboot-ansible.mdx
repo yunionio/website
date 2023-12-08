@@ -10,7 +10,7 @@ First, you need to install ansible and git. The minimum required version of Ansi
 # Install ansible and git locally
 $ yum install -y epel-release git python3-pip
 $ python3 -m pip install --upgrade pip setuptools wheel
-$ python3 -m pip install --upgrade ansible
+$ python3 -m pip install 'ansible<=9.0.0'
 ```
 
   </TabItem>
@@ -32,7 +32,7 @@ fi
 # Install ansible and git locally
 $ apt install -y git python3-pip
 $ python3 -m pip install --upgrade pip setuptools wheel
-$ python3 -m pip install --upgrade ansible
+$ python3 -m pip install 'ansible<=9.0.0'
 ```
 
 Note: In the `Debian 11` environment, if systemd.unified_cgroup_hierarchy=0 is not found in `/proc/cmdline`, ocboot will automatically configure the relevant GRUB options, rebuild the startup parameters, and restart the operating system so that `k8s` can be launched normally.
@@ -44,7 +44,7 @@ Note: In the `Debian 11` environment, if systemd.unified_cgroup_hierarchy=0 is n
 # Install ansible and git locally
 $ yum install -y git python3-pip
 $ python3 -m pip install --upgrade pip setuptools wheel
-$ python3 -m pip install --upgrade ansible
+$ python3 -m pip install 'ansible<=9.0.0'
 ```
   </TabItem>
 
@@ -53,7 +53,7 @@ $ python3 -m pip install --upgrade ansible
 ```bash
 # Install ansible locally
 $ python3 -m pip install --upgrade pip setuptools wheel
-$ python3 -m pip install --upgrade ansible
+$ python3 -m pip install 'ansible<=9.0.0'
 ```
 
   </TabItem>
