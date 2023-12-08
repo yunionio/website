@@ -140,6 +140,22 @@ GROUP BY "vm_id", time(1m) fill(none)
 }
 ```
 
+## SDK
+
+可以使用下面的 SDK 以方便的方式构造监控查询请求：
+
+- Go:
+    - 构造查询请求：[MetricQueryInput](https://github.com/yunionio/cloudpods/blob/release/3.10/pkg/mcclient/modules/monitor/helper.go#L587-L672)
+    - 发起请求：[PerformQuery](https://github.com/yunionio/cloudpods/blob/release/3.10/pkg/mcclient/modules/monitor/mod_unifiedmonitor.go#L52-L54)
+    - 用法举例：
+        - [命令行参数](https://github.com/yunionio/cloudpods/blob/release/3.10/pkg/mcclient/options/monitor/unifiedmonitor.go#L67-L116)
+        - [服务端构造](https://github.com/yunionio/cloudpods/blob/release/3.10/pkg/monitor/models/unifiedmonitor.go#L533-L555)
+
+- Java:
+    - 构造查询请求：[MetricQueryInput](https://github.com/yunionio/mcclient_java/blob/v3.2.10/src/main/java/com/yunionyun/mcp/mcclient/managers/impl/monitor/MetricQueryInput.java)
+    - 发起请求：[PerformQuery](https://github.com/yunionio/mcclient_java/blob/v3.2.10/src/main/java/com/yunionyun/mcp/mcclient/managers/impl/monitor/UnifiedMonitorManager.java#L30-L32)
+    - 用法举例：[参考这个PR](https://github.com/yunionio/mcclient_java/pull/52/files#diff-64be3a95e81733de6ac3e486a4631b18b031c2720106473fbb16d25a9cae4dd9R19-R35)
+
 ## 签名
 
 signature 签名的作用是防止查询条件被篡改，如果不需要该功能，可以配置 monitor 服务关闭。
@@ -166,9 +182,49 @@ $ kubectl rollout restart deployment -n onecloud default-monitor
 
 signature 的计算方法可以参考这里前端 javascript 代码：[https://github.com/yunionio/dashboard/blob/v3.10.0-rc2/src/utils/crypto.js#L11-L18](https://github.com/yunionio/dashboard/blob/v3.10.0-rc2/src/utils/crypto.js#L11-L18)
 
-## 登陆 influxdb 直接查询数据
+## 命令行工具
 
-有些情况不确定查询的 API 数据是否准确，可以用下面的方法直接进入 influxdb 容器使用命令行查询指标：
+使用 `climc monitor-unifiedmonitor-query` 命令可以查询平台监控数据。
+
+```bash
+# 查询 vm_cpu measurement 里面的 usage_active 指标
+$ climc --debug monitor-unifiedmonitor-query vm_cpu usage_active
+
+# 设置指标间隔为 1m ，另外使用 --tags 过滤
+$ climc --debug monitor-unifiedmonitor-query --interval 1m --tags vm_id=e0d3c5ce-ec65-42ad-89d9-0b75953f841e --tags zone=YunionHQ vm_cpu usage_active
+
+# 查询时间段内数据
+$ climc --debug monitor-unifiedmonitor-query --from 2023-12-07T23:54:42.123Z --to 2023-12-08T13:54:42.123Z vm_cpu usage_active
+```
+
+## 直接查询监控数据
+
+平台现在支持把监控数据存到 VictoriaMetrics 或者 Influxdb，可以使用下面的方法查询相关时序数据库的监控数据。
+
+关于 Influxdb 到 VictoriaMetrics 的切换，可以参考文档：[切换 Influxdb 到 VictoriaMetrics](../../operations/monitoring/migrating-to-vm.md)。
+
+### 查询 VictoriaMetrics 数据
+
+如果使用 VictoriaMetrics 作为监控后端，可以通过 `https://控制节点IP:30428/vmui/` 访问 VictoriaMetrics 前端 web 界面，VictoriaMetrics 使用 MetricsQL 查询语法，具体使用方式参考文档：
+
+- [MetricsQL](https://docs.victoriametrics.com/MetricsQL.html)
+
+:::tip
+现在监控数据上报的格式是 Influxdb 的行格式，当监控指标发送到 VictoriaMetrics 时，会自动转换成相关的格式。
+
+比如 Influxdb 行格式：`cpu,tag1=value1 usage_active=30` 
+
+会转换成 VictoriaMetrics 的格式：`cpu_usage_active{tag1="value1"} 30`
+
+具体格式转换可参考下面的文档：
+
+- [How to send data from InfluxDB-compatible agents such as Telegraf](https://docs.victoriametrics.com/Single-server-VictoriaMetrics.html#how-to-send-data-from-influxdb-compatible-agents-such-as-telegraf)
+:::
+
+
+### 查询 Influxdb 数据
+
+如果使用 Influxdb 作为监控后端，可以用下面的方法直接进入 influxdb 容器使用命令行查询指标：
 
 ```bash
 $ kubectl exec -ti -n onecloud $(kubectl get pods -n onecloud | grep default-influxdb | awk '{print $1}') -- influx -host 127.0.0.1 -port 30086 -type influxql -ssl  -precision rfc3339 -unsafeSsl

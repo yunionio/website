@@ -176,3 +176,5 @@ $ kubectl delete deployment -n onecloud default-influxdb
 ## 访问 VictoriaMetrics 前端
 
 默认情况下，可以通过 `https://控制节点IP:30428/vmui/` 访问 VictoriaMetrics 前端 web 界面，可以查看下数据是否有上报上来。
+
+具体使用方式可以参考文档：[查询 VictoriaMetrics 数据](../../development/monitor/query.md#查询-victoriametrics-数据)。
