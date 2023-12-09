@@ -2,38 +2,38 @@
 sidebar_position: 1
 ---
 
-# MariaDB 推荐配置
+# MariaDB Recommended Configurations
 
-配置建议如下：
+The configurations are recommended as follows:
 
-1. 取消对客户端的域名反解
+1. Skip the domain name resolvation of the client
 
 ```
 skip-name-resolve
 ```
 
-2. 自动清理binlog的时间（天数）
+2. Set the time of automatic cleaning binlog (in terms of number of days)
 
 ```
 expire_logs_days=30
 ```
 
 
-3. 设置每个表一个独立innodb文件
+3. Turn on independent INNODB file for each table
 
 ```
 innodb_file_per_table=ON
 ```
 
-4. 最大连接数
+4. Maximal allowd connections
 
 ```
 max_connections=300
 ```
 
-默认151，可以调高一些，比如300 
+The default is 151，we may set it higher, e.g. 300 
 
-注意：调高MySQL最大连接数同时需要调高操作系统的最大打开文件数，需修改 /usr/lib/systemd/system/mariadb.service 如下：
+Note: Besides to increase the maximum number of connections of MySQL, you may also need to increase the maximum number of open files of the operating system:
 
 ```
 # /usr/lib/systemd/system/mariadb.service
@@ -43,22 +43,22 @@ LimitMEMLOCK=10000
 ```
 
 
-5. query最大返回字节数
+5. Set the maximal allowed package size of each query
 
 ```
 max_allowed_packet=20M
 ```
 
-默认1M，调高为 20M
+The default is 1M，set it to 20M.
 
 
-6. 设置日期字段的默认时区为UTC
+6. Set the default timezone of datetime field to be UTC
 
 ```
 default_time_zone='+00:00'
 ```
 
-7. 开启slow log日志以及该日志的logrotate
+7. Turn on slow log and the automatic logrotate
 
 ```
 slow_query_log = ON
@@ -66,18 +66,18 @@ long_query_time = 30
 slow_query_log_file = /var/log/mariadb/slow.log
 ```
 
-8. 开启error log
+8. Turn on error log
 ```
 log_error=/var/log/mariadb/mariadb.err.log
 ```
 
-9. 关闭通用log
+9. Turn off general log
 ```
 general_log=OFF
 general_log_file=/var/log/mariadb/mariadb.log
 ```
 
-修改配置文件
+An example of the configuration file as follows:
 ```
 # /etc/my.cnf
 [mysqld]
