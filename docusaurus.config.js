@@ -40,6 +40,13 @@ const config = {
     locales: ['zh-Hans', 'en'],
   },
 
+  scripts: [
+    {
+      src: 'https://hm.baidu.com/hm.js?3c5253cd6530122d0f774cab69e3c07f',
+      async: true,
+    },
+  ],
+
   presets: [
     [
       'classic',
@@ -78,6 +85,16 @@ const config = {
     ],
   ],
 
+  plugins: [
+    [
+      '@docusaurus/plugin-google-gtag',
+      {
+        trackingID: 'G-999X9XX9XX',
+        anonymizeIP: true,
+      },
+    ],
+  ],
+
   themes: [
     [
       require.resolve('@easyops-cn/docusaurus-search-local'),
@@ -106,7 +123,8 @@ const config = {
         title: 'Cloudpods',
         logo: {
           alt: 'Cloudpods Logo',
-          src: 'img/logo.png',
+          src: 'img/logo_green_round_revert.png',
+          srcDark: 'img/logo_white_round_revert.png',
         },
         items: [
           // { to: '/docs/getting-started', label: '快速开始', position: 'left' },
