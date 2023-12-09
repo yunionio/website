@@ -18,31 +18,33 @@ function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   const { isDarkTheme } = useColorMode();
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container row">
-        <div className={clsx('col', styles.alignCenter)}>
-          <Heading as="h1" className="hero__title">
-            {siteConfig.title}
-          </Heading>
-          <p className="hero__subtitle">
-            <Translate id="homepage.subtitle">云原生的开源融合云平台</Translate>
-          </p>
-          <p className="hero__title">
-            <Translate id="homepage.buildown">构建您自己的云上之云</Translate>
-          </p>
-          <div className={styles.buttons}>
-            <Link
-              className="button button--secondary button--lg"
-              to="/docs/getting-started/">
-              <Translate id="homepage.getStarted">快速开始</Translate>
-            </Link>
+    <section className={clsx('hero hero--primary', styles.heroBanner)}>
+      <div className="container">
+        <div className="row">
+          <div className={clsx('col', styles.alignCenter)}>
+            <Heading as="h1" className="hero__title">
+              {siteConfig.title}
+            </Heading>
+            <p className="hero__subtitle">
+              <Translate id="homepage.subtitle">云原生的开源融合云平台</Translate>
+            </p>
+            <p className="hero__title">
+              <Translate id="homepage.buildown">构建您自己的云上之云</Translate>
+            </p>
+            <div className={styles.buttons}>
+              <Link
+                className="button button--secondary button--lg"
+                to="/docs/getting-started/">
+                <Translate id="homepage.getStarted">快速开始</Translate>
+              </Link>
+            </div>
+          </div>
+          <div className="col">
+            <img src={isDarkTheme? useBaseUrl('img/logo_black.png') : useBaseUrl('img/logo_white.png') } className={styles.heroImg} />
           </div>
         </div>
-        <div className="col">
-          <img src={isDarkTheme? useBaseUrl('img/logo_black.png') : useBaseUrl('img/logo_white.png') } className={styles.heroImg} />
-        </div>
       </div>
-    </header>
+    </section>
   );
 }
 
@@ -52,8 +54,8 @@ export default function Home() {
     <Layout
       title={''}
       description="">
-      <HomepageHeader />
       <main>
+        <HomepageHeader />
         {/* <HomepagePanel /> */}
         <HomepageFeatures />
         <HomepageBrands />

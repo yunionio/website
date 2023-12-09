@@ -8,15 +8,21 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  display: block;
 }
 
 .heroImg {
   width: 400px;
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: auto;
 }
 
 .alignCenter {
   margin-top: auto;
-  margin-left: 100px;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: auto;
 }
 
