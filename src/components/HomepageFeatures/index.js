@@ -77,7 +77,8 @@ function Feature({Svg, title, title_id, description, description_id}) {
       </div>
       <div className="text--center padding-horiz--md">
         <Heading as="h3">
-          <Translate id={title_id}>{title}</Translate></Heading>
+          <Translate id={title_id}>{title}</Translate>
+        </Heading>
         <div className={styles.featureItemText}>
           <Translate id={description_id}>{description}</Translate>
         </div>
