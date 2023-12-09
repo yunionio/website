@@ -292,6 +292,9 @@
   "homepage.subtitle": {
     "message": "A cloud-native open-source unified cloud platform"
   },
+  "homepage.buildown": {
+    "message": "Build your own cloud on clouds"
+  },
   "homepage.cloudpodsVirtDesc": {
     "message": "Local virtualization&bare metal"
   },
