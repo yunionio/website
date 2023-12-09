@@ -10,6 +10,16 @@
   overflow: hidden;
 }
 
+.heroImg {
+  width: 400px;
+}
+
+.alignCenter {
+  margin-top: auto;
+  margin-left: 100px;
+  margin-bottom: auto;
+}
+
 @media screen and (max-width: 996px) {
   .heroBanner {
     padding: 2rem;
@@ -20,4 +30,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.buttonsDark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
 }
