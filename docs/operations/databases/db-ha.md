@@ -1,31 +1,31 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
-# Deploy Mariadb HA
+# 部署 Mariadb HA 环境
 
-Use keepalived and Mariadb's master-master replication feature to achieve high availability of DB.
+本文介绍使用 keepalived 和 Mariadb 的主主复制功能来实现 DB 的高可用。
 
-## Deployment
+## 部署
 
-The main function of keepalived is to provide vip for Mariadb, switching between 2 Mariadb instances to provide uninterrupted service.
+keepalived 的主要作用是为 Mariadb 提供 vip，在2个 Mariadb 实例之间切换，不间断的提供服务。
 
-In the following example:
+下文示例中：
 
-- DB VIP: 192.168.199.97
-- Primary node IP: 192.168.199.98
-- Backup node IP: 192.168.199.99
+- DB VIP：192.168.199.97
+- 主节点IP：192.168.199.98
+- 备节点IP：192.168.199.99
 
-### Configure Mariadb master-master replication
+### 部署配置 Mariadb 主主复制
 
-Install and start Mariadb
+安装并启动 Mariadb
 
 ```bash
 $ yum install -y mariadb-server
 $ systemctl enable --now mariadb
 ```
 
-Run the Mariadb Security Configuration Wizard to set passwords, etc.
+运行 Mariadb 安全配置向导，设置密码等
 
 ```bash
 $ mysql_secure_installation
@@ -53,12 +53,12 @@ Reload privilege tables now? [Y/n] y
  ... ...
 ```
 
-Modify the Mariadb configuration file to prepare for configuring the master-master replication.
+修改 Mariadb 配置文件，准备配置主主复制。
 
-Note: The difference between primary and secondary is the `confserver-id` and `auto_increment_offset` fields.
+备注：主、从区别是`confserver-id`、`auto_increment_offset`两个字段。
 
 ```bash
-# Primary node
+# 主节点
 $ cat <<EOF > /etc/my.cnf
 [mysqld]
 datadir=/var/lib/mysql
@@ -109,7 +109,7 @@ pid-file=/var/run/mariadb/mariadb.pid
 !includedir /etc/my.cnf.d
 EOF
 
-# Backup Node
+# 备节点
 $ cat <<EOF > /etc/my.cnf
 [mysqld]
 datadir=/var/lib/mysql
@@ -160,26 +160,25 @@ pid-file=/var/run/mariadb/mariadb.pid
 !includedir /etc/my.cnf.d
 EOF
 
-# Restart the service
+# 重启服务
 $ systemctl restart mariadb
 ```
 
-On the primary node, create a read-only account, export all data, and import it into the backup node. Record the name and position of the binlog log file.
+主节点创建只读账号，导出全部数据，导入备节点。记录binlog日志文件名和position。
 
 ```bash
-# The following commands are executed on the primary node
+# 以下命令在主节点执行
 
-# This password is for the Mariadb root set above. For convenience, the read-only account also uses this password
+# 此密码为上面设置的 Mariadb root 密码，为了方便，只读账号也使用此密码
 $ MYSQL_PASSWD='your-sql-passwd'
 
-# Enable remote access to Mariadb
+# 开启 Mariadb 的远程访问
 $ mysql -uroot -p$MYSQL_PASSWD -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_PASSWD' WITH GRANT OPTION;FLUSH PRIVILEGES"
 
-# Create a read-only account
+# 创建只读账号
 $ mysql -u root -p$MYSQL_PASSWD -e "GRANT REPLICATION SLAVE ON *.* TO repl@'%' IDENTIFIED BY '$MYSQL_PASSWD';FLUSH PRIVILEGES"
 
-# This example is for a fresh installation of Mariadb that hasn't been used yet. If you're doing master-master replication of a database that's already in use, you need to lock the table before exporting data. 
-``````bash
+# 示例是全新安装的 Mariadb ，还没有使用。如果是正在使用的数据库做主主复制，需要锁表后再导出数据
 $ mysql -uroot -p$MYSQL_PASSWD -e "SHOW PROCESSLIST"
 +----+------+-----------+------+---------+------+-------+------------------+----------+
 | Id | User | Host      | db   | Command | Time | State | Info             | Progress |
@@ -187,7 +186,7 @@ $ mysql -uroot -p$MYSQL_PASSWD -e "SHOW PROCESSLIST"
 |  4 | root | localhost | NULL | Query   |    0 | NULL  | SHOW PROCESSLIST |    0.000 |
 +----+------+-----------+------+---------+------+-------+------------------+----------+
 
-# Record the binlog file name and position
+# 记录binlog日志文件名和position
 $ mysql -u root -p$MYSQL_PASSWD -e "SHOW MASTER STATUS\G"
 *************************** 1. row ***************************
             File: mysql-bin.000001
@@ -195,25 +194,25 @@ $ mysql -u root -p$MYSQL_PASSWD -e "SHOW MASTER STATUS\G"
     Binlog_Do_DB:
 Binlog_Ignore_DB:
 
-# Export all data
+# 导出全部数据
 $ mysqldump --all-databases -p$MYSQL_PASSWD > alldb.db
 
-# Copy alldb.db to the backup node
+# 拷贝 alldb.db 到备节点
 $ scp alldb.db db2:/root/
 
 
-# Execute the following commands on the backup node
+# 以下命令在备节点执行
 
-# This password is the MariaDB root password set above
+# 此密码为上面设置的 Mariadb root 密码
 $ MYSQL_PASSWD='your-sql-passwd'
 
-# Import the data exported from the primary node
+# 导入主节点导出的数据
 mysql -u root -p$MYSQL_PASSWD < alldb.db
 
-# Reload privileges
+# 重载权限
 mysql -u root -p$MYSQL_PASSWD -e "FLUSH PRIVILEGES"
 
-# Record the binlog file name and position
+# 记录binlog日志文件名和position
 mysql -u root -p$MYSQL_PASSWD -e "SHOW MASTER STATUS\G"
 *************************** 1. row ***************************
             File: mysql-bin.000001
@@ -222,38 +221,39 @@ mysql -u root -p$MYSQL_PASSWD -e "SHOW MASTER STATUS\G"
 Binlog_Ignore_DB:
 ```
 
-Set up master-slave replication
+设置主主复制
 
 ```bash
-# Execute the following commands on the primary node
+# 以下命令在主节点执行
 
-# Modify MASTER_HOST to the IP address of the backup node, and modify MASTER_LOG_FILE and MASTER_LOG_POS based on the information recorded on the backup node
+# 修改MASTER_HOST为备节点IP，修改MASTER_LOG_FILE和MASTER_LOG_POS为上面备节点记录的信息
 mysql -u root -p$MYSQL_PASSWD -e "CHANGE MASTER TO MASTER_HOST='192.168.199.99',MASTER_USER='repl',MASTER_PASSWORD='$MYSQL_PASSWD',MASTER_PORT=3306,MASTER_LOG_FILE='mysql-bin.000001',MASTER_LOG_POS=509778,MASTER_CONNECT_RETRY=2;START SLAVE"
 
 
-# Execute the following commands on the backup node
+# 以下命令在备节点执行
 
-# Modify MASTER_HOST to the IP address of the primary node, and modify MASTER_LOG_FILE and MASTER_LOG_POS based on the information recorded on the primary node
+# 修改MASTER_HOST为主节点IP，修改MASTER_LOG_FILE和MASTER_LOG_POS为上面主节点记录的信息
 mysql -u root -p$MYSQL_PASSWD -e "CHANGE MASTER TO MASTER_HOST='192.168.199.98',MASTER_USER='repl',MASTER_PASSWORD='$MYSQL_PASSWD',MASTER_PORT=3306,MASTER_LOG_FILE='mysql-bin.000001',MASTER_LOG_POS=2023,MASTER_CONNECT_RETRY=2;START SLAVE"
 
 
-# Execute this command on both primary and backup nodes, verify synchronization status, and output 2 Yes to indicate normal status
+# 主备都执行，验证同步状态，都输出2个 Yes 表示正常
 mysql -u root -p$MYSQL_PASSWD -e "SHOW SLAVE STATUS\G" | grep Running
-Slave_IO_Running: Yes
-Slave_SQL_Running: Yes
+             Slave_IO_Running: Yes
+            Slave_SQL_Running: Yes
 
-# If this step fails, for example, if Slave_SQL_Running is connecting, it's highly likely that the firewall has not been turned off. Please execute the following command to turn off the firewall, and then redo the previous step of checking the two Yes.
+# 如果这一步不成功，例如Slave_SQL_Running为 connecting，极大概率是防火墙没关闭。请执行如下命令，关闭防火墙，然后重新执行上一步的2个Yes的检测。
 systemctl is-active firewalld >/dev/null && systemctl disable --now firewalld
+
 ```
 
-The DB master-master replication deployment is now complete. You can test database operations on any node and verify them on the other node. However, it is still necessary to provide services externally through the VIP, otherwise if a switch occurs, the business side will need to switch IPs. Next, configure keepalived to provide external services.
+至此，DB 主主复制部署完成，可以测试在任一节点进行数据库操作，另一节点验证。不过对外提供服务还是需要通过 vip，不然发生切换还需要业务端切换 ip，下面配置 keepalived 对外提供服务。
 
-### Deploy and configure keepalived
+### 部署配置 keepalived
 
-Set the relevant environment variables and configure them according to different environments.
+设置相关的环境变量，根据不同的环境自行配置。
 
 ```bash
-# keepalived vip address
+# keepalived vip 地址
 export DB_VIP=192.168.199.97
 
 # keepalived auth toke
@@ -263,29 +263,29 @@ export DBHA_KA_AUTH=onecloud
 export DB_NETIF=eth0
 ```
 
-Set sysctl options
+设置 sysctl 选项
 
 ```bash
 $ cat <<EOF >>/etc/sysctl.conf
-net.ipv4.ip_forward=1
-net.ipv4.ip_nonlocal_bind=1
+net.ipv4.ip_forward = 1
+net.ipv4.ip_nonlocal_bind = 1
 EOF
 
 $ sysctl -p
 ```
 
-Install keepalived nc
+安装 keepalived nc
 
 ```bash
 $ yum install -y keepalived nc
 ```
 
-Add configuration
+添加配置
 
-The following is the configuration for the primary node:
+以下为主节点的配置：
 
 ```bash
-# Make sure virtual_router_id doesn't conflict with other keepalived clusters on the local network
+# 请确保 virtual_router_id 不会和局域网内的其他 keepalived 集群冲突
 $ cat <<EOF >/etc/keepalived/keepalived.conf
 global_defs {
     router_id onecloud
@@ -326,10 +326,10 @@ EOF
 $ chmod +x /etc/keepalived/chk_mysql
 ```
 
-The following is the configuration for the backup node:
+以下为备节点的配置：
 
 ```bash
-# Make sure the virtual_router_id of the backup node is the same as that of the primary node
+# 请确保备节点 virtual_router_id 和主节点一致
 $ cat <<EOF >/etc/keepalived/keepalived.conf
 global_defs {
     router_id onecloud
@@ -357,7 +357,7 @@ vrrp_instance VI_1 {
     }
 
     virtual_ipaddress {
-        $DB_VIP 
+        $DB_VIP
     }
 }
 EOF
@@ -370,7 +370,7 @@ EOF
 $ chmod +x /etc/keepalived/chk_mysql
 ```
 
-After the configuration is complete, start `keepalived` on the master and standby nodes respectively using the following command:
+配置后，在主备节点分别启动 keepalived
 
 ```bash
 $ systemctl enable --now keepalived
@@ -385,14 +385,14 @@ $ ip addr show $DB_NETIF
        valid_lft forever preferred_lft forever
 ```
 
-### Configure `keepalived` to switch network adapter automatically
+### 配置 keepalived 自动切换网卡
 
-In this solution, `k8s` and `mysql` share the same network adapter. If `k8s` uses the `host` feature, it will automatically enable the `br0` network adapter. When `host` starts or switches network adapters, it may affect the high availability of `mysql`. The following auxiliary script can enhance the stability of `k8s+mysql`. 
+本方案中，`k8s` 与 `mysql`共用网卡。如果`k8s`启用了`host`功能，会自动启用`br0`网卡。在`host` 启动、网卡切换时，有一定概率影响`mysql`的高可用稳定性。以下是辅助脚本，来提升`k8s+mysql`的稳定性。
 
-Run the following scripts respectively on the primary and standby nodes of `db`. Be sure to replace the `node_ip` variable in the first line with the machine's own IP address.
+以下脚本分别在 db 的主节点、备节点执行。注意替换第一行的`node_ip`变量为本机`ip`。
 
 ```bash
-# Replace the variable DB_NODE_IP in this script with the local IP address
+# 注意替换这里的 DB_NODE_IP 为本机 Ip
 node_ip=$DB_NODE_IP
 [[ -z "$node_ip" ]] && echo "please export variable 'node_ip' first! "
 
@@ -401,12 +401,12 @@ cat <<EOF_CK1 >/etc/keepalived/check_interface.sh
 
 datestr="\$(date +"%F %T")"
 env_interface=\$(cat /etc/keepalived/keepalived.conf| grep -w interface |awk '{print \$2}')
-echo "[\$datestr] The interface keepalived is currently listening on: \$env_interface"
+echo "[\$datestr] 目前keepalived监听的网卡: \$env_interface"
 router_interface=\$(/usr/sbin/ip a show | grep $node_ip | awk '{ print \$NF}')
-echo "[\$datestr] The name of the interface where the ip is located: [\$router_interface]"
+echo "[\$datestr] ip所在网卡名称: [\$router_interface]"
 
 if [[ -n "\$router_interface" ]] && [[ "\$router_interface" != "\$env_interface" ]]; then
-    echo "[\$datestr] updating keepalived.conf interface"
+    echo "[\$datestr] update keepalived.conf interface"
     sed -i -e "s#\$env_interface#\$router_interface#g" /etc/keepalived/keepalived.conf
     systemctl restart keepalived
 else
@@ -426,6 +426,7 @@ cat <<EOF_CRON >/etc/cron.d/update_keepalived_interface
 * * * * * root /etc/keepalived/check_interface2.sh >/dev/null 2>&1
 EOF_CRON
 systemctl restart crond
+
 chmod +x /etc/keepalived/chk_mysql
 chmod +x /etc/keepalived/check_interface.sh
 chmod +x /etc/keepalived/check_interface2.sh
@@ -436,6 +437,7 @@ chmod +x /etc/rc.d/rc.local
 if ! grep -q /etc/keepalived/check_interface.sh /etc/rc.d/rc.local; then
     sed -i '$a bash /etc/keepalived/check_interface.sh >> /var/log/keepalived.log' /etc/rc.d/rc.local
 fi
+
 ```
 
-Thus, the high availability deployment of DB is completed. The Mariadb or keepalived service of any node can be down without affecting external services in case of a node failure.
+至此，DB 高可用部署完成，任一节点的 Mariadb 或 keepalived 服务异常，或者任一节点宕机，都不影响对外服务。
