@@ -54,7 +54,7 @@ api网关组件
 - **Pod**： default-keystone-xxx
 - **功能**：
     - 认证
-    - 资源归属project和domain
+    - 资源归属：域(domain), 项目(project)
     - 权限：角色（role），权限（policy）
     - 服务目录
 
@@ -112,7 +112,7 @@ api网关组件
             - 作为DHCP Server为虚拟机分配IP
             - 作为DHCP relay server转发物理机PXE启动时候的DHCP请求
         - GPU设备探测与初始化
-            - 初始化即为GPU设备绑定vfio驱动
+            - 为 GPU 设备绑定 vfio 驱动并注册到云平台
         - 宿主机初始化与信息探测
         - 监控数据采集
     - ovn-controller：虚拟机vpc网络管理，连接southbound，将southbound中的flows转换成ovs流表规则。
