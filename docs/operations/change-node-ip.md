@@ -22,7 +22,7 @@ $ kubeadm reset -f
 ### 2. 修改旧的config.yml
 
 :::warning
-- 如果第一次部署是直接运行的 `./run.py $ip` 这种方式，生成的配置文件就在 ocboot 目录下的 config-allinone-current.yml 文件
+- 如果第一次部署是直接运行的 `./run.py <full|cmp|virt> ` 这种方式，生成的配置文件就在 ocboot 目录下的 config-allinone-current.yml 文件
 - 如果第一次部署是用的自定义配置文件，请使用相关配置文件
 :::
 
@@ -83,9 +83,9 @@ $ ./ocboot.py add-node $primary_master_ip $target_node_ip
 ```bash
 # 先确定有问题的计算节点在当前 k8s 里面的节点名称
 $ kubectl get nodes
-NAME                       STATUS   ROLES    AGE    VERSION          INTERNAL-IP       EXTERNAL-IP   
-ceph-01                    Ready    <none>   127d   v1.15.12         192.168.222.111   <none>        
-ceph-02                    Ready    <none>   127d   v1.15.12         192.168.222.112   <none>        
+NAME                       STATUS   ROLES    AGE    VERSION          INTERNAL-IP       EXTERNAL-IP
+ceph-01                    Ready    <none>   127d   v1.15.12         192.168.222.111   <none>
+ceph-02                    Ready    <none>   127d   v1.15.12         192.168.222.112   <none>
 
 
 # 比如现在要查看 ceph-02 上的 host 服务日志，命令如下
