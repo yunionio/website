@@ -32,3 +32,9 @@ Password: admin@123
 然后用浏览器访问 https://10.168.26.216 ，用户名输入 `admin`，密码输入 `admin@123` 就会进入 Cloudpods 的界面。
 
 ![登录页](../images/index.png)
+
+## 修改 api_server 接入端
+
+`api_server` 配置是整个平台的接入端地址，会影响前端 CloudShell、 虚拟机 VNC 或者 Web SSH 的连接。一般无法打开 CloudShell 或者通过前端 SSH 进入虚拟机，是因为没有正确设置 api_server 配置。
+
+需要参考文档：[修改服务 api_server 入口配置](../../operations/fe/config-ssl-certs#change-api-server-via-climc)，根据自己环境的网络情况手动修改。
