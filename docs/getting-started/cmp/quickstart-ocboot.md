@@ -44,7 +44,6 @@ import UseCMP from '../_parts/_quickstart-use-cmp.mdx';
 
 ## FAQ
 
-
 ### 1. 如何重装?
 
 import FAQReset from '../_parts/_quickstart-faq-reset.md';

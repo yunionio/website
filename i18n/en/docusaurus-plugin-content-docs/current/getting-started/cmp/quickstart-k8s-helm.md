@@ -214,7 +214,8 @@ Visit the platform frontend at https://10.127.100.207 using a browser, and then 
 
 ## Change the api_server access url
 
-The api_server is the address of the access point for the entire platform, which affects the front-end vnc or web ssh connection.
+The `api_server` option is the address of the access point for the entire platform, which affects the front-end vnc or web ssh connection.
+
 You need to modify it manually according to your environment, refer to the document: [Change service api_server configuration](../../operations/fe/config-ssl-certs#change-api-server-via-climc).
 
 ## Upgrade

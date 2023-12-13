@@ -32,3 +32,10 @@ Password: admin@123
 Then use a browser to access https://10.168.26.216. Enter `admin` for username and `admin@123` for password to enter the Cloudpods interface.
 
 ![login page](../images/index.png)
+
+## Change the api_server access url
+
+The `api_server` option is the address of the access point for the entire platform, which affects the front-end CloudShell, vnc or Web SSH connection. It is generally impossible to open CloudShell or login the virtual machine through the front-end SSH when the api_server configuration has not been set correctly.
+
+You need to modify it manually according to your environment, refer to the document: [Change service api_server configuration](../../operations/fe/config-ssl-certs#change-api-server-via-climc).
+
