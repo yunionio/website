@@ -50,7 +50,7 @@ $ kubectl edit ingress -n onecloud default-web
 $ kubectl get pods -n kube-system | grep traefik | awk '{print $1}' | xargs kubectl delete pods -n kube-system
 ```
 
-### 4. 修改服务 api_server 入口配置
+### 4. 修改服务 api_server 入口配置 {#change-api-server-via-climc}
 
 因为使用域名 `foo.bar.com` 访问，需要修改云平台的默认 api_server 配置，这个配置会影响前端 VNC 连接的地址。将旧的 https://ip 访问地址改为 `https://foo.bar.com`，操作如下：
 
@@ -61,7 +61,13 @@ default:
   ...
 ```
 
-配置完成后就可以通过 `https://foo.bar.com` 访问前端了。
+然后重启 webconsole 服务，操作如下：
+
+```bash
+$ kubectl delete pods -n onecloud $(kubectl get pods -n onecloud | egrep 'webconsole|apigateway' | awk '{print $1}')
+```
+
+配置完成后，等待 webconsole 和 apigateway pod 重启后，就可以通过 `https://foo.bar.com` 访问前端了。
 
 ## 更改前端HTTPS 443端口为其它端口的方法步骤
 假设平台登陆地址为https://10.127.90.221，更改443端口为8443
