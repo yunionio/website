@@ -68,28 +68,28 @@ $ climc feature-config-jdcloud --switch off
 
 | 名称      | 功能                 | climc 子命令             |
 |-----------|----------------------|--------------------------|
-| onestack  | KVM虚拟化管理        | feature-config-onestack  |
-| baremetal | 裸金属管理           | feature-config-baremetal |
-| lb        | 负载均衡管理         | feature-config-lb        |
-| aliyun    | 阿里公有云管理       | feature-config-aliyun    |
-| aws       | AWS 亚马逊公有云管理 | feature-config-aws       |
-| azure     | Azure 微软公有云管理 | feature-config-azure     |
-| google    | Google 公有云管理    | feature-config-google    |
-| qcloud    | 腾讯公有云管理       | feature-config-qcloud    |
-| ctyun     | 天翼公有云管理       | feature-config-ctyun     |
-| huawei    | 华为公有云管理       | feature-config-huawei    |
-| ucloud    | ucloud 公有云管理    | feature-config-ucloud    |
-| ecloud    | 移动公有云管理       | feature-config-ecloud    |
-| jdcloud   | 京东公有云管理       | feature-config-jdcloud   |
-| vmware    | VMWare 管理          | feature-config-vmware    |
-| openstack | openstack 私有云管理 | feature-config-openstack |
-| zstack    | zstack 私有云管理    | feature-config-zstack    |
-| apsara    | 阿里飞天专有云管理   | feature-config-apsara    |
-| cloudpods | Cloudpods私有云管理  | feature-config-cloudpods |
-| hcso      | 华为HCSO私有云管理   | feature-config-hcso      |
-| nutanix   | Nutanix超融合管理    | feature-config-nutanix   |
-| s3        | 通用S3对象存储管理   | feature-config-s3        |
-| ceph      | Ceph rados对象存储管理| feature-config-ceph      |
-| xsky      | Xsky 存储管理        | feature-config-xsky      |
-| k8s       | K8S 容器集群管理     | feature-config-k8s       |
-| proxmox   | PVE虚拟化管理        | feature-config-proxmox   |
+| onestack  | KVM虚拟化管理        	| `feature-config-onestack`  |
+| baremetal | 裸金属管理           	| `feature-config-baremetal` |
+| lb        | 负载均衡管理         	| `feature-config-lb`        |
+| aliyun    | 阿里公有云管理       	| `feature-config-aliyun`    |
+| aws       | AWS 亚马逊公有云管理 	| `feature-config-aws`       |
+| azure     | Azure 微软公有云管理 	| `feature-config-azure`     |
+| google    | Google 公有云管理    	| `feature-config-google`    |
+| qcloud    | 腾讯公有云管理       	| `feature-config-qcloud`    |
+| ctyun     | 天翼公有云管理       	| `feature-config-ctyun`     |
+| huawei    | 华为公有云管理       	| `feature-config-huawei`    |
+| ucloud    | ucloud 公有云管理    	| `feature-config-ucloud`    |
+| ecloud    | 移动公有云管理       	| `feature-config-ecloud`    |
+| jdcloud   | 京东公有云管理       	| `feature-config-jdcloud`   |
+| vmware    | VMWare 管理          	| `feature-config-vmware`    |
+| openstack | openstack 私有云管理 	| `feature-config-openstack` |
+| zstack    | zstack 私有云管理    	| `feature-config-zstack`    |
+| apsara    | 阿里飞天专有云管理   		| `feature-config-apsara`    |
+| cloudpods | Cloudpods私有云管理  	| `feature-config-cloudpods` |
+| hcso      | 华为HCSO私有云管理   	| `feature-config-hcso`      |
+| nutanix   | Nutanix超融合管理    	| `feature-config-nutanix`   |
+| s3        | 通用S3对象存储管理   	| `feature-config-s3`        |
+| ceph      | Ceph rados对象存储管理	| `feature-config-ceph`      |
+| xsky      | Xsky 存储管理        	| `feature-config-xsky`      |
+| k8s       | K8S 容器集群管理     	| `feature-config-k8s`       |
+| proxmox   | PVE虚拟化管理        	| `feature-config-proxmox`   |
