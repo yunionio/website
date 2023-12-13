@@ -215,6 +215,11 @@ default-cloudpods-web   *       10.127.100.207          80, 443   7h52m
 
 使用浏览器访问 https://10.127.100.207 即可访问平台前端，然后使用之前创建的 admin 用户登陆。
 
+## 修改 api_server 接入端
+
+api_server 是整个平台的接入端地址，会影响前端 vnc 或者 web ssh 的连接。
+需要根据自己的环境手动修改，参考文档：[修改服务 api_server 入口配置](../../operations/fe/config-ssl-certs#change-api-server-via-climc)。
+
 ## 升级
 
 升级可以通过修改对应的 values yaml 文件，然后进行升级配置，比如发现 cluster.regionServer.service.nodePort 的 30888 端口出现了占用冲突，要修改成其它端口 30001，就修改 values-prod.yaml 里面对应的值：

@@ -212,6 +212,11 @@ default-cloudpods-web   *       10.127.100.207          80, 443   7h52m
 
 Visit the platform frontend at https://10.127.100.207 using a browser, and then log in with the admin user created earlier.
 
+## Change the api_server access url
+
+The api_server is the address of the access point for the entire platform, which affects the front-end vnc or web ssh connection.
+You need to modify it manually according to your environment, refer to the document: [Change service api_server configuration](../../operations/fe/config-ssl-certs#change-api-server-via-climc).
+
 ## Upgrade
 
 Upgrade can be done by modifying the corresponding values yaml file and then performing upgrade configuration. For example, if there is a port conflict with the cluster.regionServer.service.nodePort 30888 port and you need to change it to another port such as 30001, modify the corresponding values in values-prod.yaml:
