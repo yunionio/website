@@ -23,11 +23,17 @@ $ climc logs-purge-splitable --service <service_type>
 
 ## 清理数据库日志
 
-在部署日志的服务器上执行
+在部署数据库（mariadb）的服务器上执行：
 
 ```bash
 # 设置自动清除binlog的保留时间
 $ vi /etc/my.cnf
 expire_logs_days = 30
 ```
+然后重启数据库服务，让配置生效。
+
+```bash
+systemctl restart mariadb
+```
+
 ![](/img/docs/operations/log/binlog.png)
