@@ -7,6 +7,9 @@ docker-yarn:
 write-en-translation:
 	yarn write-translations --locale en
 
+docker-write-en-translation:
+	./tools/run-in-docker.sh write-translations --locale en
+
 start:
 	npm run start
 
