@@ -3,28 +3,27 @@ sidebar_position: 21
 edition: ce
 ---
 
-# 多可用区服务配置
+# Multi-Availability Zone Service Configuration
 
-介绍在多个可用区(zone)下部署物理机管理服务(baremetal-agent), VMware管理服务(esxi-agent)以及宿主机管理服务(host)。
+This document introduces the deployment of bare-metal agent, VMware-agent, and host-managed service in multiple availability zones (zone).
 
 :::tip
-该方式只适用于使用 ocboot 部署的环境。
+This method is only applicable to environments deployed with ocboot.
 :::
 
+The platform has the concept of availability zones (zone), which can be understood as corresponding to the machine rooms in the actual environment. After the service is deployed, there will be a default availability zone `zone0`.
 
-平台有可用区(zone)的概念，可以理解为对应实际环境中的机房，刚部署完服务后会有一个默认的可用区 zone0 。
+The baremetal-agent, esxi-agent, and host-managed services of the cloud platform are services at the availability zone level. If the physical servers, physical machines or managed VMware clusters in the actual environment are located in different machine rooms, multiple availability zones need to be created, and these services need to be deployed in different availability zones.
 
-云平台的物理机管理服务(baremetal-agent), VMware管理服务(esxi-agent)以及虚拟机管理服务(host)是可用区级别的服务，如果实际环境中的服务器，物理机或者管理的 VMware 集群位于不同的机房，需要创建多个可用区，然后在不同的可用区部署这些服务。
+The following document introduces how to deploy these services in multiple availability zones.
 
-接下来的文档介绍如何在多个可用区部署这些服务。
+## Create Availability Zones
 
-## 创建可用区
-
-可用区的添加使用 onecloud-operator 这个服务来控制，直接修改 onecloud namespace 里面的 `default onecloudcluster `资源就行，比如下面的命令添加 `my-zone-1` 这个可用区：
+The addition of availability zones is controlled by the `onecloud-operator` service. Just modify the `default onecloudcluster` resource in the onecloud namespace. For example, the following command adds the `my-zone-1` availability zone:
 
 ```bash
-# 修改 default onecloudcluster 的 spec.customZones
-# 添加需要增加的可用区
+# Modify spec.customZones of "default onecloudcluster"
+# Add the available zone to add
 $ kubectl edit onecloudcluster -n onecloud default
 ...
   customZones:
@@ -32,7 +31,7 @@ $ kubectl edit onecloudcluster -n onecloud default
 ...
 ```
 
-修改完后保存退出，然后使用 `climc zone-list` 看下是否有新建的可用区：
+After modification, save and exit, and then use `climc zone-list` to see if the new availability zone is created:
 
 ```bash
 $ climc zone-list
@@ -44,9 +43,9 @@ $ climc zone-list
 +--------------------------------------+-----------+--------+----------------+
 ```
 
-## 物理机管理服务(baremetal-agent) 和VMware管理服务(esxi-agent)
+## Baremetal-Agent and ESXi-Agent Service
 
-发现已经有新建的可用区 my-zone-1 了，operator 服务也会自动创建对应可用区的物理机管理服务(baremetal-agent) 和VMware管理服务(esxi-agent) ，查看对应的 deployment，命令如下：
+The created availability zone, my-zone-1, generates the baremetal-agent and ESXi-agent automatically. You can check the corresponding deployment as the following command shows:
 
 ```bash
 $ kubectl get deployments. -n onecloud | grep my-zone-1
@@ -54,17 +53,17 @@ default-baremetal-agent-my-zone-1   0/0     0            0           3m37s
 default-esxi-agent-my-zone-1        1/1     1            1           3m42s
 ```
 
-其中物理机服务(baremetal-agent)需要选择一个 k8s node 手动开启。
+The baremetal-agent service requires manual start on a k8s node.
 
-### 启用 baremetal-agent 
+### Enable baremetal-agent 
 
 ```bash
-# $listen_interface 指的是 baremetal-agent 监听的网卡名称
+# $listen_interface is the name of the network interface that baremetal-agent listens to.
 $ ocadm baremetal enable --node $node_name --listen-interface $listen_interface
-# 观察 baremetal agent pod 状态查看是否启动成功
+# Observe the state of the baremetal agent pod to see if it starts successfully
 $ watch "kubectl get pods -n onecloud | grep baremetal"
 default-baremetal-agent-7c84996c9b-hhllw   1/1     Running   0          3m10s
-# 启动成功确认 baremetal-agent 注册到控制节点
+# After successful launch, please confirm that the baremetal-agent has been registered with the control node.
 $ climc agent-list
 +--------------------------------------+--------------------------+----------------+-----------------------------+---------+------------+------------------------------------------+--------------------------------------+
 |                  ID                  |           Name           |   Access_ip    |         Manager_URI         | Status  | agent_type |                 version                  |               zone_id                |
@@ -73,38 +72,36 @@ $ climc agent-list
 +--------------------------------------+--------------------------+----------------+-----------------------------+---------+------------+------------------------------------------+--------------------------------------+
 ```
 
-## 宿主机服务
+## Host Services
 
-宿主机服务(host)管理一台宿主机上的虚拟机，默认情况下的宿主机属于可用区zone0，如果有其它机房的宿主机，需要新建可用区，然后创建一个属于这个可用区的二层网络(wire)，再基于这个二层网络(wire)创建包含注册宿主机IP的子网(network)，最后把宿主机添加进来就可以了。
+The host service manages virtual machines on a physical host. By default, a physical host belongs to the `zone0` availability zone. If there are physical hosts in other data centers, you need to create a new availability zone, then create a layer 2 network (`wire`) in this zone, create a subnet (`network`) based on this layer 2 network (`wire`) that includes the IP address of the host to be registered, and finally add the physical host to the `wire`.
 
-### 创建二层网络
+### Creating a Layer 2 Network
 
-直接基于之前创建的可用区 my-zone-1 创建二层网络 my-wire-1，命令如下：
+To create a layer 2 network (`my-wire-1`) based on an existing availability zone (`my-zone-1`), use the following command:
 
 ```bash
-# 10000 表示的是带宽，假设是万兆的网络
+# 10000 represents the bandwidth; assuming it is a 10 Gbps network
 $ climc wire-create my-zone-1 my-wire-1 10000
 
-# 查看新建的二层网络
-# 能看到二层网络在 my-zone-1 可用区下面
+# To view the newly created layer 2 network, which should be under the `my-zone-1` availability zone
 $ climc wire-list --details
 +--------------------------------------+-----------+-----------+--------------------------------------+-----------+----------+---------+---------+--------------+-----------+
 |                  ID                  |   Name    | Bandwidth |               Zone_ID                |   Zone    | Networks |   VPC   | VPC_ID  | public_scope | domain_id |
 +--------------------------------------+-----------+-----------+--------------------------------------+-----------+----------+---------+---------+--------------+-----------+
 | f0582003-8a11-4200-8ffd-025bbe7bfc5a | my-wire-1 | 10000     | d64ccd80-7643-454d-8d40-7f5a0d57107f | my-zone-1 | 0        | Default | default | system       | default   |
-+--------------------------------------+-----------+-----------+--------------------------------------+-----------+----------+---------+---------+--------------+-----------+
 ***  Total: 1 Pages: 1 Limit: 20 Offset: 0 Page: 1  ***
 ```
 
-### 创建 IP 子网
+### Creating an IP subnet
 
-根据上一步，已经创建好了二层网络 my-wire-1，接下来我们创建包含注册宿主机 IP 的子网，假设待注册宿主机的网络信息如下：
+To follow up on the last step, the second-layer network called "`my-wire-1`" has already been created. Next, we create a subnet that contains the IP addresses of registered VMs. Suppose the network information of the VM to be registered is as follows:
 
-- IP: 192.168.121.61
-- 默认网关：192.168.121.1
-- 掩码：24
+- IP: `192.168.121.61`
+- Default Gateway: `192.168.121.1`
+- Mask: `24`
 
-根据需要注册的宿主机信息，创建一个 my-hostnet-1，网段为 192.168.121.61-192.168.121.62，这里也可以根据自己的环境变更网络的范围，对应命令如下：
+Based on the VM information that needs to be registered, create a subnet called "my-hostnet-1", with a network range of `192.168.121.61-192.168.121.62`. You can also change the network range according to your own environment. The corresponding command is as follows:
 
 ```bash
 $ climc network-create \
@@ -113,15 +110,15 @@ $ climc network-create \
     my-wire-1 my-hostnet-1 192.168.121.61 192.168.121.62 24
 ```
 
-### 添加计算节点
+### Adding a compute node
 
-子网创建好后，就可以使用部署工具 ocboot 的 `add-node` 命令添加目标宿主机到平台了，详细添加方法可以参考[添加计算节点](../getting-started/onpremise/host)，假设目标宿主机 IP 为 192.168.121.61 ，控制节点 IP 为 192.168.121.21，对应命令如下：
+After the subnet is created, you can use the deployment tool `ocboot` to add the target VM to the platform using the `add-node` command. For detailed instructions on how to add a compute node, please refer to [Adding Compute Nodes](../getting-started/onpremise/host). Suppose the IP address of the target VM is `192.168.121.61` and the control node IP is `192.168.121.21`. The corresponding command is as follows:
 
 ```bash
 $ ./ocboot.py add-node 192.168.121.21 192.168.121.61
 ```
 
-等待命令执行完成后，查看宿主机所属的可用区是否为 my-zone-1：
+After waiting for the command to complete, check whether the host's availability zone is "my-zone-1" using the following command:
 
 ```bash
 $ climc host-list --zone my-zone-1
@@ -132,5 +129,4 @@ $ climc host-list --zone my-zone-1
 +--------------------------------------+----------------------+-------------------+----------------+-----------------------------+---------+---------+-------------+----------+-----------+------------+---------------+--------------+------------+--------------------------------+--------------+-----------+--------------+
 ***  Total: 1 Pages: 1 Limit: 20 Offset: 0 Page: 1  ***
 ```
-
-发现 192.168.121.61 的宿主机已经添加到新建的可用区 my-zone-1 了。
+The host with IP address `192.168.121.61` has been added to the newly created availability zone `my-zone-1`.
