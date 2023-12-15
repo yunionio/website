@@ -42,13 +42,13 @@ $ rm -rf /var/lib/mysql  # 保留原始数据执行 mv  -f /var/lib/mysql /var/l
 $ rm -rf /etc/my.conf
 ```
 
-机器重启，恢复之前的网络:
+机器重启，恢复之前的网络：
 
 ```bash
 $ reboot
 ```
 
-卸载openvswitch:
+卸载openvswitch（先重启，再卸载 openvswitch，以免可能出现的断网情况）。命令如下：
 
 ```bash
 $ systemctl disable --now openvswitch
