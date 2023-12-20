@@ -123,8 +123,8 @@ const config = {
         title: 'Cloudpods',
         logo: {
           alt: 'Cloudpods Logo',
-          src: 'img/logo_green_round_revert.png',
-          srcDark: 'img/logo_white_round_revert.png',
+          src: 'img/cloudpods_circle_black.svg',
+          srcDark: 'img/cloudpods_circle_white.svg',
         },
         items: [
           // { to: '/docs/getting-started', label: '快速开始', position: 'left' },
