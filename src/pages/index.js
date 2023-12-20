@@ -17,6 +17,7 @@ import Translate, { translate } from '@docusaurus/Translate';
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   const { isDarkTheme } = useColorMode();
+  const Svg = require('@site/static/img/cloudpods.svg').default;
   return (
     <section className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
@@ -40,7 +41,7 @@ function HomepageHeader() {
             </div>
           </div>
           <div className="col">
-            <img src={isDarkTheme? useBaseUrl('img/logo_black.png') : useBaseUrl('img/logo_white.png') } className={styles.heroImg} />
+            <Svg className={styles.heroImg} />
           </div>
         </div>
       </div>
