@@ -13,10 +13,7 @@
 
 .heroImg {
   width: 400px;
-  margin-top: auto;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: auto;
+  height: 400px;
 }
 
 .alignCenter {
