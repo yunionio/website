@@ -8,6 +8,7 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import HomepageBrands from '@site/src/components/HomepageBrands';
 import HomepageFooter from '@site/src/components/HomepageFooter';
 // import HomepagePanel from '@site/src/components/HomepagePanel';
+// import GitHubButton from 'react-github-btn'
 
 import Heading from '@theme/Heading';
 import styles from './index.module.css';

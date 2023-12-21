@@ -1,0 +1,37 @@
+---
+sidebar_position: 159
+---
+
+# Release Notes
+
+## Versions
+
+We adopt the Semantic Versioning of the format as v\<major\>.\<minor\>.\<build\>, e.g. v3.10.7.
+
+## Branchs
+
+We are maintaining three minor version branchs at any time:
+
+* Stable: The maintenance branch. We only fix bugs, but do not add any new features. It is currently v3.9.
+* Mainline: The currently released branch. we will add minor incremental features and fix BUGs, but do not add new major features or architectural changes. It is currently v3.10.
+* Development: The current main development branch. The major new features or architectural changes are developed in the branch. The development branch is always master branch.
+
+## Release Cycles
+
+The minor versions of each branches will be periodically built and released in the format of docker images. The release cycle is as follow:
+
+* Stable: released in the middle of each month
+* Mainline: release at the beginning of each month
+* Development: never released publicly
+
+A new minor version will be released around half a year. Next to be released minor version is v3.11.
+
+Only major architectual changes will increase the major version number. The  following is the  history of the major versions:
+
+
+| Major version  | Time  | Changes                                   |
+|----------------|-----------------|--------------------------------------------|
+| v1.x           | 2017-2018       | the initial version in python, supporting Virtualization, Baremetal and VMware |
+| v2.x           | 2018-2019       | migrating from Python to golang, supporting multi-cloud management  |
+| v3.x           | 2019 until now  | complte rearch with golang, pure cloud native architecture on Kubernetes |
+| v4.x           | TBD             | Plugin architure of multicloud adaptor layer, etc. |
