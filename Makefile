@@ -13,7 +13,7 @@ docker-write-en-translation:
 start:
 	npm run start
 
-docker-start:
+docker-start: docker-yarn
 	./tools/run-in-docker.sh start --host 0.0.0.0
 
 start-en:
