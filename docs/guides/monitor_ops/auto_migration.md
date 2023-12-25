@@ -58,6 +58,10 @@ $ climc server-ssh cpu-test-vm
 
 3. 隔2分钟查看监控迁移记录
 
+:::tip
+以下查看底层监控数据的方式只适用于 Influxdb，如果使用 VictoriaMetrics 存储底层监控数据，请参考文档: [查询 VictoriaMetrics 数据](../../development/monitor/query.md#query-victoric-metrics-data)。
+:::
+
 ```bash
 # 可以先登录 influxdb 查看当前宿主机的监控指标
 $ kubectl exec -ti -n onecloud $(kubectl get pods -n onecloud | grep default-influxdb | awk '{print $1}') -- influx -host 127.0.0.1 -port 30086 -type influxql -ssl  -precision rfc3339 -unsafeSsl
