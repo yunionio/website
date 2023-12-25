@@ -203,11 +203,32 @@ $ climc --debug monitor-unifiedmonitor-query --from 2023-12-07T23:54:42.123Z --t
 
 关于 Influxdb 到 VictoriaMetrics 的切换，可以参考文档：[切换 Influxdb 到 VictoriaMetrics](../../operations/monitoring/migrating-to-vm.md)。
 
-### 查询 VictoriaMetrics 数据
+### 查询 VictoriaMetrics 数据 {#query-victoric-metrics-data}
 
-如果使用 VictoriaMetrics 作为监控后端，可以通过 `https://控制节点IP:30428/vmui/` 访问 VictoriaMetrics 前端 web 界面，VictoriaMetrics 使用 MetricsQL 查询语法，具体使用方式参考文档：
+如果使用 VictoriaMetrics 作为监控后端，可以通过 `https://控制节点IP:30428/vmui/` 访问 VictoriaMetrics 前端 web 界面，VictoriaMetrics 使用 MetricsQL 查询语法，以下有一些查询例子：
+
+```bash
+# 查询 cpu usage_active 指标
+cpu_usage_active
+
+# 查询 disk free 指标，过滤条件为 host_id="32d41926-6038-42a3-8a31-40c08274823b"
+disk_free{host_id="32d41926-6038-42a3-8a31-40c08274823b"}
+
+# 查询 disk free 指标，过滤条件为 device="sda2",path="/opt/cloud"
+disk_free{device="sda2",path="/opt/cloud"}
+
+# 查询 mem_ 开头的指标
+{__name__=~"mem_.*"}
+
+# 查询 mem used 指标，过滤条件使用正则表达式 host=~"ha-test0[1,2].*"
+mem_used{host=~"ha-test0[1,2].*"}
+```
+
+具体使用方式参考文档：
 
 - [MetricsQL](https://docs.victoriametrics.com/MetricsQL.html)
+
+- 关于 telegraf 上报监控指标格式的说明如下：
 
 :::tip
 现在监控数据上报的格式是 Influxdb 的行格式，当监控指标发送到 VictoriaMetrics 时，会自动转换成相关的格式。
