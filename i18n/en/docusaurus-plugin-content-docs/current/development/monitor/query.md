@@ -203,11 +203,33 @@ The platform now supports storing monitoring data in either VictoriaMetrics or I
 
 Regarding the switch from InfluxDB to VictoriaMetrics, refer to the document: [Switching from InfluxDB to VictoriaMetrics](../../operations/monitoring/migrating-to-vm.md).
 
-### Querying VictoriaMetrics Data
+### Querying VictoriaMetrics Data {#query-victoric-metrics-data}
 
 If you use VictoriaMetrics as the monitoring backend, you can access the VictoriaMetrics frontend web interface through `https://control-node-IP:30428/vmui/`. VictoriaMetrics uses MetricsQL query syntax, please refer to the following documents for specific usage:
 
+
+```bash
+# Query CPU usage_active metrics
+cpu_usage_active
+
+# Query the disk free metric and filter it to host_id="32d41926-6038-42a3-8a31-40c08274823b"
+disk_free{host_id="32d41926-6038-42a3-8a31-40c08274823b"}
+
+# Query the disk free indicator, filter by device="sda2", path="/opt/cloud"
+disk_free{device="sda2",path="/opt/cloud"}
+
+# Query metrics starting with mem_
+{__name__=~"mem_.*"}
+
+# Query the mem used metric, and use the regular expression host=~"ha-test0[1,2].*"
+mem_used{host=~"ha-test0[1,2].*"}
+```
+
+For more information, please refer to the following documentation:
+
 - [MetricsQL](https://docs.victoriametrics.com/MetricsQL.html)
+
+- The following is a description of the telegraf for reporting monitoring metrics:
 
 :::tip
 Currently, the format for reporting monitoring data is InfluxDB line format. When monitoring metrics are sent to VictoriaMetrics, they will be automatically converted to the corresponding format.
