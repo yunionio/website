@@ -31,7 +31,7 @@ function HomepageHeader() {
               <Translate id="homepage.subtitle">云原生的开源融合云平台</Translate>
             </p>
             <p className="hero__title">
-              <Translate id="homepage.buildown">构建您自己的云上之云</Translate>
+              <Translate id="homepage.buildown">构建您专属的云上之云</Translate>
             </p>
             <div className={styles.buttons}>
               <Link
