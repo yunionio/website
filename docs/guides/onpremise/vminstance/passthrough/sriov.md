@@ -39,7 +39,7 @@ $ grub2-mkconfig -o /boot/grub2/grub.cfg
 
 #### Mellanox 网卡配置
 
-Mellanox 网卡需要安装 MLNX_OFED 驱动，参考他们的官方文档：
+Mellanox 网卡需要安装 MLNX_OFED 驱动，参考其官方文档：
 
 - [https://enterprise-support.nvidia.com/s/article/howto-install-mlnx-ofed-driver](https://enterprise-support.nvidia.com/s/article/howto-install-mlnx-ofed-driver)
 - [https://docs.nvidia.com/networking/display/MLNXOFEDv461000/Installing+Mellanox+OFED](https://docs.nvidia.com/networking/display/MLNXOFEDv461000/Installing+Mellanox+OFED)
@@ -137,8 +137,11 @@ $ climc server-attach-network c15a5a99-75ea-4b8c-8c7a-521e5f980db4 \
 
 ## OVS Offload
 
-OVS Offload 是基于 SR-IOV 实现的一种硬件卸载的技术；如果硬件支持 OVS Offload, 则能够让 OVS 数据面卸载到网卡上，OVS 控制面不用做任何更改。
+OVS Offload 是部分厂商基于 SR-IOV 实现的一种OpenvSwitch数据转发硬件卸载的技术；如果硬件支持 OVS Offload, 则能够让 OVS 数据面卸载到网卡上，OVS 控制面不用做任何更改。
+
 OVS Offload 的基础配置依赖于 SR-IOV 的配置，确保宿主机已经打开了 SR-IOV。然后需要安装开启 OVS Offload 必要的依赖，如 Mellanox 网卡需要安装 MLNX_OFED 驱动。
+
+目前，Mellanox的Connext-6系列网卡支持OVS Offload。
 
 ### 安装 OFED驱动，配置 SRIOV VF
 ```
@@ -223,6 +226,8 @@ Mellanox 网卡支持的 bond 模式为:
 这意味着，在 Active-Backup 模式下，只要有一个 PF active，来自任何 VF 的流量都可以通过这个 PF 发送。
 在 XOR 或 LACP 模式下，如果两个 PF 都 active，来自 VF 的流量将在这两个 PF 之间分配。
 
+具体Bond配置方法请参考其他文档。
+
 网卡配置好 bond 后修改 host.conf 配置文件：
 ```bash
 $ vi /etc/yunion/host.conf
@@ -277,3 +282,15 @@ $ reboot
 	Kernel driver in use: mlx5_core
 	Kernel modules: mlx5_core
 ```
+
+#### 如何验证OVS Offload是否生效
+
+首先，确认OpenvSwitch在控制面已经打开硬件卸载特性：
+
+```bash
+$ ovs-vsctl list Open_vSwitch . | grep other_config
+## 输出内容需要包含hw-offload="true"
+other_config        : {hw-offload="true"}
+````
+
+其次，执行  `ovs-appctl dpctl/dump-flows type=offloaded` 查看卸载到硬件转发表的流表，如果硬件卸载未生效，则输出为空。
