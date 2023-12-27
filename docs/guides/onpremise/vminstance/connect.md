@@ -22,7 +22,22 @@ sidebar_position: 2
 
 单击 “远程终端” 按钮，选择 “SSH IP地址” 菜单项，与虚拟机建立web SSH连接。
 
+
 ![](./images/webssh.png)
+
+创建的实例默认会注入一个 **cloudroot** 的用户并绑定用户所在项目的公钥，因此可以直接通过秘钥免密登录
+
+```bash
+# 管理员可通过下面命令禁止自动登录
+$ climc service-config webconsole --conf 'enable_auto_login=false'
+# 调整登录空闲超时断开ssh连接时间, 默认-1无超时限制
+$ climc service-config webconsole --conf 'ssh_session_timeout_minutes=30'
+```
+
+:::tip
+通过**ISO**安装的实例若想实现自动免密登录，需要进入系统创建cloudroot用户, 并通过命令 climc sshkeypair-show 拿到公钥放置到cloudroot用户底下
+:::
+
 
 ## 通过 climc 登录
 
