@@ -52,7 +52,6 @@ $ yum install -y devtoolset-9
 $ scl enable devtoolset-9 bash
 # 下载对应操作系统版本的 iso，注意区分 centos7.x
 # 可在 nvidia 提供的驱动网站上下载: https://network.nvidia.com/products/infiniband-drivers/linux/mlnx_ofed/
-# 可在 nvidia 提供的驱动网站上下载: https://network.nvidia.com/products/infiniband-drivers/linux/mlnx_ofed/
 $ wget https://content.mellanox.com/ofed/MLNX_OFED-5.8-1.1.2.1/MLNX_OFED_LINUX-5.8-1.1.2.1-rhel7.9-x86_64.iso
 $ mount -o loop MLNX_OFED_LINUX-5.8-1.1.2.1-rhel7.9-x86_64.iso /mnt
 $ cd /mnt
@@ -73,6 +72,16 @@ $ /etc/init.d/openibd restart
 $ mst start
 # 配置SRIOV VF数量, 重启生效, 具体设备名称查看 mst status -v
 $ mlxconfig -d /dev/mst/mt4119_pciconf0 set SRIOV_EN=1 NUM_OF_VFS=64
+
+# mlnx infiniband 网卡开启 sriov 后的注意事项！！
+# IB 网卡开启 sriov 后可能会导致 ip 命令如下报错：
+Error: Buffer too small for object.
+Dump terminated
+需要使用 mlnx 的 iproute 包中的 ip 命令替换宿主机原本的 ip 命令，这个包在 ofed 驱动中, 如：
+- /mnt/DEBS/mlnx-iproute2_6.4.0-1.2310055_amd64.deb # debian link
+- /mnt/RPMS/mlnx-iproute2-5.19.0-1.58203.x86_64.rpm # centos
+
+# 重启虚机
 $ reboot
 ```
 
@@ -86,13 +95,15 @@ $ reboot
 $ vi /etc/yunion/host.conf
 networks:
 - eth1/br0/192.168.100.111
-- eth2/br1/bcast0
+- eth2/br1/bcast1
 # networks包含了两种配置方式，第一个参数是物理网卡名称，第二个参数是网桥名称，
 # 第三个参数有两种，一种是 ip 地址，另外一种是 wire，对于不想配置 ip地址的网卡可以使用 wire 属性，wire 代表的是这个网卡所在的二层网络。
-sriov_nics:
-- eth2
-# 为 eth2 网卡打开 sriov
 
+sriov_nics:
+- eth1 # 指定为 192.168.100.111 所在的 wire
+- eth2 # 指定为 bcast1
+- eth3 # 没有配置在networks中，会默认使用第一个网卡所在的 wire，infiniband 网卡应该使用这种配置方式
+# 为 eth2 网卡打开 sriov
 ```
 
 修改完成后重启 host-agent 服务: `kubectl rollout restart ds default-host`, 重启完成等待 host-agent 服务启动成功后可以在控制节点使用 climc 查看配置的 VF 网卡.
