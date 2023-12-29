@@ -142,7 +142,7 @@ const config = {
             position: 'right',
             dropdownActiveClassDisabled: true,
             dropdownItemsAfter: [
-              { label: '3.9', href: 'https://www.cloudpods.org/v3.9/' },
+              { label: '3.9', href: 'https://v1.cloudpods.org/v3.9/' },
               // { to: '/versions', label: 'All versions' },
             ],
           },
