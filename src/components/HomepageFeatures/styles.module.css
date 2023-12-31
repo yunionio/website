@@ -46,3 +46,32 @@
   padding: 0 3rem;
   text-align: center;
 }
+
+@media screen and (max-width: 960px) {
+  .featureItem {
+    width: calc((100% - 60px) / 2);
+  }
+  .featureItemText {
+    padding: 0 2rem;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .featureItem {
+    width: calc(100% - 20px);
+    display: flex;
+    align-items: center;
+  }
+  .featureSvg{
+    padding: 0.1rem 0 0.1rem 1rem;
+  }
+  .featureTitle{
+    text-align: left!important;
+    padding-left: 2rem!important;
+  }
+  .featureItemText {
+    padding: 0;
+    text-align: left;
+  }
+}
+
