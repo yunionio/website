@@ -10,7 +10,7 @@ sidebar_position: 10
 | Fedora                   |                                             |
 | Red Hat Enterprise Linux | 5.0以上                                     |
 | Debian                   |                                             |
-| Ubunru                   |                                             |
+| Ubuntu                   |                                             |
 | Gentoo                   |                                             |
 | Arch                     |                                             |
 | OpenWrt                  |                                             |
