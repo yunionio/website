@@ -59,14 +59,15 @@ Cloudpods 帮助客户在一个地方管理所有云计算资源。统一管理�
 
 ## 商业产品
 
+基于 Cloudpods 开源版本我们也提供了以下的商业产品：
+
 :::info
 
-[新一代企业级产品化融合云](https://www.yunion.cn/)
-
-[新一代企业级产品化云原生私有云](https://www.yunion.cn/private/index.html)
-
-[新一代产品化云原生多云管理平台](https://www.yunion.cn/cmp/index.html)
-
-[公有云账单管理与优化（FinOps）](https://www.yunion.cn/finops/index.html)
+- [企业级融合云](https://www.yunion.cn/)
+- [企业级云原生私有云](https://www.yunion.cn/private/index.html)
+- [企业级云原生多云管理平台](https://www.yunion.cn/cmp/index.html)
+- [公有云账单管理与优化（FinOps）](https://www.yunion.cn/finops/index.html)
 
 :::
+
+关于开源版本与商业版本的详细功能对比，请参考这个页面：[云联壹云版本对比](https://www.yunion.cn/comparison-info)。
