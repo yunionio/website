@@ -56,14 +56,15 @@ The product features include:
 
 ## Commercial Products
 
+Based on the open source version of Cloudpods, we also provide the following commercial products:
+
 :::info
 
-[New generation of enterprise-level product Hybrid Cloud](https://www.yunion.cn/)
-
-[New generation of enterprise-level product Cloud Native Private Cloud](https://www.yunion.cn/private/index.html)
-
-[New generation of product-oriented Cloud Native Multi-cloud Management Platform](https://www.yunion.cn/cmp/index.html)
-
-[Public cloud billing management and optimization (FinOps)](https://www.yunion.cn/finops/index.html)
+- [Enterprise-level product Hybrid Cloud](https://www.yunion.cn/)
+- [Enterprise-level product Cloud Native Private Cloud](https://www.yunion.cn/private/index.html)
+- [Product-oriented Cloud Native Multi-cloud Management Platform](https://www.yunion.cn/cmp/index.html)
+- [Public cloud billing management and optimization (FinOps)](https://www.yunion.cn/finops/index.html)
 
 :::
+
+For detailed comparison between open source version and commercial version, please refer to this page: [云联壹云版本对比](https://www.yunion.cn/comparison-info)。
