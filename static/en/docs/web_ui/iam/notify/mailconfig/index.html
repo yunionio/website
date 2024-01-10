@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <script>
+    let dest_url = `${window.location.origin}/en/docs/guides/misc/notify/mailconfig`
+    let url = window.location.href
+    if (window.location.hash) {
+      dest_url = `${dest_url}/${window.location.hash}`
+    }
+    window.location = dest_url
+  </script>
+</html>
+
+
