@@ -49,7 +49,13 @@ onecloud.yunion.io/lbagent=enable
 
 然后再到 Web 前端控制台创建 “负载均衡集群”，然后把“节点”关联到对应的集群即可。
 
-## 3.9（含）之前版本部署Lbagent
+注意：3.10（含）之后，负载均衡节点部署后并不会自动关联负载均衡集群，需要手动关联，关联之后节点上的负载均衡组件才会开始正常工作。可以在web控制台关联，或通过如下climc命令关联：
+
+```bash
+climc lbagent-join-cluster --cluster-id CLUSTER_ID AGENT_ID
+```
+
+### 3.9（含）之前版本部署Lbagent
 
 3.9（含）之前版本负载均衡仅支持经典网络，采用前端界面部署Lbagent，部署流程如下：
 
@@ -57,7 +63,7 @@ onecloud.yunion.io/lbagent=enable
 2. 为lbcluster创建一对lbagent
 3. 在前端界面的lbagent列表上，点击lbagent的“部署”，输入lbagent所需keystone账号，repo地址等信息，通过后端的ansible脚本自动化实现lbagent的部署。
 
-## 将3.9（含）之前版本lbagent升级为3.10
+#### 将3.9（含）之前版本lbagent升级为3.10
 
 对于已经部署了3.9（含）之前版本的lbagent节点，可以通过如下步骤升级为3.10的lbagent：
 
