@@ -310,6 +310,43 @@ export default function CloudFeatureSupportTable() {
             <td>Y</td>
           </tr>
           <tr>
+            <td>火山引擎(VolcEngine)</td>
+            <td>Y</td>
+            <td>Y</td>
+            <td>Y</td>
+            <td>Y</td>
+            <td>Y</td>
+            <td>Y</td>
+            <td>Y</td>
+            <td>Y</td>
+            <td>-</td>
+            <td>Y</td>
+            <td>N</td>
+            <td>-</td>
+            <td>Y</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>Y</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+          </tr>
+          <tr>
             <td>优刻得(Ucloud)</td>
             <td>Y</td>
             <td>Y</td>
@@ -422,6 +459,43 @@ export default function CloudFeatureSupportTable() {
           </tr>
           <tr>
             <td>京东云(JDcloud)</td>
+            <td>R</td>
+            <td>Y</td>
+            <td>Y</td>
+            <td>N</td>
+            <td>R</td>
+            <td>R</td>
+            <td>R</td>
+            <td>R</td>
+            <td>-</td>
+            <td>R</td>
+            <td>N</td>
+            <td>-</td>
+            <td>R</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+          </tr>
+          <tr>
+            <td>金山云(Ksyun)</td>
             <td>R</td>
             <td>Y</td>
             <td>Y</td>
@@ -606,7 +680,7 @@ export default function CloudFeatureSupportTable() {
             <td>N</td>
           </tr>
           <tr>
-            <td>阿里私有云(Apsara)</td>
+            <td>阿里飞天(Apsara)</td>
             <td>Y</td>
             <td>Y</td>
             <td>Y</td>
@@ -680,6 +754,43 @@ export default function CloudFeatureSupportTable() {
             <td>N</td>
           </tr>
           <tr>
+            <td>HCS</td>
+            <td>Y</td>
+            <td>Y</td>
+            <td>Y</td>
+            <td>N</td>
+            <td>R</td>
+            <td>Y</td>
+            <td>Y</td>
+            <td>Y</td>
+            <td>-</td>
+            <td>Y</td>
+            <td>R</td>
+            <td>-</td>
+            <td>Y</td>
+            <td>R</td>
+            <td>R</td>
+            <td>-</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>Y</td>
+            <td>N</td>
+            <td>N</td>
+            <td>-</td>
+            <td>N</td>
+            <td>N</td>
+            <td>-</td>
+            <td>-</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+            <td>N</td>
+          </tr>
+          <tr>
             <td>Nutainx</td>
             <td>Y</td>
             <td>-</td>
@@ -714,6 +825,43 @@ export default function CloudFeatureSupportTable() {
             <td>-</td>
             <td>-</td>
             <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Proxmox</td>
+            <td>Y</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>Y</td>
+            <td>-</td>
+            <td>Y</td>
+            <td>N</td>
+            <td>R</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>N</td>
+            <td>N</td>
+            <td>-</td>
+            <td>N</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>N</td>
+            <td>-</td>
+            <td>-</td>
+            <td>N</td>
+            <td>-</td>
+            <td>N</td>
             <td>-</td>
           </tr>
           <tr>
@@ -755,6 +903,43 @@ export default function CloudFeatureSupportTable() {
           </tr>
           <tr>
             <td>浪潮云(inCloud Sphere)</td>
+            <td>R</td>
+            <td>Y</td>
+            <td>Y</td>
+            <td>-</td>
+            <td>N</td>
+            <td>N</td>
+            <td>R</td>
+            <td>N</td>
+            <td>Y</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>华三云(H3C)</td>
             <td>R</td>
             <td>Y</td>
             <td>Y</td>
