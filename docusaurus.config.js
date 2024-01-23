@@ -14,7 +14,7 @@ const config = {
   customFields: {
     release_branch: 'release/3.10',
     pre_release_branch: 'release/3.9',
-    release_version: 'v3.10.8',
+    release_version: 'v3.10.10',
     pre_release_version: '3.9.14',
   },
 
