@@ -85,6 +85,8 @@ master_nodes:
   ntpd_server: "$PRIMARY_IP"
   # ${haComment}
   high_availability: true
+  insecure_registries:
+  - $PRIMARY_IP:5000
   hosts:
   - user: root
     hostname: "$MASTER_1_IP"
