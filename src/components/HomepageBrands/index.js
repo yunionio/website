@@ -6,7 +6,8 @@ const SupportBrandInfo = {
   title: '支持的云平台和技术',
   title_id: 'homepage.supportBrandTitle',
   icons: ['IPMI', 'KVM', 'Redfish', 'ceph', 'minio', 'VMware', 'OpenStack', 'Nutanix', 'ZStack', 'Proxmox',
-    'BingoCloud', 'ctyun', 'ecloud', 'JDCloud', 'Aliyun', 'TencentCloud', 'huaweicloud', 'AWS', 'Azure', 'GoogleCloud', 'UCloud']
+    'BingoCloud', 'ctyun', 'ecloud', 'JDCloud', 'Aliyun', 'TencentCloud', 'huaweicloud', 'AWS', 'Azure', 'GoogleCloud', 'UCloud',
+    'Oracle', 'QingCloud', 'Volcengine', 'BaiduCloud', 'liantong', 'jinshan']
 }
 
 const UserBrandInfo = {
@@ -15,7 +16,7 @@ const UserBrandInfo = {
   sub_title: '请在此 {issueLink} 查看Cloudpods用户列表',
   sub_title_id: 'homepage.cloudpodsUserDesc',
   icons: ['mininglamp', 'tianyancha', 'percent', 'bitmain', 'navinfo', 'bonc', 'huolala', 'jzsec', 'lixiang', 'nio', 'nsfocus',
-  'lexin', 'xiaoying', 'hpc-now', 'asiainfodata', 'tcl', 'iscas', 'grgbanking', 'stoneatom']
+    'lexin', 'xiaoying', 'hpc-now', 'asiainfodata', 'tcl', 'iscas', 'grgbanking', 'stoneatom', 'jilin-university', 'guojiachaosuanjinan', 'dongnan-university']
 }
 
 const OrgBrandInfo = {
@@ -57,7 +58,7 @@ export default function HomepageFeatures() {
         </div>
       </section>
       {/* 用户 */}
-      <section className={styles.section} style={{background: 'rgba(0,0,0,0.05)'}}>
+      <section className={styles.section} style={{ background: 'rgba(0,0,0,0.05)' }}>
         <div className="container">
           <div>
             <div className={styles.sectionTitle}>
@@ -93,6 +94,6 @@ export default function HomepageFeatures() {
         </div>
       </section>
     </div>
-    
+
   );
 }
