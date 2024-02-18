@@ -25,6 +25,9 @@ docker-start-en:
 build:
 	yarn build
 
+oneline-build:
+	./scripts/build.py --edition=ce --multi-versions --no-out-fetch
+
 docker-build:
 	./tools/run-in-docker.sh build
 
