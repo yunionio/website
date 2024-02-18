@@ -12,10 +12,10 @@ const config = {
   // tagline: '开源、云原生的融合云平台',
   favicon: 'img/favicon.ico',
   customFields: {
-    release_branch: 'release/3.10',
-    pre_release_branch: 'release/3.9',
-    release_version: 'v3.10.12',
-    pre_release_version: '3.9.14',
+    release_branch: 'release/3.11',
+    pre_release_branch: 'release/3.10',
+    release_version: 'v3.11.0',
+    pre_release_version: 'v3.10.12',
   },
 
   // Set the production url of your site here
@@ -56,7 +56,7 @@ const config = {
           lastVersion: 'current',
           versions: {
             current: {
-              label: '3.10',
+              label: '3.11',
               path: '',
             },
           },
@@ -142,6 +142,7 @@ const config = {
             position: 'right',
             dropdownActiveClassDisabled: true,
             dropdownItemsAfter: [
+              { label: '3.10', href: 'https://www.cloudpods.org/v3.10/' },
               { label: '3.9', href: 'https://v1.cloudpods.org/v3.9/' },
               // { to: '/versions', label: 'All versions' },
             ],
