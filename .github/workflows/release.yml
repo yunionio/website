@@ -30,7 +30,7 @@ jobs:
       shell: bash
       run: |
         echo $PWD
-        yarn build
+        yarn docusaurus build --out-dir build/v3.10
 
     - name: Publish site to yunionio/yunionio.github.io
       uses: peaceiris/actions-gh-pages@v3
