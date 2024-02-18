@@ -1,0 +1,14 @@
+.fixed-table thead tr th {
+  /* min - width: 80px; */
+}
+
+table tr th, table tr td  { border-left: 1px solid #dee2e6 }
+table { border-collapse: collapse; table-layout:fixed; width:100%; height: 700px; }
+.fixed-row-1 { position:sticky; top: 0; background-color: #FFFFFF; z-index: 2 }
+.fixed-row-2 { position:sticky; top: 48px; background-color: #fff; z-index: 2 }
+.fixed-col-1 { position:sticky; left: 0; background-color: #FFFFFF; z-index: 1 }
+.fixed-col-2 { position:sticky; left: 40px; background-color: #fff; z-index: 1 }
+.fixed-row-1:before { content: ''; position: absolute; width: 100%; height: 1px; left: 0; bottom: 0; background: #dee2e6 }
+.fixed-col-1:before { content: ''; position: absolute; width: 0.5px; height: 100%; left: 0; bottom: 0; background: #dee2e6 }
+.fixed-row-1:after { content: ''; position: absolute; height: 1px; width: 100%; left: 0; top: 0; background: #dee2e6 }
+.fixed-col-2:after { content: ''; position: absolute; width: 0.5px; height: 100%; left: 0; bottom: 0; background: #dee2e6 }
