@@ -49,3 +49,5 @@ build/
 
 # nodeenv
 env/
+
+__cloudpods-website*
