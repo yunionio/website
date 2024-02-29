@@ -9,7 +9,7 @@ host-image 服务是 cloudpods 远程挂载磁盘的组件，依赖基于 qemu �
 
 ```sh
 $ git clone -b stable-2.12 https://gitlab.com/qemu-project/qemu.git
-$ wget https://raw.githubusercontent.com/yunionio/qemu/stable-2.12/0001-patch-for-2.12.patch
+$ wget https://raw.githubusercontent.com/yunionio/qemu/stable-2.12/0001-libqemuio-support-libqemuio-on-release-2.12.patch
 $ cd qemu && mkdir src && mv ./* src/
 $ git apply ../0001-libqemuio-support-libqemuio-on-release-2.12.patch
 
@@ -28,6 +28,7 @@ $ make libqemuio.a
 $ apt install -y file gnutls-bin libgnutls30 libgnutls28-dev
 $ cd /go/src/yunion.io/x/cloudpods
 # 编译 host-image
+$ git config --global --add safe.directory /go/src/yunion.io/x/cloudpods
 $ LIBQEMUIO_PATH=/root/qemu make cmd/host-image
 $ ./scripts/bundle_libraries.sh _output/bin/bundles/host-image _output/bin/host-image
 ```
