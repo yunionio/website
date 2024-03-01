@@ -54,9 +54,9 @@ keystone, region, glance 等后端服务，都是用的同一套后端服务框�
 | REST API 请求                             | API 功能               | 对应对象 | 框架方法                | 说明                     |
 |-------------------------------------------|------------------------|----------|-------------------------|--------------------------|
 | GET /$resources                           | 列表                   | Manager  | ListItemFilter          | 过滤                     |
-| -                                         |                        | Manager  | GetCustomizeColumns     | 获得扩展字段的信息       |
+| -                                         |                        | Manager  | FetchCustomizeColumns   | 获得扩展字段的信息       |
 | GET /\<resources\>/\<property\>           | 获得*该类资源*特定属性 | Manager  | GetProperty\<Property\> | 获得*该类资源*的特定属性 |
-| GET /\<resources\>/\<res_id\>             | 获得*某个资源*详情     | Model    | GetExtraDetails         | 获取扩展字段的信息       |
+| GET /\<resources\>/\<res_id\>             | 获得*某个资源*详情     | Model    | FetchCustomizeColumns   | 获取扩展字段的信息       |
 | GET /\<resources\>/\<res_id\>/\<spec\>    | 获得*某个资源*特定属性 | Model    | GetDetails\<Spec\>      | 获取*某个资源*的特定属性 |
 | POST /\<resources\>                       | 新建资源               | Manager  | ValidateCreateData      | 校验和处理创建的数据     |
 | -                                         |                        | Model    | CustomizeCreate         | 自定义的创建操作         |
