@@ -1,4 +1,153 @@
 import styles from './styles.module.css';
+
+const tableList = [
+    // 表头1
+    [
+        {
+            text: '分类',
+            rowspan: 2,
+            style: {
+                zIndex: 3,
+            }
+        },
+        {
+            text: '云资源类型',
+            rowspan: 2,
+            style: {
+                zIndex: 3,
+            }
+        },
+        {
+            text: '操作',
+            rowspan: 2,
+            style: {
+                zIndex: 3,
+            },
+        },
+        {
+            text: '公有云',
+            colspan: 16,
+            style: {
+                textAlign: 'center',
+            }
+        },
+        {
+            text: '私有云',
+            colspan: 14,
+            style: {
+                textAlign: 'center'
+            }
+        }
+    ],
+    // 表头2
+    [{ none: true }, { none: true }, { none: true }, '阿里云', '阿里金融云', '腾讯云', '华为云', 'AWS', 'Azure', 'GCP', '火山引擎', 'UCloud', '天翼云', '移动云', '京东云', '百度云', '联通云', '金山云', '青云', '阿里飞天 (3.12+)', 'HCSO', 'HCS (8.0.3+)', 'ZStack (3.4.0+)', 'OpenStack (M+)', 'VMware (6.5+)', 'Cloudpods', 'DStack', 'Nutanix (6.5.2+)', 'BingoCloud', 'inCloud Sphere (6.5.1+)', '外部数据', 'Proxmox (6.3+)', 'H3C (CloudOS 5.0+)'],
+    [
+        {
+            text: '主机',
+            rowspan: 7,
+        },
+        {
+            text: '虚拟机',
+            rowspan: 2,
+        }, '新建', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'
+    ],
+    [{ none: true }, { none: true }, '克隆', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
+    [{ none: true },'弹性伸缩组', '', '', '', '', '', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Y', '', '', '', '', 'Y', '', ''],
+    [{ none: true }, '系统镜像', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', 'Y', 'Y', '', '', ''],
+    [{ none: true }, '硬盘', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'],
+    [{ none: true }, '快照', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', 'Y', 'Y', '', '', '', '', 'Y', 'Y', 'Y', 'Y', 'Y', '', 'Y', 'Y', 'Y', '', '', '', '', ''],
+    [{ none: true }, '自动快照策略', 'Y', '', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Y', '', '', '', '', '', '', ''], 
+    [{ none: true }, '安全组', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 'Y', 'Y', 'Y', 'Y', 'Y', '', 'Y', 'Y', 'Y', '', '', 'Y', '', ''],
+    [
+        {
+            text: '网络',
+            rowspan: 9,
+        },
+        '专有网络VPC', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 'Y', 'Y', 'Y', 'Y', 'Y', '', 'Y', 'Y', '', 'Y', 'Y', 'Y', '', 'Y'],
+    [{ none: true }, 'IP子网', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y','', 'Y', 'Y', 'Y', '', 'Y'],
+    [{ none: true }, '弹性公网IP', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 'Y', 'Y', 'Y', 'Y', 'Y','', 'Y', 'Y', '', 'Y', '', 'Y', '', 'Y'],
+    [{ none: true }, 'NAT网关', 'Y', 'Y', '', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', 'Y', 'Y', 'Y', '', '', '', '', '', '', '', '', '', '', ''],
+    [{ none: true }, 'DNS解析', 'Y', 'Y', 'Y', '', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''], 
+    [{ none: true }, '负载均衡LB', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', '', '', '', '', '','Y', 'Y', 'Y', '', 'Y','', 'Y', '', '', '', '', 'Y', '', 'Y'],
+    [{ none: true }, 'CDN', 'Y', 'Y', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    [{ none: true }, 'WAF', 'Y', 'Y', '', '', 'Y', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    [{ none: true }, 'IPv6网关', 'Y', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    [
+        {
+            text: '存储',
+            rowspan: 3,
+        },
+        '对象存储', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', '', '', '','Y', 'Y', 'Y', '', '', '', 'Y', '', '', '', '', 'Y', '', ''],
+    [{ none: true }, 'NAS文件存储', 'Y', 'Y', '', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    [{ none: true }, '表格存储', 'Y', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    [
+        {
+            text: '数据库',
+            rowspan: 3,
+        }, 
+        'RDS', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', '', '', '', '', '', 'Y', 'Y', 'Y', '', '', '', '', '', '', '', '','Y', '', 'Y'],
+    [{ none: true }, 'Redis', 'Y', 'Y', 'Y', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', 'Y', 'Y', 'Y', '', '', '', '', '', '', '', '', '', '', ''],
+    [{ none: true }, 'MongoDB', '', '', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    [
+        {
+            text: '中间件',
+            rowspan: 2,
+        },
+        'Kafka', '', '', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
+    ],
+    [{ none: true }, 'Elasticsearch', '', '', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',],
+    [
+        {
+            text: '容器',
+            rowspan: 2,
+        },
+        'Kubernetes集群纳管', 'Y', '', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
+    ],
+    [{ none: true }, 'Kubernetes集群新建', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '','Y', 'Y', 'Y', '', '', '', '', '', '', ''],
+    ['监控', '监控告警', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y','', 'Y', 'Y', '', '', '', '', '','Y', 'Y', '', 'Y', '', 'Y', 'Y', 'Y', '', '', '', '', '', ''],
+    ['费用', '公有云账单分析/私有云计费服务', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', '', '', '', '','Y', 'Y', '', 'Y', 'Y', 'Y', 'Y', 'Y','', '', '', '', '', ''],
+    [
+        {
+            text: '其他',
+            rowspan: 2,
+        },
+        '公有云子账号', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', '', '', '', '', '', '','Y', '', '', '', '', '', 'Y', 'Y', 'Y', 'Y', '', '', ''
+    ],
+    [{ none: true }, '免密登录云平台', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', '', '', '', '', '', '', '', 'Y', '', '', '', '', '', '', '', '', '', '', '', ''],
+
+]
+
+console.log(tableList)
+
+const fixedRowLen = 2
+const fixedColLen = 3
+
+const getClassName = (rowIdx, colIdx) => {
+    let str = ''
+    if (rowIdx < fixedRowLen) {
+        str = styles[`fixedRow${rowIdx + 1}`]
+    }
+    if (colIdx < fixedColLen) {
+        str = str ? `${str} ${styles[`fixedCol${colIdx + 1}`]}` : styles[`fixedCol${colIdx + 1}`]
+    }
+    return str
+}
+
+const getTableItem = (item, rowIdx, colIdx) => {
+    if (item.none) return null
+    if (rowIdx < fixedRowLen || colIdx < fixedColLen) {
+        return (
+            <th rowspan={item.rowspan || 1} colspan={item.colspan || 1} style={{ ...(item.style || {}), minWidth: '80px', textAlign: 'center' }} className={getClassName(rowIdx, colIdx)}>
+                {item.text || item}
+            </th>
+        )
+    }
+    return (
+        <td rowspan={item.rowspan || 1} colspan={item.colspan || 1} style={item.style || {}} className={getClassName(rowIdx, colIdx)}>
+            {item.text || item}
+        </td>
+    )
+}
 export default function CloudFeatureSupportTable() {
   // TODO: 把下面这个表格用组件重构了
   return (
@@ -12,1046 +161,13 @@ export default function CloudFeatureSupportTable() {
       </ul>
       
     <table>
-    <tr>
-        <th rowspan="2" class="fixed-row-1 fixed-col-1" style={{zIndex: 3}}> 分类 </th>
-        <th rowspan="2" class="fixed-row-1 fixed-col-2" style={{zIndex: 3}}>云资源类型</th>
-        <th style={{textAlign: 'center'}} class="fixed-row-1" colspan="16">公有云</th>
-        <th style={{textAlign: 'center'}} class="fixed-row-1" colspan="14">私有云</th>
-    </tr>
-    <tr>
-        <th class="fixed-row-2">阿里云</th>
-        <th class="fixed-row-2">阿里金融云</th>
-        <th class="fixed-row-2">腾讯云</th>
-        <th class="fixed-row-2">华为云</th>
-        <th class="fixed-row-2">AWS</th>
-        <th class="fixed-row-2">Azure</th>
-        <th class="fixed-row-2">GCP</th>
-        <th class="fixed-row-2">火山引擎</th>
-        <th class="fixed-row-2">UCloud</th>
-        <th class="fixed-row-2">天翼云</th>
-        <th class="fixed-row-2">移动云</th>
-        <th class="fixed-row-2">京东云</th>
-        <th class="fixed-row-2">百度云</th>
-        <th class="fixed-row-2">联通云</th>
-        <th class="fixed-row-2">金山云</th>
-        <th class="fixed-row-2">青云</th>
-        <th class="fixed-row-2">阿里飞天 (3.12+)</th>
-        <th class="fixed-row-2">HCSO</th>
-        <th class="fixed-row-2">HCS (8.0.3+)</th>
-        <th class="fixed-row-2">ZStack (3.4.0+)</th>
-        <th class="fixed-row-2">OpenStack (M+)</th>
-        <th class="fixed-row-2">VMware (6.5+)</th>
-        <th class="fixed-row-2">Cloudpods</th>
-        <th class="fixed-row-2">DStack</th>
-        <th class="fixed-row-2">Nutanix (6.5.2+)</th>
-        <th class="fixed-row-2">BingoCloud</th>
-        <th class="fixed-row-2">inCloud Sphere (6.5.1+)</th>
-        <th class="fixed-row-2">外部数据</th>
-        <th class="fixed-row-2">Proxmox (6.3+)</th>
-        <th class="fixed-row-2">H3C (CloudOS 5.0+)</th>
-    </tr>
-    <tr>
-        <th rowspan="7" class="fixed-col-1">主机</th>
-        <th class="fixed-col-2">虚拟机</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>         
-    </tr>
-    <tr>
-        <th class="fixed-col-2">弹性伸缩组</th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">系统镜像</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">硬盘</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">快照</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">自动快照策略</th>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">安全组</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th rowspan="9" class="fixed-col-1">网络</th>
-        <th class="fixed-col-2">专有网络VPC</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">IP子网</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td> 
-    </tr>
-    <tr>
-    <th class="fixed-col-2">弹性公网IP</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">NAT网关</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">DNS解析</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">负载均衡LB</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">CDN</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">WAF</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">IPv6网关</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th rowspan="3" class="fixed-col-1">存储</th>
-        <th class="fixed-col-2">对象存储</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">NAS文件存储</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">表格存储</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th rowspan="3" class="fixed-col-1">数据库</th>
-        <th class="fixed-col-2">RDS</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">Redis</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">MongoDB</th>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th rowspan="2" class="fixed-col-1">中间件</th>
-        <th class="fixed-col-2">Kafka</th>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th class="fixed-col-2">Elasticsearch</th>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th rowspan="2" class="fixed-col-1">容器</th>
-        <th class="fixed-col-2">Kubernetes集群纳管</th>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th class="fixed-col-2">Kubernetes集群新建</th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th class="fixed-col-1">监控</th>
-        <th class="fixed-col-2">监控告警</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th class="fixed-col-1">费用</th>
-        <th class="fixed-col-2">公有云账单分析/私有云计费服务</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th rowspan="2" class="fixed-col-1">其他</th>
-        <th class="fixed-col-2">公有云子账号</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th class="fixed-col-2">免密登录云平台</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
+        {tableList.map((rowList, rowIdx) => (
+            <tr>
+                {rowList.map((item, colIdx) => (
+                    getTableItem(item, rowIdx, colIdx)
+                ))}
+            </tr>
+        ))}
     </table>
 
     </div>
