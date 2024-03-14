@@ -1,6 +1,355 @@
 import styles from './styles.module.css';
+
+const Aliyun = '阿里云'
+const TencentCloud = "腾讯云"
+const HuaweiCloud = "华为云"
+const Aws = "AWS"
+const GoogleCloud = "GCP"
+const Azure = "Azure"
+const VolcEngine = "火山引擎"
+const UCloud = "UCloud"
+const Ctyun = "天翼云"
+const ECloud = "移动云"
+const JDCloud = "京东云"
+const BaiduCloud = "百度云"
+const CuCloud = "联通云"
+const Ksyun = "金山云"
+const QingCloud = "青云"
+const Apsara = "阿里飞天(v3.12+)"
+const HCSO = "HCSO"
+const HCS = "HCS (v8.0.3+)"
+const ZStack = "ZStack (v3.4.0+)"
+const OpenStack = "OpenStack (M+)"
+const VMware = "VMware (6.0+)"
+const Cloudpods = "Cloudpods"
+const Nutanix = "Nutanix (v6.5.2+)"
+const BingoCloud = "BingoCloud"
+const IncloudSphere = "IncloudSphere (6.5.1+)"
+const RemoteFile = "外部数据"
+const Proxmox = "Proxmox(v6.3+)"
+const H3C = "H3C (CloudOS 5.0+)"
+const OracleCloud = "OracleCloud"
+
+const tableList = [
+    // 表头1
+    [
+        {
+            text: '分类',
+            rowspan: 2,
+            style: {
+                zIndex: 3,
+                width: '80px'
+            }
+        },
+        {
+            text: '云资源类型',
+            rowspan: 2,
+            style: {
+                zIndex: 3,
+                width: '130px!important'
+            }
+        },
+        {
+            text: '操作',
+            rowspan: 2,
+            style: {
+                zIndex: 3,
+            },
+        },
+        {
+            text: '公有云',
+            colspan: 16,
+            style: {
+                textAlign: 'center',
+            }
+        },
+        {
+            text: '私有云',
+            colspan: 14,
+            style: {
+                textAlign: 'center'
+            }
+        }
+    ],
+    // 表头2
+    [{ none: true }, { none: true }, { none: true }, 
+        Aliyun, 
+        TencentCloud, 
+        HuaweiCloud, 
+        Aws, 
+        Azure, 
+        GoogleCloud, 
+        VolcEngine, 
+        UCloud, 
+        Ctyun, 
+        ECloud,
+        JDCloud,
+        BaiduCloud,
+        CuCloud, 
+        Ksyun, 
+        QingCloud, 
+        OracleCloud,
+        Apsara, 
+        HCSO, 
+        HCS, 
+        ZStack, 
+        OpenStack, 
+        VMware, 
+        Cloudpods, 
+        Nutanix, 
+        BingoCloud, 
+        IncloudSphere, 
+        RemoteFile, 
+        Proxmox, 
+        H3C
+    ],
+]
+
+const data = {
+    "主机": {
+        "虚拟机": {
+            "删除": { [Aliyun]: 'Y', [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "N", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "Y", [BingoCloud]: "Y", [IncloudSphere]: "Y", [RemoteFile]: "-", [Proxmox]: "Y", [H3C]: "Y" },
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "Y", [BaiduCloud]: "", [JDCloud]: "Y", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "Y", [BingoCloud]: "Y", [IncloudSphere]: "Y", [RemoteFile]: "Y", [Proxmox]: "Y", [H3C]: "Y" },
+            "新建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "N", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "Y", [BingoCloud]: "Y", [IncloudSphere]: "Y", [RemoteFile]: "-", [Proxmox]: "Y", [H3C]: "N" },
+            "开机": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "N", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "Y", [BingoCloud]: "Y", [IncloudSphere]: "Y", [RemoteFile]: "-", [Proxmox]: "Y", [H3C]: "N" },
+            "关机": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "N", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "Y", [BingoCloud]: "Y", [IncloudSphere]: "Y", [RemoteFile]: "-", [Proxmox]: "Y", [H3C]: "N" }, 
+            "续费": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "-", [Azure]: "-", [GoogleCloud]: "-", [VolcEngine]: "N", [UCloud]: "", [Ctyun]: "", [ECloud]: "N", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "-", [HCSO]: "-", [HCS]: "", [ZStack]: "", [OpenStack]: "", [VMware]: "", [Cloudpods]: "", [Nutanix]: "", [BingoCloud]: "", [IncloudSphere]: "", [RemoteFile]: "", [Proxmox]: "", [H3C]: "" },
+            "重装系统": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "-", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "N", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "-", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "-" },
+            "调整配置": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "N", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "Y", [BingoCloud]: "-", [IncloudSphere]: "Y", [RemoteFile]: "-", [Proxmox]: "Y", [H3C]: "-" },
+            "重置密码": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "-", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "N", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "-", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "-" },
+            "绑定秘钥": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "-", [Aws]: "-", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "-", [Ctyun]: "Y", [ECloud]: "N", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "-", [HCS]: "-", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "-", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "-" },
+            "保存镜像": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "", [Ctyun]: "Y", [ECloud]: "N", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "", [OpenStack]: "", [VMware]: "", [Cloudpods]: "Y", [Nutanix]: "", [BingoCloud]: "", [IncloudSphere]: "", [RemoteFile]: "-", [Proxmox]: "", [H3C]: "" },
+            "绑定&解绑安全组": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "N", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "" },
+            "绑定&解绑EIP": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "N", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "N", [Nutanix]: "N", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "", [Proxmox]: "", [H3C]: "" },
+            "公网转EIP": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "", [Aws]: "", [Azure]: "", [GoogleCloud]: "", [VolcEngine]: "", [UCloud]: "", [Ctyun]: "Y", [ECloud]: "N", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "", [HCSO]: "", [HCS]: "", [ZStack]: "", [OpenStack]: "", [VMware]: "", [Cloudpods]: "", [Nutanix]: "", [BingoCloud]: "", [IncloudSphere]: "", [RemoteFile]: "-", [Proxmox]: "", [H3C]: "" },
+            "迁移": { [Aliyun]: "-", [TencentCloud]: "-", [HuaweiCloud]: "-", [Aws]: "-", [Azure]: "-", [GoogleCloud]: "-", [VolcEngine]: "-", [UCloud]: "-", [Ctyun]: "Y", [ECloud]: "-", [BaiduCloud]: "-", [JDCloud]: "-", [CuCloud]: "-", [Ksyun]: "-", [QingCloud]: "-", [OracleCloud]: "", [Apsara]: "-", [HCSO]: "-", [HCS]: "-", [ZStack]: "-", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "N", [Nutanix]: "N", [BingoCloud]: "N", [IncloudSphere]: "N", [RemoteFile]: "-", [Proxmox]: "N", [H3C]: "N" },
+            "VNC远程": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "-", [Azure]: "-", [GoogleCloud]: "-", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "Y", [BaiduCloud]: "N", [JDCloud]: "Y", [CuCloud]: "N", [Ksyun]: "N", [QingCloud]: "N", [OracleCloud]: "N", [Apsara]: "N", [HCSO]: "N", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "N", [BingoCloud]: "N", [IncloudSphere]: "N", [RemoteFile]: "-", [Proxmox]: "Y", [H3C]: "N" },
+        },
+        "公共镜像": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "-", [HCSO]: "-", [HCS]: "-", [ZStack]: "-", [OpenStack]: "-", [VMware]: "-", [Cloudpods]: "-", [Nutanix]: "-", [BingoCloud]: "-", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "-" },
+        },
+        "自定义镜像": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "Y", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "Y", [BingoCloud]: "Y", [IncloudSphere]: "Y", [RemoteFile]: "Y", [Proxmox]: "Y", [H3C]: "-" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "N", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "N", [HCSO]: "N", [HCS]: "N", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "Y", [BingoCloud]: "N", [IncloudSphere]: "N", [RemoteFile]: "-", [Proxmox]: "Y", [H3C]: "-" },
+        },
+        "硬盘": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "Y", [BaiduCloud]: "", [JDCloud]: "Y", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "Y", [BingoCloud]: "Y", [IncloudSphere]: "Y", [RemoteFile]: "Y", [Proxmox]: "Y", [H3C]: "Y" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "N", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "N" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "Y", [BingoCloud]: "Y", [IncloudSphere]: "N", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "N" },
+            "扩容": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "Y", [BingoCloud]: "N", [IncloudSphere]: "N", [RemoteFile]: "-", [Proxmox]: "Y", [H3C]: "N" },
+            "挂载&卸载": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "" },
+        },
+        "快照": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "Y", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "N", [Cloudpods]: "Y", [Nutanix]: "N", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "-" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "N", [Cloudpods]: "", [Nutanix]: "N", [BingoCloud]: "", [IncloudSphere]: "", [RemoteFile]: "", [Proxmox]: "", [H3C]: "" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "N", [Cloudpods]: "", [Nutanix]: "N", [BingoCloud]: "", [IncloudSphere]: "", [RemoteFile]: "", [Proxmox]: "", [H3C]: "" },
+        },
+        "自动快照策略": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "", [Aws]: "", [Azure]: "", [GoogleCloud]: "Y", [VolcEngine]: "", [UCloud]: "", [Ctyun]: "", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "", [HCS]: "N", [ZStack]: "", [OpenStack]: "", [VMware]: "N", [Cloudpods]: "", [Nutanix]: "N", [BingoCloud]: "", [IncloudSphere]: "", [RemoteFile]: "", [Proxmox]: "", [H3C]: "" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "", [Aws]: "", [Azure]: "", [GoogleCloud]: "Y", [VolcEngine]: "", [UCloud]: "", [Ctyun]: "", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "", [HCS]: "N", [ZStack]: "", [OpenStack]: "", [VMware]: "N", [Cloudpods]: "", [Nutanix]: "N", [BingoCloud]: "", [IncloudSphere]: "", [RemoteFile]: "", [Proxmox]: "", [H3C]: "" },
+        },
+        "安全组": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "Y", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "Y", [Proxmox]: "-", [H3C]: "-" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "N", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "-" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "N", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "-" },
+            "规则增删改查": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "N", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "-" },
+        }
+    },
+    "网络": {
+        "VPC": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "Y", [BaiduCloud]: "", [JDCloud]: "Y", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "Y", [Proxmox]: "-", [H3C]: "-" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "-" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "-" },
+        },
+        "IP子网": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "Y", [BaiduCloud]: "", [JDCloud]: "Y", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "Y", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "Y", [RemoteFile]: "Y", [Proxmox]: "-", [H3C]: "Y" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "Y", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "N", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "-" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "Y", [BaiduCloud]: "", [JDCloud]: "", [CuCloud]: "", [Ksyun]: "", [QingCloud]: "", [OracleCloud]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "N", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "-" },
+        },
+        "弹性公网IP": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [ECloud]: "Y", [OracleCloud]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "Y", [Proxmox]: "-" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-" },
+            "绑定&解绑": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [UCloud]: "Y", [Ctyun]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "Y", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "Y", [Nutanix]: "-", [BingoCloud]: "Y", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-" },
+        },
+        "NAT网关": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "", [ZStack]: "", [OpenStack]: "", [VMware]: "-", [Cloudpods]: "", [Nutanix]: "-", [BingoCloud]: "", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "N", [Apsara]: "", [HCSO]: "Y", [HCS]: "", [ZStack]: "", [OpenStack]: "", [VMware]: "-", [Cloudpods]: "", [Nutanix]: "-", [BingoCloud]: "", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "N", [Apsara]: "", [HCSO]: "Y", [HCS]: "", [ZStack]: "", [OpenStack]: "", [VMware]: "-", [Cloudpods]: "", [Nutanix]: "-", [BingoCloud]: "", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "" },
+        },
+        "负载均衡": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [ZStack]: "", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "", [Nutanix]: "-", [BingoCloud]: "", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "N", [GoogleCloud]: "N", [HCSO]: "Y", [HCS]: "", [ZStack]: "", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "", [Nutanix]: "-", [BingoCloud]: "", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "N", [GoogleCloud]: "N", [HCSO]: "Y", [HCS]: "", [ZStack]: "", [OpenStack]: "Y", [VMware]: "-", [Cloudpods]: "", [Nutanix]: "-", [BingoCloud]: "", [IncloudSphere]: "-", [RemoteFile]: "-", [Proxmox]: "-", [H3C]: "" },
+        },
+        "CDN": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y" },
+            "创建": { [TencentCloud]: "Y" },
+            "删除": { [TencentCloud]: "Y" },
+        },
+        "IPv6网关": {
+            "同步": { [Apsara]: "Y" }
+        }
+    },
+    "存储": {
+        "对象存储": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [OpenStack]: "", [VMware]: "-", [Cloudpods]: "", [Nutanix]: "-", [RemoteFile]: "Y", [Proxmox]: "-" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [OpenStack]: "", [VMware]: "-", [Cloudpods]: "", [Nutanix]: "-", [RemoteFile]: "-", [Proxmox]: "-" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [OpenStack]: "", [VMware]: "-", [Cloudpods]: "", [Nutanix]: "-", [RemoteFile]: "-", [Proxmox]: "-" },
+            "文件操作": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y", [OpenStack]: "", [VMware]: "-", [Cloudpods]: "", [Nutanix]: "-", [RemoteFile]: "-", [Proxmox]: "-" },
+        },
+        "NAS文件存储": {
+            "同步": { [Aliyun]: "Y", [HuaweiCloud]: "Y", [HCSO]: "Y" },
+            "创建": { [Aliyun]: "Y", [HuaweiCloud]: "Y", [HCSO]: "" },
+            "删除": { [Aliyun]: "Y", [HuaweiCloud]: "Y", [HCSO]: "" },
+        },
+        "表格存储": {
+            "同步": { [Aliyun]: "Y", [Apsara]: "Y" },
+        },
+    },
+    "数据库": {
+        "RDS": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [JDCloud]: "Y", [Apsara]: "Y", [HCSO]: "Y", [HCS]: "Y" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "N", [GoogleCloud]: "Y", [JDCloud]: "N", [Apsara]: "N", [HCSO]: "Y", [HCS]: "N" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "N", [GoogleCloud]: "Y", [JDCloud]: "N", [Apsara]: "N", [HCSO]: "Y", [HCS]: "N" },
+            "数据库增删改": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "N", [GoogleCloud]: "Y", [JDCloud]: "N", [Apsara]: "N", [HCSO]: "Y", [HCS]: "N" },
+            "用户增删改": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "N", [GoogleCloud]: "Y", [JDCloud]: "N", [Apsara]: "N", [HCSO]: "Y", [HCS]: "N" },
+        },
+        "Redis": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [Apsara]: "Y", [HCSO]: "Y" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "N", [Apsara]: "N", [HCSO]: "Y" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "N", [Apsara]: "N", [HCSO]: "Y" },
+            "数据库增删改": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "N", [Apsara]: "N", [HCSO]: "Y" },
+            "用户增删改": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "N", [Apsara]: "N", [HCSO]: "Y" },
+        },
+        "MongoDB": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y" },
+        },
+    },
+    "中间件": {
+        "Kafka": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y" },
+        },
+        "Elasticsearch": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y" },
+        },
+    },
+    "容器": {
+        "Kubernetes集群": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [Aws]: "Y", [Azure]: "Y" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "", [Aws]: "Y", [Azure]: "" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "", [Aws]: "Y", [Azure]: "" },
+        },
+    },
+    "监控": {
+        "虚拟机监控": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [JDCloud]: "Y", [Ctyun]: "Y", [ECloud]: "Y", [Apsara]: "Y", [VMware]: "Y", [BingoCloud]: "Y", [ZStack]: "Y", [Cloudpods]: "Y", [HCSO]: "Y", [HCS]: "Y", [H3C]: "Y" },
+        },
+    },
+    "费用": {
+        "计费": {
+            "账单拉取": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y" },
+        },
+    },
+    "其他": {
+        "云用户": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y" },
+        },
+        "免密登录": {
+            "SSO": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y" },
+        },
+    }
+}
+
+const cloudList = [        
+    Aliyun, 
+    TencentCloud, 
+    HuaweiCloud, 
+    Aws, 
+    Azure, 
+    GoogleCloud, 
+    VolcEngine, 
+    UCloud, 
+    Ctyun, 
+    ECloud,
+    JDCloud,
+    BaiduCloud,
+    CuCloud, 
+    Ksyun, 
+    QingCloud, 
+    Apsara, 
+    HCSO, 
+    HCS, 
+    ZStack, 
+    OpenStack, 
+    VMware, 
+    Cloudpods, 
+    Nutanix, 
+    BingoCloud, 
+    IncloudSphere, 
+    RemoteFile, 
+    Proxmox, 
+    H3C,
+]
+
+const typeList = Object.keys(data)
+typeList.map((typeItem, typeIdx) => {
+    const resourceList = Object.keys(data[typeItem])
+    let actionsLen = 0
+    resourceList.map((resourceItem, resourceIdx) => {
+        const actionList = Object.keys(data[typeItem][resourceItem])
+        actionsLen += actionList.length
+    })
+    resourceList.map((resourceItem, resourceIdx) => {
+        const actionList = Object.keys(data[typeItem][resourceItem])
+        actionList.map((action, index) => {
+            let row = []
+            // 分类
+            row.push(resourceIdx === 0 && index === 0 ? { text: typeItem, rowspan: actionsLen } : {none: true})
+            // 资源类型
+            row.push(index === 0 ? {text: resourceItem, rowspan: actionList.length} : {none: true})
+            // 操作
+            row.push(action)
+            // 值
+            cloudList.map(cloud => {
+                row.push(data[typeItem][resourceItem][action][cloud] || '')
+            })
+            tableList.push(row)
+        })
+    })
+})
+
+
+const fixedRowLen = 2
+const fixedColLen = 3
+
+const getClassName = (rowIdx, colIdx) => {
+    let str = ''
+    if (rowIdx < fixedRowLen) {
+        str = styles[`fixedRow${rowIdx + 1}`]
+    }
+    if (colIdx < fixedColLen) {
+        str = str ? `${str} ${styles[`fixedCol${colIdx + 1}`]}` : styles[`fixedCol${colIdx + 1}`]
+    }
+    return str
+}
+
+const getTableItem = (item, rowIdx, colIdx) => {
+    if (item.none) return null
+    if (rowIdx < fixedRowLen || colIdx < fixedColLen) {
+        return (
+            <th rowspan={item.rowspan || 1} colspan={item.colspan || 1} style={{ ...(item.style || {}), minWidth: '95px', textAlign: 'center' }} className={getClassName(rowIdx, colIdx)}>
+                {item.text || item}
+            </th>
+        )
+    }
+    return (
+        <td rowspan={item.rowspan || 1} colspan={item.colspan || 1} style={item.style || {}} className={getClassName(rowIdx, colIdx)}>
+            {item.text || item}
+        </td>
+    )
+}
 export default function CloudFeatureSupportTable() {
-  // TODO: 把下面这个表格用组件重构了
   return (
     <div>
       <ul>
@@ -10,1048 +359,15 @@ export default function CloudFeatureSupportTable() {
         <li>D: 开发过程中</li>
         <li>R: 只读同步</li>
       </ul>
-      
+
     <table>
-    <tr>
-        <th rowspan="2" class="fixed-row-1 fixed-col-1" style={{zIndex: 3}}> 分类 </th>
-        <th rowspan="2" class="fixed-row-1 fixed-col-2" style={{zIndex: 3}}>云资源类型</th>
-        <th style={{textAlign: 'center'}} class="fixed-row-1" colspan="16">公有云</th>
-        <th style={{textAlign: 'center'}} class="fixed-row-1" colspan="14">私有云</th>
-    </tr>
-    <tr>
-        <th class="fixed-row-2">阿里云</th>
-        <th class="fixed-row-2">阿里金融云</th>
-        <th class="fixed-row-2">腾讯云</th>
-        <th class="fixed-row-2">华为云</th>
-        <th class="fixed-row-2">AWS</th>
-        <th class="fixed-row-2">Azure</th>
-        <th class="fixed-row-2">GCP</th>
-        <th class="fixed-row-2">火山引擎</th>
-        <th class="fixed-row-2">UCloud</th>
-        <th class="fixed-row-2">天翼云</th>
-        <th class="fixed-row-2">移动云</th>
-        <th class="fixed-row-2">京东云</th>
-        <th class="fixed-row-2">百度云</th>
-        <th class="fixed-row-2">联通云</th>
-        <th class="fixed-row-2">金山云</th>
-        <th class="fixed-row-2">青云</th>
-        <th class="fixed-row-2">阿里飞天 (3.12+)</th>
-        <th class="fixed-row-2">HCSO</th>
-        <th class="fixed-row-2">HCS (8.0.3+)</th>
-        <th class="fixed-row-2">ZStack (3.4.0+)</th>
-        <th class="fixed-row-2">OpenStack (M+)</th>
-        <th class="fixed-row-2">VMware (6.5+)</th>
-        <th class="fixed-row-2">Cloudpods</th>
-        <th class="fixed-row-2">DStack</th>
-        <th class="fixed-row-2">Nutanix (6.5.2+)</th>
-        <th class="fixed-row-2">BingoCloud</th>
-        <th class="fixed-row-2">inCloud Sphere (6.5.1+)</th>
-        <th class="fixed-row-2">外部数据</th>
-        <th class="fixed-row-2">Proxmox (6.3+)</th>
-        <th class="fixed-row-2">H3C (CloudOS 5.0+)</th>
-    </tr>
-    <tr>
-        <th rowspan="7" class="fixed-col-1">主机</th>
-        <th class="fixed-col-2">虚拟机</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>         
-    </tr>
-    <tr>
-        <th class="fixed-col-2">弹性伸缩组</th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">系统镜像</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">硬盘</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">快照</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">自动快照策略</th>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">安全组</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th rowspan="9" class="fixed-col-1">网络</th>
-        <th class="fixed-col-2">专有网络VPC</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">IP子网</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td> 
-    </tr>
-    <tr>
-    <th class="fixed-col-2">弹性公网IP</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">NAT网关</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">DNS解析</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">负载均衡LB</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">CDN</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">WAF</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">IPv6网关</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th rowspan="3" class="fixed-col-1">存储</th>
-        <th class="fixed-col-2">对象存储</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">NAS文件存储</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">表格存储</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th rowspan="3" class="fixed-col-1">数据库</th>
-        <th class="fixed-col-2">RDS</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">Redis</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th class="fixed-col-2">MongoDB</th>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td> 
-    </tr>
-    <tr>
-        <th rowspan="2" class="fixed-col-1">中间件</th>
-        <th class="fixed-col-2">Kafka</th>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th class="fixed-col-2">Elasticsearch</th>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th rowspan="2" class="fixed-col-1">容器</th>
-        <th class="fixed-col-2">Kubernetes集群纳管</th>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th class="fixed-col-2">Kubernetes集群新建</th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th class="fixed-col-1">监控</th>
-        <th class="fixed-col-2">监控告警</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th class="fixed-col-1">费用</th>
-        <th class="fixed-col-2">公有云账单分析/私有云计费服务</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th rowspan="2" class="fixed-col-1">其他</th>
-        <th class="fixed-col-2">公有云子账号</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <th class="fixed-col-2">免密登录云平台</th>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>Y</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
+        {tableList.map((rowList, rowIdx) => (
+            <tr>
+                {rowList.map((item, colIdx) => (
+                    getTableItem(item, rowIdx, colIdx)
+                ))}
+            </tr>
+        ))}
     </table>
 
     </div>
