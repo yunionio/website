@@ -114,3 +114,16 @@ ovs-vsctl list Open_vSwitch
 部署完成后，用上述部署两台计算节点的ansible脚本进行部署。
 
 样例inventory的hosts描述了两台主机用作主备高可用，如果无需高可用，可将其中的一个主机描述删除，仅部署一台。
+
+## FAQ：如何解决多个EIP网关冲突
+
+AllInOne部署时会默认开启AllInOne节点的EIP网关配置，如果事后用户又按照以上步骤部署了新的EIP网关，则会出现EIP网关冲突的现象。具体表现为EIP时通时断。
+
+可以采用如下方式将AllInOne部署时默认开启的EIP网关下线：
+
+* 修改AllInOne部署节点的 /etc/yunion/host.conf, 设置 sdn_enable_eip_man: false (如果已经是false，则不是这个情况，请另找原因），并重启该节点的host服务
+* 在该节点运行如下脚本清理eip网关生成的bridge和端口：
+```bash
+ovs-vsctl del-br breip
+ovs-vsctl list-ports brvpc | grep ^ev- | awk '{print "ovs-vsctl del-port brvpc " $1}' | sh
+```
