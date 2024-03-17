@@ -20,8 +20,8 @@ climc命令如下：
 climc guest-image-create <name> --image <id_of_root_image> --image <id_of_data_image> --image ...
 ```
 
-要求所有镜像的状态都是active状态，并且第一个镜像为系统盘，要求设置了os_type属性。
+要求所有镜像的状态都是active状态，并且第一个镜像为系统盘，并且设置了os_type属性。
 
 ### 如何将vmware的ova虚拟机文件导入成为主机镜像？
 
-首先将ova解压缩为一个目录，内部包含ovf描述虚拟机的配置信息，以及诺干vmdk磁盘文件。将vmdk磁盘文件分别上传平台。然后创建一个主机镜像，按顺序包含这些上传的vmdk镜像。
+ova其实是一个zip压缩目录。首先将ova解压缩为一个目录，目录内部包含ovf文件描述虚拟机的配置信息，以及诺干vmdk磁盘文件。将vmdk磁盘文件分别上传平台成为磁盘镜像。然后按上述步骤将这些vmdk的磁盘镜像合并为一个主机镜像，注意这些vmdk镜像的顺序需要严格按照ova中的顺序。
