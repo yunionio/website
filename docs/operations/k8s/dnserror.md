@@ -44,6 +44,21 @@ calicoctl patch felixconfig default -p '{"spec":{"ipipEnabled":false}}'
 calicoctl patch felixconfig default -p '{"spec":{"ipipMtu":1430}}'
 calicoctl patch felixconfig default -p '{"spec":{"vxlanMtu":1430}}'
 ```
+同时还需要修改veth网口的MTU，改配置在configmap的calico-config中：
+
+```bash
+kubectl -n kube-system edit configmaps calico-config
+```
+
+修改 "veth_mtu" 为指定值（注意该值是字符串）
+```yaml
+...
+     typha_service_name: none
+     veth_mtu: "1430"
+   kind: ConfigMap
+   metadata:
+...
+```
 
 ## 原因排查
 
@@ -121,7 +136,9 @@ IP_AUTODETECTION_METHOD 还可以配置为其他的值，可以参考 calico 官
 # tcpdump -i <if_of_calico_node> -nnn "ip proto 4" and host <ip_of_dst_node>
 
 # 比如要在控制节点的 br0 上抓来自于计算节点(IP: 10.130.0.13) 的 ip-in-ip 包，命令如下：
-$ tcpdump -i br0 -nnn "ip proto 4" and host 10.130.0.13
+$ tcpdump -i br0 -nnn ip proto 4 and host 10.130.0.13
+# 比如要在控制节点的 br0 上抓来自于计算节点(IP: 10.130.0.13) 的 ip-in-ip 包，并且上层虚拟IP是10.40.52.18 (0x0a283412)，命令如下：
+$ tcpdump -i br0 -nnn 'ip proto 4 and host 10.130.0.13 and (ip[32:4]=0x0a283412 or ip[36:4]=0x0a283412)'
 ```
 
 如果采用VXLAN隧道协议，则采用如下命令抓包：
