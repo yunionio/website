@@ -73,6 +73,20 @@ $ /etc/init.d/openibd restart
 $ mst start
 # 配置SRIOV VF数量, 重启生效, 具体设备名称查看 mst status -v
 $ mlxconfig -d /dev/mst/mt4119_pciconf0 set SRIOV_EN=1 NUM_OF_VFS=64
+
+# mlnx infiniband 网卡开启 sriov 后的注意事项！！
+# IB 网卡开启 sriov 后可能会导致 ip 命令如下报错：
+Error: Buffer too small for object.
+Dump terminated
+需要使用 mlnx 的 iproute 包中的 ip 命令替换宿主机原本的 ip 命令，这个包在 ofed 驱动中, 如：
+- /mnt/DEBS/mlnx-iproute2_6.4.0-1.2310055_amd64.deb # debian link
+- /mnt/RPMS/mlnx-iproute2-5.19.0-1.58203.x86_64.rpm # centos
+
+# 配置 VF 网卡名称 udev 规则，如果不配置会按照系统默认新增网卡的命名规则
+cp /usr/share/doc/mlnx-ofa_kernel-5.8/vf-net-link-name.sh /etc/infiniband/
+# 如果文件有冲突需要按需合并
+cp /usr/share/doc/mlnx-ofa_kernel-5.8/82-net-setup-link.rules /etc/udev/rules.d/
+
 $ reboot
 ```
 
