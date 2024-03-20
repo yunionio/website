@@ -81,6 +81,11 @@ Dump terminated
 - /mnt/DEBS/mlnx-iproute2_6.4.0-1.2310055_amd64.deb # debian link
 - /mnt/RPMS/mlnx-iproute2-5.19.0-1.58203.x86_64.rpm # centos
 
+# 配置 VF 网卡名称 udev 规则，如果不配置会按照系统默认新增网卡的命名规则
+cp /usr/share/doc/mlnx-ofa_kernel-5.8/vf-net-link-name.sh /etc/infiniband/
+# 如果文件有冲突需要按需合并
+cp /usr/share/doc/mlnx-ofa_kernel-5.8/82-net-setup-link.rules /etc/udev/rules.d/
+
 # 重启虚机
 $ reboot
 ```
