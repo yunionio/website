@@ -251,7 +251,7 @@ const data = {
     },
     "费用": {
         "计费": {
-            "账单拉取": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y" },
+            "账单拉取": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [VolcEngine]: "Y", [Ksyun]: "Y" },
         },
     },
     "其他": {
