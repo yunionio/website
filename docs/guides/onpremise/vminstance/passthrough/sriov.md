@@ -308,3 +308,35 @@ other_config        : {hw-offload="true"}
 ````
 
 其次，执行  `ovs-appctl dpctl/dump-flows type=offloaded` 查看卸载到硬件转发表的流表，如果硬件卸载未生效，则输出为空。
+
+
+## 网卡 SR-IOV 常见问题：
+
+如果按照以上配置后重启宿主机 SR-IOV 网卡未正常上报，需要查看 host-agent 日志和宿主机 dmesg 进一步排查。
+以下是一些常遇到的问题：
+
+1. 检查宿主机 IOMMU 是否打开
+```
+$ cat /proc/cmdline
+查看是否包含如下选项
+intel_iommu=on iommu=pt
+
+运行查看是否有输出，如果打开了 iommu 应该会有输出
+$ dmesg | grep -e DMAR -e IOMMU -e AMD-Vi
+```
+
+
+2. dmesg: not enough MMIO resources for SR-IOV
+```
+$ /etc/default/grub cmdline 中添加 pci=realloc
+
+$ grub2-mkconfig -o /boot/grub2/grub.cfg
+$ 重启
+```
+
+3. dmesg: ENABLE_HCA(0x104) timeout
+BIOS 引导系统中查找这些字样 "ACS", "PCIe Ari Support" and "Iommu" 并打开。
+
+
+
+
