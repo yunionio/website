@@ -59,13 +59,11 @@ primary_master_node:
   # ${productVersionComment}
   product_version: '${productVersion}'
   # ${imageRepositoryComment}
-  image_repository: registry.cn-beijing.aliyuncs.com/yunionio
+  image_repository: registry.cn-beijing.aliyuncs.com/yunion
   # ${haComment}
   high_availability: true
   # ${translate({ id: "ocbootConfigHA.enableMinio", message: "使用 minio 作为后端虚拟机镜像存储" })}
   enable_minio: true
-  insecure_registries:
-  - $PRIMARY_IP:5000
   ha_using_local_registry: false
   # ${hostNetworkComment}
   host_networks: "$PRIMARY_INTERFACE/br0/$PRIMARY_IP"
@@ -85,8 +83,6 @@ master_nodes:
   ntpd_server: "$PRIMARY_IP"
   # ${haComment}
   high_availability: true
-  insecure_registries:
-  - $PRIMARY_IP:5000
   hosts:
   - user: root
     hostname: "$MASTER_1_IP"
