@@ -256,10 +256,24 @@ const data = {
     },
     "其他": {
         "云用户": {
-            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y" },
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [GoogleCloud]: "Y", [Ksyun]: "Y", [VolcEngine]: "Y" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [Ksyun]: "Y", [VolcEngine]: "Y" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [Ksyun]: "Y", [VolcEngine]: "Y" },
+        },
+        "云用户组": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [Ksyun]: "Y", [VolcEngine]: "Y" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [Ksyun]: "Y", [VolcEngine]: "Y" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [Ksyun]: "Y", [VolcEngine]: "Y" },
+            "绑定&解绑权限": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [Ksyun]: "Y", [VolcEngine]: "Y" },
+            "添加&删除用户": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Azure]: "Y", [Ksyun]: "Y", [VolcEngine]: "Y" },
+        },
+        "身份提供商": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [VolcEngine]: "Y" },
+            "创建": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [VolcEngine]: "Y" },
+            "删除": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [VolcEngine]: "Y" },
         },
         "免密登录": {
-            "SSO": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y" },
+            "角色SSO(SAML2.0)": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [VolcEngine]: "Y" },
         },
     }
 }
