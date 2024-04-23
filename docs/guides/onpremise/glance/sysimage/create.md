@@ -406,3 +406,12 @@ ssh_pwauth:   1
 ### Windows系统安装配置Cloudbase-init（可选）
 
 请参考[腾讯云文档中心-Windows操作系统安装Cloudbase-Init](https://cloud.tencent.com/document/product/213/30000)。
+
+### ESXi镜像优化
+
+平台支持将ESXi从iso安装并保存为镜像，保存镜像前，建议做如下配置：
+
+进入ESXi shell，执行如下命令（参考：https://kb.vmware.com/s/article/1031111）
+```bash
+esxcfg-advcfg -s 1 /Net/FollowHardwareMac
+```
