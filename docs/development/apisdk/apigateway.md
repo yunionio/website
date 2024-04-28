@@ -60,6 +60,8 @@ climc service-config-edit yunionapi
 
 为了方便使用统一API入口，SDK和climc做了如下的变更：
 
+[代码示例](https://github.com/yunionio/cloudpods/blob/be62b3e0495d687f0d7e45bc73df6a6abef5f8ac/pkg/mcclient/README.md?plain=1#L62)
+
 * 认证服务入口需设置为：
 
 ```
@@ -67,6 +69,7 @@ https://<ip_or_domain_of_apigatway>/api/s/identity/v3
 ```
 
 * EndpointType 需设置为 apigateway
+
 
 ### climc的配置
 

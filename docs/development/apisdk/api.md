@@ -33,6 +33,10 @@ $ climc credential-get-aksk
 
 ## 3. 获取认证地址
 
+::::warning
+认证地址有 30500 端口, 若用域名访问，请保留端口信息, 否则会出现 405 Method Not Allowed 错误
+::::
+
 ```
 $ ocadm cluster rcadmin
 export OS_AUTH_URL=https://10.211.55.9:30500/v3
