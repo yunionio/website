@@ -28,7 +28,7 @@ edition: ce
     - docker 建议安装最新的 ce 版本，新版本已经包含 docker-compose 插件
     - docker 需要开启容器网络以及 iptables
 
-### 安装配置 docker
+### 安装配置 docker 
 
 :::tip 注意
 如果您的环境已经安装了新版本的 docker ，可以跳过改步骤。
@@ -59,7 +59,7 @@ Docker Compose 环境准备好后，就可以使用 https://github.com/yunionio/
 
 ```bash
 # 下载 ocboot 工具到本地
-$ git clone -b release/3.11 https://github.com/yunionio/ocboot && cd ./ocboot
+$ git clone -b release/3.10 https://github.com/yunionio/ocboot && cd ./ocboot
 
 # 进入 compose 目录
 $ cd compose
