@@ -60,7 +60,7 @@ After the Docker Compose environment is ready, you can use the docker-compose.ym
 
 ```bash
 # Download the OCBoot tool to the local environment
-$ git clone -b release/3.11 https://github.com/yunionio/ocboot && cd ./ocboot
+$ git clone -b release/3.10 https://github.com/yunionio/ocboot && cd ./ocboot
 
 # Enter the compose directory
 $ cd compose

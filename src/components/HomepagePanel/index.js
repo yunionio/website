@@ -14,7 +14,7 @@ export default function HomepagePanel() {
               <Translate id='homepage.cloudpodsVirtDesc'>本地虚拟化&裸金属</Translate>
             </div>
             <CodeBlock language='bash'>
-              {'git clone -b release/3.11 https://github.com/yunionio/ocboot && cd ./ocboot\n./run.py virt'}
+              {'git clone -b release/3.10 https://github.com/yunionio/ocboot && cd ./ocboot\n./run.py virt'}
             </CodeBlock>
             <div className={styles.panelItemSupport}>
               <Translate id='homepage.osSupport'>系统支持：CentOS 7.6~7.9 Minimal、Debian 10/11、Ubuntu 22.04、银河麒麟V10 SP2、统信 UOS kongzi</Translate>
@@ -29,7 +29,7 @@ export default function HomepagePanel() {
               <Translate id='homepage.cloudpodsCmpDesc'>统一管理公有云和私有云</Translate>
             </div>
             <CodeBlock language='bash'>
-              {'git clone -b release/3.11 https://github.com/yunionio/ocboot && cd ./ocboot\n./ run.py cmp'}
+              {'git clone -b release/3.10 https://github.com/yunionio/ocboot && cd ./ocboot\n./ run.py cmp'}
             </CodeBlock>
             <div className={styles.panelItemSupport}>
               <Translate id='homepage.osSupport'>系统支持：CentOS 7.6~7.9 Minimal、Debian 10/11、Ubuntu 22.04、银河麒麟V10 SP2/SP3、统信 UOS kongzi</Translate>
