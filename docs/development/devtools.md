@@ -186,3 +186,36 @@ goroutine profile: total 83
 ```
 
 - 将收集到的服务版本信息及堆栈信息提交到 GitHub issue 上: [https://github.com/yunionio/cloudpods/issues](https://github.com/yunionio/cloudpods/issues)
+
+### 获取创建虚拟机调度失败日志
+
+```bash
+
+# 登录控制节点，列出调度任务列表
+
+$ climc scheduler-history-list
++---------------+---------------------+-----------+-------------+---------------+
+|  session_id   |        time         |  status   |  consuming  | is_suggestion |
++---------------+---------------------+-----------+-------------+---------------+
+| 1715168194022 | 2024-05-08 11:36:34 | 1 success | 64.687915ms | false         |
+| 1715167938185 | 2024-05-08 11:32:18 | 1 failed  | 0s          | false         |
+| 1715167849319 | 2024-05-08 11:30:49 | 1 failed  | 0s          | false         |
+| 1715167815198 | 2024-05-08 11:30:15 | 1 success | 58.733867ms | false         |
+| 1715153101591 | 2024-05-08 07:25:01 | 1 success | 36.752624ms | false         |
+| 1715077940402 | 2024-05-07 10:32:20 | 1 success | 23.926726ms | false         |
+| 1715009657333 | 2024-05-06 15:34:17 | 1 success | 32.592824ms | false         |
++---------------+---------------------+-----------+-------------+---------------+
+***  Total: 7 Pages: 1 Limit: 7 Offset: 0 Page: 1  ***
+
+# 找到最近一次 status = failed 的session_id, 这里是 1715167938185
+
+$ climc scheduler-history-show --raw --log 1715167938185
+consuming: 0s
+error: 'genericScheduler.Schedule: No resource are avaliable that match all of the
+  following predicates: filter by baremetal_status(-1), session_id="1715167938185"'
+  ...
+  ...
+  ...
+time: "2024-05-08 11:32:18"
+
+```
