@@ -48,8 +48,8 @@ $ climc service-config webconsole --conf 'ssh_session_timeout_minutes=30'
 查询 server 的 ip
 
 ```bash
-# 可通过 server-list --search --details 的方式找到虚拟机的 ip
-$ climc server-list --search <server_name> --details 
+# 可通过 server-list --search --details --scope system 的方式找到虚拟机的 ip
+$ climc server-list --search <server_name> --details --scope system
 
 # 或者通过 server-show <server_id> 的方式得到 ip
 $ climc server-show <server_name> | grep ip
