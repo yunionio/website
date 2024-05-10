@@ -138,3 +138,9 @@ yum install -y yunion-lbagent
 systemctl daemon-reload
 systemctl restart yunion-lbagent
 ```
+
+* 修改ssh监听端口和地址
+
+一般ssh服务默认监听0.0.0.0:22，这就导致如果在lbagent上配置监听22端口的listener，则会因为所有地址的22端口都被占用，从而出现监听配置失败，进而导致所有监听都失败。因此，建议配置lbagent的ssh服务监听具体IP（例如管理IP）的22端口，或其他端口。
+
+对于lbagent上其他监听0.0.0.0的服务也应该做类似配置，避免出现和haproxy的listener监听端口冲突。
