@@ -189,7 +189,7 @@ $ source ~/test_rc_admin
 $ source ~/test_rc_aksk
 
 # 执行climc。例如，查看虚拟机列表
-$ climc server-list
+$ climc server-list --scope system
 ```
 
 注意: 如果执行 climc 时出现 *Error: Missing OS_AUTH_URL* 的错误提示时，请 source 或设置认证云平台的环境变量。

@@ -72,16 +72,16 @@ Optional arguments:
 
 ```bash
 # 先查看虚拟机的信息
-$ climc server-list --search vm1 --details
+$ climc server-list --search vm1 --details --scope system
 
 # 执行随机迁移
 $ climc server-migrate vm1
 
 # 迁移过程中虚拟机会处于 migrating 的状态
-$ climc server-list --search vm1
+$ climc server-list --search vm1 --scope system
 
 # 迁移完成后虚拟机状态变为 ready，并且可以发现宿主机信息也发生了变化
-$ climc server-list --search vm1 --details
+$ climc server-list --search vm1 --details --scope system
 ```
 
 - 迁移到指定宿主机

@@ -71,7 +71,7 @@ $ climc server-stop tvm-wz
 $ climc server-change-disk-storage tvm-wz vdisk-tvm-wz-1636100820075603665 host_10.1.180.11_local_storage_0
 
 # 然后查看虚拟机的状态，磁盘迁移存储虚拟机会处于 disk_change_storage 的状态
-$ climc server-list --search tvm-wz --details
+$ climc server-list --search tvm-wz --details --scope system
 | 329bfce5-135f-4113-861e-bd44b8aaf9e0 | tvm-wz | postpaid     | 10.2.18.252 | 30720 | disk_change_storage      | 1          | 1024      | Default  | default  |
 
 # 等待虚拟机状态变为 ready 表示迁移完毕
