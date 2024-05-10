@@ -112,7 +112,7 @@ $ climc monitor-migrationalert-event afc9468c-2cd7-4be8-83c7-92d7535a53cf --scop
 # 上述信息表示把 a15 上的 aisenzhe 虚拟机(cpu.usage_active 10.76%) 迁移到 test-66-onecloud02(cpu.usage_active 22.65%) 目标宿主机上
 
 # 查看虚拟机的状态发现正在迁移中
-$ climc server-list --search aisenzhe
+$ climc server-list --search aisenzhe --scope system
 +--------------------------------------+----------+--------------+-----------+------------+-----------+-----------+-----------------------------+------------+---------+-----------+
 |                  ID                  |   Name   | Billing_type |  Status   | vcpu_count | vmem_size | Secgrp_id |         Created_at          | Hypervisor | os_type | is_system |
 +--------------------------------------+----------+--------------+-----------+------------+-----------+-----------+-----------------------------+------------+---------+-----------+
