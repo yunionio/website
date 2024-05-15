@@ -1,0 +1,52 @@
+
+## 简介
+
+不少用户反馈，ocboot目前的 k8s套件版本过低（`v1.15`），希望能够推出更高版本。为此，我们推出了基于`buildah`+`k3s` (`v1.28`)的部署方式。
+
+::::warning
+请注意，目前本方案处于测试阶段，请在充分测试之后，再用于您的生产环境。
+::::
+
+本安装方案，不再依赖目标机器上的`ansible`，而是把 ansibie 及其依赖集成在`buildah` 镜像里。
+
+## 部署方式
+
+请使用如下命令部署。请参考注释部分。
+
+import BuildahK3S from '@site/src/components/BuildahK3S';
+
+<BuildahK3S productVersion={props.productVersion} />
+
+## 支持的操作系统
+
+注：3.11、3.10等，表示发行版 Release/3.11、Release/3.10。其余同理。
+
+| Operationg system and Arch             | 3.11 | 3.10 |
+| -------------------------------------- | ---- | ---- |
+| CentOS 7 2009 x86_64+aarch64           | ✅    | ✅    |
+| OpenEuler 22.03 LTS Sp3 x86_64+aarch64 | ✅    | ✅    |
+| Debian 11 x86_64+aarch64               | ✅    | ✅    |
+| Ubuntu 22.04 x86_64+aarch64            | ✅    | ✅    |
+| CentOS Stream8 x86_64                  | ✅    | ✅    |
+| Rocky Linux 8.9 x86_64                 | ✅    | ✅    |
+| OpencloudOS 8.8 x86_64                 | ✅    | ✅    |
+| AlmaLinux 8.9 x86_64                   | ✅    | ✅    |
+| AnolisOS 8.8 x86_64                    | ✅    | ✅    |
+
+## 如何卸载k3s
+
+```bash
+./scripts/uninstall-k3s.sh
+```
+
+如有需要，请在卸载k3s之后，自行清理数据库。本文档不做赘述。
+
+## FAQ
+
+### 1. 是否支持将 k8s 的系统，迁移/升级到 k3s 系统里？
+
+暂不支持。
+
+### 2. 其它问题？
+
+其它问题欢迎在 Cloudpods github issues 界面提交: [https://github.com/yunionio/cloudpods/issues](https://github.com/yunionio/cloudpods/issues) , 我们会尽快回复。
