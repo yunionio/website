@@ -46,6 +46,14 @@ sidebar_position: 3
 
 [https://rockylinux.org/cloud-images/](https://rockylinux.org/cloud-images/)
 
+### AlmaLinux
+
+[https://repo.almalinux.org/almalinux/](https://repo.almalinux.org/almalinux/)
+
+### FreeBSD
+
+[https://download.freebsd.org/ftp/snapshots/VM-IMAGES/](https://download.freebsd.org/ftp/snapshots/VM-IMAGES/)
+
 ## 常用镜像百度网盘提取链接及提取码
 
 我们也提供了一些常用的 windows 镜像，需要通过百度网盘下载，然后导入镜像服务。
