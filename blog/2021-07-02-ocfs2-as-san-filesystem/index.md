@@ -285,3 +285,11 @@ Number  Start  End           Size          File system  Name  Flags
 ```
 
 经过以上步骤后，文件系统扩容完毕。最后，在其余节点执行partprobe感知设备的容量变化，再重新挂载分区就可以了。
+
+## OCFS2文件系统的修复
+
+遇到某个ocfs2节点故障下线再上线后，无法正常挂载ocfs2目录的故障，dmesg报错需要运行fsck.ocfs2进行文件系统检查和修复。
+
+对ocfs2文件系统进行fsck需要确保在所有节点均umount，并且停止o2cb和ocfs2服务。仅在一个节点启动o2cb和ocfs2服务，并在改节点运行fsck.ocfs2。
+
+对ocsfs2的共享块存储多次运行fsck.ocfs2进行检查和修复后。再逐个节点启用o2cb和ocfs2服务。最后再逐个节点挂载ocfs2文件系统。
