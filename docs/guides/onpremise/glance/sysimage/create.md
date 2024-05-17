@@ -69,9 +69,9 @@ sidebar_position: 2
     $ vi /etc/dracut.conf
     # 修改配置文件，去掉add_drivers+前面#注释，并在引号中添加如下内容，修改完成后保存。
     # 以下为 x86 需要添加的内核驱动
-    add_drivers+=" hpsa mptsas mpt2sas mpt3sas megaraid_sas mptspi virtio virtio_ring virtio_pci virtio_scsi virtio_blk vmw_pvscsi "
+    add_drivers+=" hpsa mptsas mpt2sas mpt3sas megaraid_sas mptspi virtio virtio_ring virtio_pci virtio_scsi virtio_blk vmw_pvscsi nvme "
     # 以下为 arm 需要添加的内核驱动
-    add_drivers+=" mptsas mpt2sas mpt3sas megaraid_sas mptspi virtio virtio_ring virtio_pci virtio_scsi virtio_blk "
+    add_drivers+=" mptsas mpt2sas mpt3sas megaraid_sas mptspi virtio virtio_ring virtio_pci virtio_scsi virtio_blk nvme "
 
     # 使配置生效
     $ dracut -f
