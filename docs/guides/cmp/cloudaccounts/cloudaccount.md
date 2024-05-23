@@ -91,7 +91,7 @@ sidebar_position: 0.1
 
 :::warning
 - 已创建的AccessKey，无法再查看AccessKeySecret。
-- 若要同步阿里云资源目录信息，需同时添加 AliyunSTSAssumeRoleAccess（调用STS服务AssumeRole接口的权限）和 AliyunResourceDirectoryReadOnlyAccess （资源目录服务只读）权限
+- 若要同步阿里云资源目录信息，需额外添加 AliyunSTSAssumeRoleAccess（调用STS服务AssumeRole接口的权限）和 AliyunResourceDirectoryReadOnlyAccess （资源目录服务只读）权限
 
 :::
  
