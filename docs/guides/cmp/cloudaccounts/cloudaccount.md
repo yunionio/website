@@ -90,7 +90,9 @@ sidebar_position: 0.1
    ![](./images/aliyun_ram_access_key_get.png)
 
 :::warning
-已创建的AccessKey，无法再查看AccessKeySecret。
+- 已创建的AccessKey，无法再查看AccessKeySecret。
+- 若要同步阿里云资源目录信息，需同时添加 AliyunSTSAssumeRoleAccess（调用STS服务AssumeRole接口的权限）和 AliyunResourceDirectoryReadOnlyAccess （资源目录服务只读）权限
+
 :::
  
 ##### 通过平台管理阿里云资源，需要云账号拥有哪些权限
@@ -118,6 +120,7 @@ sidebar_position: 0.1
 | 管理云解析(DNS)的权限                                | AliyunDNSReadOnlyAccess | AliyunDNSFullAccess|
 | 管理企业财务管理(EFC)的权限                     | AliyunFinanceConsoleReadOnlyAccess                | AliyunFinanceConsoleFullAccess               |
 | 管理云监控(CloudMonitor)的权限                               | AliyunCloudMonitorReadOnlyAccess                  | AliyunCloudMonitorFullAccess                 |
+| 管理资源目录服务（ResourceDirectory）的权限                               | AliyunCloudMonitorReadOnlyAccess                  | AliyunResourceDirectoryReadOnlyAccess                 |
 
 ##### 如何给子账号授权
 
