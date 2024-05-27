@@ -1,6 +1,7 @@
 ---
 sidebar_position: 4
 edition: ce
+draft: true
 ---
 
 # High Availability Installation

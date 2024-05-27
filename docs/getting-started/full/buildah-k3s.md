@@ -1,6 +1,7 @@
 ---
 edition: ce
 sidebar_position: 6
+draft: true
 ---
 # 基于 buildah + k3s 快速部署
 
