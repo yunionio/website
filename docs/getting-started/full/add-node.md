@@ -1,6 +1,7 @@
 ---
 sidebar_position: 3
 edition: ce
+draft: true
 ---
 
 # 添加计算节点

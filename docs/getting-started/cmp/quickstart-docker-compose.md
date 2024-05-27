@@ -14,8 +14,6 @@ edition: ce
 
 该部署方法仅适用于多云管理功能的使用，比如管理公有云(aws, 阿里云, 腾讯云等)或者其它私有云(zstack, openstack 等)，无法使用内置私有云相关功能(因为内置私有云需要节点上面安装配置 qemu, openvswitch 等各种虚拟化软件)。
 
-另外 VMWare 目前也无法使用 Docker Compose 的方式管理，因为目前对 VMWare 的磁盘管理依赖依赖内核 nbd 模块，该模块无法在 docker compose 里面加载。如果是需要对 VMWare 管理，请使用 [Ocboot 快速安装](./quickstart-ocboot) 的方式部署。
-
 如果需要使用内置私有云，请使用 [私有云](../onpremise/) 的方式部署。
 :::
 

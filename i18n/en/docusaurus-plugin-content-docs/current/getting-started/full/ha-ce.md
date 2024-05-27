@@ -1,6 +1,7 @@
 ---
 sidebar_position: 2
 edition: ce
+draft: true
 ---
 
 # Highly Available Installation 

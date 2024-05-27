@@ -10,9 +10,7 @@ edition: ce
 :::tip 注意
 该方案通过 Helm 在已有的 Kubernetes 集群上自动部署 Cloudpods 多云管理版本。
 
-该部署方法可能会因为不同 Kubernetes 发行版的 CSI，CNI 和 Ingress controller 配置不同出现兼容性错误，如果部署失败，又想快速体验产品功能，建议还是使用 [Ocboot 快速安装](./quickstart-ocboot) 的方式部署。
-
-另外 VMWare 目前也无法使用 Docker Compose 的方式管理，因为目前对 VMWare 的磁盘管理依赖依赖内核 nbd 模块，该模块无法在 docker compose 里面加载。如果是需要对 VMWare 管理，请使用 [Ocboot 快速安装](./quickstart-ocboot) 的方式部署。
+该部署方法可能会因为不同 Kubernetes 发行版的 CSI，CNI 和 Ingress controller 配置不同出现兼容性错误，如果部署失败，又想快速体验产品功能，建议使用 [Docker Compose 快速安装](./quickstart-docker-compose) 的方式部署。
 
 已经验证过的Kubernetes发行版本包括：
 - 阿里云 ACK
