@@ -10,9 +10,7 @@ Deploy the Cloudpods CMP multi-cloud management version on Kubernetes using [Hel
 :::tip Note
 This solution automatically deploys the Cloudpods multi-cloud management version on an existing Kubernetes cluster using Helm.
 
-This deployment method may result in compatibility issues due to different configurations of CSI, CNI, and Ingress Controller for different Kubernetes distributions. If deployment fails and you want to quickly experience the product features, it is recommended to use the [Ocboot Quick Install](./quickstart-ocboot) method for deployment.
-
-In addition, VMWare currently cannot be managed using Docker Compose because disk management for VMWare currently depends on the kernel nbd module, which cannot be loaded within Docker Compose. If you require VMWare management, please use the [Quick Installation via Ocboot](./quickstart-ocboot) method for deployment.
+This deployment method may result in compatibility issues due to different configurations of CSI, CNI, and Ingress Controller for different Kubernetes distributions. If deployment fails and you want to quickly experience the product features, it is recommended to use the [Quick Installation via Docker Compose](./quickstart-docker-compose) method for deployment.
 
 Kubernetes distributions that have been verified include:
 - Alibaba Cloud ACK

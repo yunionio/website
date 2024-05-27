@@ -1,6 +1,7 @@
 ---
 sidebar_position: 2
 edition: ce
+draft: true
 ---
 
 # 高可用安装 

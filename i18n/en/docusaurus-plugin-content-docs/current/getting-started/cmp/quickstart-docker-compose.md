@@ -14,8 +14,6 @@ This method deploys the Cloudpods multi-cloud management version through Docker 
 
 This deployment method only applies to the use of multi-cloud management features, such as managing public clouds (AWS, Alibaba Cloud, Tencent Cloud, etc.) or other private clouds (ZStack, OpenStack, etc.), and cannot be used for built-in private cloud-related features (because built-in private clouds require the installation and configuration of various virtualization software such as QEMU and Openvswitch on the nodes).
 
-In addition, VMware cannot currently be managed using Docker Compose because disk management for VMware currently depends on the kernel nbd module, which cannot be loaded inside docker compose. If you need to manage VMware, use the [Quick Installation via Ocboot](./quickstart-ocboot) method to deploy.
-
 If you need to use the built-in private cloud, use the [Private cloud](../onpremise/) deployment method.
 :::
 
