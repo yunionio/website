@@ -1,6 +1,7 @@
 ---
 edition: ce
 sidebar_position: 1
+draft: true
 ---
 
 # Quick Installation via Ocboot 
