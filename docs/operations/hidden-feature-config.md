@@ -93,3 +93,5 @@ $ climc feature-config-jdcloud --switch off
 | xsky      | Xsky 存储管理        	| `feature-config-xsky`      |
 | k8s       | K8S 容器集群管理     	| `feature-config-k8s`       |
 | proxmox   | PVE虚拟化管理        	| `feature-config-proxmox`   |
+| volcengine   | 火山引擎公有云管理        	| `feature-config-volcengine`   |
+| oraclecloud   | Oracle公有云管理        	| `feature-config-oraclecloud`   |
