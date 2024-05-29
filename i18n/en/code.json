@@ -435,11 +435,11 @@
     "message": "Default NIC Selection Rules for the Kubernetes calico Plugin"
   },
   "确保 git 已经安装": {
-     "message": "Ensure that Git is installed"
+    "message": "Ensure that Git is installed"
   },
   "克隆ocboot 的 master 分支. 注意：k3s的部署方式，目前只实现在 ocboot 的 master里": {
-     "message": "Clone the master branch of ocboot. Note: Currently, the deployment method of k3s is only implemented in the master branch of ocboot."
-    },
+    "message": "Clone the master branch of ocboot. Note: Currently, the deployment method of k3s is only implemented in the master branch of ocboot."
+  },
   "安装 buildah": {
     "message": "installation of buildah"
   },
@@ -451,6 +451,9 @@
   },
   "如果网络情况复杂(多网卡、多ip)，此处也可手工指定 IP": {
     "message": "In the event of complex network scenarios (multiple network cards, multiple IPs), you can also manually specify the IP address."
+  },
+  "可以使用 -h 选项来查看详细参数": {
+    "message": "You may use -h option to display help and usage information."
   },
   "ocbootConfigHA.controlPlaneHostHint": {
     "message": "IP of the K8s control node, corresponding to the VIP on which keepalived listens"
