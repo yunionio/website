@@ -14,8 +14,8 @@ const config = {
   customFields: {
     release_branch: 'release/3.11',
     pre_release_branch: 'release/3.10',
-    release_version: 'v3.11.0',
-    pre_release_version: 'v3.10.12',
+    release_version: 'v3.11.3',
+    pre_release_version: 'v3.10.4',
   },
 
   // Set the production url of your site here
