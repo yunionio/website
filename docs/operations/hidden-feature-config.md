@@ -95,3 +95,4 @@ $ climc feature-config-jdcloud --switch off
 | proxmox   | PVE虚拟化管理        	| `feature-config-proxmox`   |
 | volcengine   | 火山引擎公有云管理        	| `feature-config-volcengine`   |
 | oraclecloud   | Oracle公有云管理        	| `feature-config-oraclecloud`   |
+| sangfor   | 深信服超融合HCI       | `feature-config-sangfor`   |
