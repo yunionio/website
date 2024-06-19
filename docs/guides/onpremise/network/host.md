@@ -38,7 +38,7 @@ import HostAliasVlanNICPNG from './images/host_alias_vlan_nic.png';
 
 <img src={HostAliasVlanNICPNG} width="500" />
 
-以物理机的网口为em1，VLAN ID为100，em1的虚拟机网桥br0为例，以下为配置脚本：
+以物理机的网口为em1，VLAN ID为100，em1的虚拟机网桥br0为例，以下为运行时更改配置的命令：
 
 ```bash
 ip link add link em1 name em1.100 type vlan id 100 && ip addr flush dev br0 && ip addr add 10.192.4.20/22 dev em1.100 && ip link set dev em1.100 up

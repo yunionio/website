@@ -78,8 +78,13 @@ MariaDB [(none)]> SHOW MASTER STATUS;
 
 然后退出MariaDB，执行mysqldump将主节点的数据导出：
 
-```
+```bash
 mysqldump -u root -p --all-databases > /a/path/mysqldump.sql
+```
+
+如果数据库已经开启主备并启用了binary logging，建议用如下命令参数：
+```bash
+mysqldump -u root -p --master-data --single-transaction --skip-lock-tables --routines --triggers --all-databases > /a/path/mysqldump.sql
 ```
 
 再登入主节点MariaDB，解锁READ LOCK。
