@@ -44,114 +44,114 @@
   os_name: Linux
   os_arch: x86_64
   os_version: 24.10(Oracular)
-  build: 20240508
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/oracular/20240508/oracular-server-cloudimg-amd64.img
+  url: https://cloud-images.ubuntu.com/oracular/current/oracular-server-cloudimg-amd64.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: aarch64
   os_version: 24.10(Oracular)
-  build: 20240508
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/oracular/20240508/oracular-server-cloudimg-arm64.img
+  url: https://cloud-images.ubuntu.com/oracular/current/oracular-server-cloudimg-arm64.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: x86_64
   os_version: 24.04(Noble)
-  build: 20240505
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/noble/20240505/noble-server-cloudimg-amd64.img
+  url: https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: aarch64
   os_version: 24.04(Noble)
-  build: 20240505
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/noble/20240505/noble-server-cloudimg-arm64.img
+  url: https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-arm64.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: x86_64
   os_version: 23.10(Mantic)
-  build: 20240514
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/mantic/20240514/mantic-server-cloudimg-amd64.img
+  url: https://cloud-images.ubuntu.com/mantic/current/mantic-server-cloudimg-amd64.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: aarch64
   os_version: 23.10(Mantic)
-  build: 20240514
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/mantic/20240514/mantic-server-cloudimg-arm64.img
+  url: https://cloud-images.ubuntu.com/mantic/current/mantic-server-cloudimg-arm64.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: x86_64
   os_version: 22.04(Jammy)
-  build: 20240514
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/jammy/20240514/jammy-server-cloudimg-amd64-disk-kvm.img
+  url: https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64-disk-kvm.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: aarch64
   os_version: 22.04(Jammy)
-  build: 20240514
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/jammy/20240514/jammy-server-cloudimg-arm64.img
+  url: https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-arm64.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: x86_64
   os_version: 20.04(Focal)
-  build: 20240513
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/focal/20240513/focal-server-cloudimg-amd64-disk-kvm.img
+  url: https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64-disk-kvm.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: aarch64
   os_version: 20.04(Focal)
-  build: 20240513
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/focal/20240513/focal-server-cloudimg-arm64.img
+  url: https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-arm64.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: x86_64
   os_version: 18.04(Bionic)
-  build: 20230607
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/bionic/20230607/bionic-server-cloudimg-amd64.img
+  url: https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: aarch64
   os_version: 18.04(Bionic)
-  build: 20230607
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/bionic/20230607/bionic-server-cloudimg-arm64.img
+  url: https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-arm64.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: x86_64
   os_version: 16.04(Xenial)
-  build: 20211001
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/xenial/20211001/xenial-server-cloudimg-amd64-disk1.img
+  url: https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-disk1.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: aarch64
   os_version: 16.04(Xenial)
-  build: 20211001
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/xenial/20211001/xenial-server-cloudimg-arm64-disk1.img
+  url: https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-arm64-disk1.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: x86_64
   os_version: 14.04(Trusty)
-  build: 20191107
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/trusty/20191107/trusty-server-cloudimg-amd64-disk1.img
+  url: https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: aarch64
   os_version: 14.04(Trusty)
-  build: 20191107
+  build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/trusty/20191107/trusty-server-cloudimg-arm64-disk1.img
+  url: https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-arm64-disk1.img
 - distribution: CentOS
   os_name: Linux
   os_arch: aarch64
