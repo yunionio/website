@@ -371,7 +371,7 @@ sidebar_position: 0.1
 1. 登录Azure控制台，单击左侧导航栏 **_"Azure Active Directory/应用注册"_** 菜单项，进入应用注册页面。建议新建一个专门的应用程序供云管平台调用Azure API。
    ![](./images/azureregisterapp.png)
 
-2. 单击 **_新注册_** 按钮，在进入的注册应用程序页面，设置名称为任意值、设置受支持的账户类型为“仅此目录中的账户”，重定向URI设置为web，并输入以"[https://](https://)"或"[http://localhost](http://localhost)"开头的URL地址，单击 **_"注册"_** 按钮。
+2. 单击 **_新注册_** 按钮，在进入的注册应用程序页面，设置名称为任意值、设置受支持的账户类型为“仅此目录中的账户”，重定向URI设置为web，并输入以"https://"或"[http://localhost](http://localhost)"开头的URL地址，单击 **_"注册"_** 按钮。
    ![](./images/azureregisteredapp.png)
 
 3. 创建成功后，系统自动显示刚创建的应用程序详情页面。该页面的应用程序（客户端）ID即为所需的客户端ID、目录（租户）ID即为所需的租户ID。
@@ -1214,7 +1214,7 @@ $ kubectl rollout restart deployment -n kube-system coredns
 2. 选择云平台为OpenStack，单击 **_"下一步：配置云账号"_** 按钮，进入配置云账号页面。
 3. 配置以下参数：
    - 名称：OpenStack账号的名称。 
-   - 认证地址：OpenStack管理平台的认证地址，如[http://host:port/v3](http://host:port/v3)。
+   - 认证地址：OpenStack管理平台的认证地址，如 **http:\/\/host:port/v3** 。
    - 账号：OpenStack平台的管理员用户名，如admin。   
    - 密码：OpenStack平台管理员用户的密码。   
    - 项目：OpenStack平台上的项目，如admin项目。  
