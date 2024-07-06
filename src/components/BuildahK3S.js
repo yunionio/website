@@ -11,7 +11,7 @@ export default function BuildahK3S(props) {
           `
 # ${translate({ message: "确保 git 已经安装" })}
 # ${translate({ message: "克隆ocboot 的 master 分支. 注意：k3s的部署方式，目前只实现在 ocboot 的 master里" })}
-git clone https://github.com/yunionio/ocboot.git
+git clone https://github.com/yunionio/ocboot.git && cd ocboot
 
 # ${translate({ message: "安装 buildah" })}
 ./scripts/install-buildah.sh
