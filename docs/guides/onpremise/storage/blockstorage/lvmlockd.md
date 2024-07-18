@@ -2,7 +2,7 @@
 sidebar_position: 8
 ---
 
-# Lvmlockd
+# Shared LVM Storage With Lvmlockd
 
 在 Centos8, OpenEuler 等操作系统中，lvmlockd 作为 clvm 的升级方案，本文介绍如何使用使用 lvmlockd 搭建 lvm 集群及如何注册到 cloudpods 中。
 
@@ -10,6 +10,10 @@ sidebar_position: 8
 
 使用 lvmlockd 搭建 shared lvm 集群：
 ```bash
+
+# 注意：centos7 lvm 会默认起 lvmetad 服务，若是 centos7 宿主机需要先禁用：
+$ systemctl disable lvm2-lvmetad.service --now
+
 $ yum install -y lvm2-lockd.x86_64
 $ yum install -y sanlock.x86_64
 
@@ -21,6 +25,8 @@ $ vi /etc/lvm/lvmlocal.conf
     host_id = 2
 
 $ systemctl enable wdmd sanlock --now
+
+# 注意：centos7 服务名称为 lvm2-lvmlockd，此命令要改为 systemctl enable lvm2-lvmlockd --now
 $ systemctl enable lvmlockd --now
 
 # 首个节点执行，创建 cluster vg: vgcreate --shared <vgname> <devices>
