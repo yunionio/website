@@ -105,7 +105,7 @@ const config = {
         hashed: true,
         language: ['en', 'ja'],
         docsRouteBasePath: '/',
-        indexBlog: false, // blog is disabled
+        indexBlog: true, // blog is disabled
         ignoreFiles: [/docs\/development\/changelog\/.*/],
         highlightSearchTermsOnTargetPage: true,
         explicitSearchResultPath: true,
