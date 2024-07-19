@@ -53,6 +53,7 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          routeBasePath: '/',
           lastVersion: 'current',
           versions: {
             current: {
@@ -104,8 +105,10 @@ const config = {
         hashed: true,
         language: ['en', 'ja'],
         docsRouteBasePath: '/',
-        indexBlog: true, // blog is disabled
+        indexBlog: false, // blog is disabled
         ignoreFiles: [/docs\/development\/changelog\/.*/],
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
       }),
     ],
   ],
