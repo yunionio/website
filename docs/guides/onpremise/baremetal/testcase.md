@@ -42,11 +42,15 @@ import BMTestIMG from "./images/baremetal_test.png"
 
 ### 1.4 交换机设置
 
-为了允许物理机能够网络PXE启动，需要设置交换机1的dhcp_relay为bareemetal_agent所在节点IP地址的UDP 67端口。
+为了允许物理机能够网络PXE启动，需要设置交换机1的dhcp_relay为baremetal_agent所在节点IP地址的UDP 67端口。
 
-如果采用“预注册”方式注册物理机，则也需要设置交换机2的dhcp_relay为baremetal_agent所在节点IP地址的UDP 67端口。
+- 如果采用“预注册”方式注册物理机，则也需要设置交换机2的dhcp_relay为baremetal_agent所在节点IP地址的UDP 67端口。
 
-在最简网络模式下，依旧是上文所说的服务和待管理物理机在同一个IP子网的网络配置下，如果不方便开启三层交换机的dhcp_relay，则可以借用平台的Host服务，开启其dhcp_relay功能，作为测试IP子网的dhcp relay服务器。具体开启方法为：修改该Host服务所在宿主机的配置文件 /etc/yunion/host.conf，增加 dhcp_relay 的配置项，内容为baremetal_agent部署节点IP的UDP 67端口。配置好后，记得重启该host服务。
+- 在最简网络模式下，依旧是上文所说的服务和待管理物理机在同一个IP子网的网络配置下，如果不方便开启三层交换机的dhcp_relay，则可以借用平台的Host服务，开启其dhcp_relay功能，作为测试IP子网的dhcp relay服务器。具体开启方法为：修改该Host服务所在宿主机的配置文件 /etc/yunion/host.conf，增加 dhcp_relay 的配置项，内容为baremetal_agent部署节点IP的UDP 67端口。配置好后，记得重启该host服务。
+
+:::tip 注意
+如果使用 docker compose 部署的环境，就不用设置 /etc/yunion/host.conf，这种部署方式默认打开了 dhcp_relay 服务。
+:::
 
 ```yaml
 dhcp_relay:
@@ -54,7 +58,9 @@ dhcp_relay:
 - 67
 ```
 
-**注意** 待管理物理机所在网络内不能有其他DHCP服务器！
+:::tip 注意
+待管理物理机所在网络内不能有其他DHCP服务器！
+:::
 
 ### 1.5 物理机硬件信息要求
 
