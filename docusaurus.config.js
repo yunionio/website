@@ -53,7 +53,6 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          routeBasePath: '/',
           lastVersion: 'current',
           versions: {
             current: {
@@ -103,8 +102,8 @@ const config = {
       ({
         // `hashed` is recommended as long-term-cache of index file is possible.
         hashed: true,
-        language: ['en', 'ja', 'zh'],
-        docsRouteBasePath: '/',
+        language: ['en', 'zh'],
+        docsRouteBasePath: '/docs',
         indexBlog: true, // blog is disabled
         ignoreFiles: [/docs\/development\/changelog\/.*/],
         highlightSearchTermsOnTargetPage: true,
