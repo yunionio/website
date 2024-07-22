@@ -102,8 +102,8 @@ const config = {
       ({
         // `hashed` is recommended as long-term-cache of index file is possible.
         hashed: true,
-        language: ['en', 'ja'],
-        docsRouteBasePath: '/',
+        language: ['en', 'zh'],
+        docsRouteBasePath: '/docs',
         indexBlog: true, // blog is disabled
         ignoreFiles: [/docs\/development\/changelog\/.*/],
       }),
