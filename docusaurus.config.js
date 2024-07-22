@@ -107,7 +107,7 @@ const config = {
         docsRouteBasePath: '/',
         indexBlog: true, // blog is disabled
         ignoreFiles: [/docs\/development\/changelog\/.*/],
-        // highlightSearchTermsOnTargetPage: true,
+        highlightSearchTermsOnTargetPage: true,
         explicitSearchResultPath: true,
       }),
     ],
