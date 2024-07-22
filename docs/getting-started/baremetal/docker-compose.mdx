@@ -84,12 +84,12 @@ LISTEN_INTERFACE=eth0 PUBLIC_IP=10.168.222.205 docker compose up
 
 点击前端“网络/IP子网/新建"，创建以下的两个子网。
 
-1. 创建一个物理机类型的子网，假设需要给物理机 PXE 启动的网段为 10.168.222.30 到 10.168.222.40，网关为 10.168.222.1，并设置 dhcp_relay 为 PUBLIC_IP 名称为 bmnet-0。
+1. 创建一个物理机类型的子网，假设需要给物理机 PXE 启动的网段为 10.168.222.30 到 10.168.222.40，网关为 10.168.222.1，**并设置 dhcp_relay 为 PUBLIC_IP**，名称为 bmnet-0。
 
 :::tip 注意
-这里一定要设置 dhcp_relay PUBLIC_IP，在这个环境中是 10.168.222.205，请根据自己环境修改。
-
-因为 baremetal-agent 服务只会响应从 dhcp_relay 过来的单播 dhcp 请求，用 docker compose 部署的服务中包含了一个 dhcp_relay 服务，也监听到 PUBLIC_IP 上，会把 dhcp 广播 relay 到 agent 服务。
+- 此物理机类型网段的开始和结束 ip 范围，以及默认网关是和实际环境网络环境相关的，是对应到交换机和路由器上的配置，注意划分的 ip 不要和已有环境的冲突了
+- **这里一定要设置 dhcp_relay 为 PUBLIC_IP，在这个环境中是 10.168.222.205，请根据自己环境修改。**
+    - 因为 baremetal-agent 服务只会响应从 dhcp_relay 过来的单播 dhcp 请求，用 docker compose 部署的服务中包含了一个 dhcp_relay 服务，也监听到 PUBLIC_IP 上，会把 dhcp 广播 relay 到 agent 服务。
 :::
 
 ![Create Baremetal Net](./imgs/create-bm-net.png)
