@@ -212,7 +212,27 @@ bash-5.1# source /etc/yunion/rcadmin
 bash-5.1# climc user-list
 ```
 
-### 3. 查看服务配置和持久化数据
+### 3. 登录物理机 pxe 内存系统
+
+当物理机通过 pxe 启动成功后，会引导进入一个内存 linux 系统，可以通过下面的方式 ssh 进入这个系统，遇到错误的时候方便排查。
+
+```bash
+# 1. 进入 climc 容器
+docker exec -ti cloudpods-baremetal-climc-1 bash
+
+# 2. 查看物理机 id
+climc host-list
+
+# 3. ssh 到 host 的内存系统
+climc host-ssh $对应物理机id
+```
+
+另外也可以通过 `climc host-logininfo $对应物理机id` 获取 root 用户的登录密码。
+
+如果物理机 pxe 内存系统上报登录信息失败，则会设置成默认的密码：mosbaremetal，对应逻辑可参考[通知代码](https://github.com/yunionio/yunionos/blob/master/src_pxe/etc/init.d/S99notify#L12-L20)。
+
+
+### 4. 查看服务配置和持久化数据
 
 所有服务的持久化数据都是存储在 *cloudpods-baremetal/data* 目录下面的，所有配置都是自动生成的，一般不需要手动修改，下面对各个目录做说明：
 
@@ -238,7 +258,7 @@ data
         └── mysql       # mysql 数据库持久化数据目录
 ```
 
-### 4. 删除所有容器
+### 5. 删除所有容器
 
 所有服务的持久化数据都是存储在 *cloudpods-baremetal/compose/data* 目录下面的，删除容器不会丢失数据，下次直接用 *docker compose up* 重启即可，操作如下：
 
