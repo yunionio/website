@@ -34,12 +34,12 @@ sidebar_position: 4
 ## 新建免密用户
 - 如下图所示
 ![](./images/saml_user_list.png)
-![](./images/saml_user_create.png)
+![](./images/saml_user_create_info.png)
 
 ## 测试免密登录
 
 - 单击平台右上角用户名，再单击 **多云统一登录** 如下图
-![](./images/user_info.png)
+![](./images/user_infos.png)
 - 点击 **免密登录用户** 切换到免密用户列表,如下图
 ![](./images/saml_auth_login_list.png)
 - 单击用户列表右侧 **免密登录** 进行测试
