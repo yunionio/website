@@ -24,7 +24,10 @@ sidebar_position: 10
 
 ### 部署时开启大页
 
-宿主机为 x86_64 架构非控制节点默认开启，且内存超过 30G时生效，预留内存为总内存的10%，最大预留20G内存。可修改 config.yaml 中 enable_hugepage 控制开启或者关闭大页内存
+宿主机为 x86_64 架构非控制节点，且内存超过 30G时，在默认部署时自动开启1G大页。预留内存初始值为总内存的20%，且最大预留32G内存。
+
+在自定义部署时，可修改 config.yaml 中 enable_hugepage 控制开启或者关闭启用大页内存。
+
 ```
   as_host: true
   # 虚拟机强行作为 OneCloud 私有云计算节点（默认为 false）。开启此项时，请确保as_host: true
@@ -33,8 +36,9 @@ sidebar_position: 10
   enable_hugepage: true
 ```
 
-### 部署完成后想开启大页
-环境部署完成后想启用native大页：
+### 部署完成后开启大页
+
+也可以在环境部署完成后，通过如下步骤启用native大页：
 
 1、设置/etc/yunion/host.conf的hugepages_options 为 native
 
@@ -55,7 +59,11 @@ Swap:            0B          0B          0B
 
 ### 配置预留内存
 
-默认情况下预留内存是宿主机当前内存的 %10，最大不超过 20G，如果想要手动配置宿主机的预留内存，则可以通过设置 RESERVED_MEM 来配置。
+开启大页后，宿主机的预留内存根据宿主机启用大页后实际保留的内存自动计算获取，无法在控制台修改。
+
+默认情况下，开启大页的宿主机的预留内存是宿主机当前内存的20%，最大不超过 32G。
+
+如果想要手动修改启用大页的宿主机的预留内存，则可以通过设置 `oc-hugetlb-gigantic-pages.service` 服务的环境变量 RESERVED_MEM 来配置。
 
 ```
 [Unit]
@@ -74,3 +82,5 @@ ExecStart=/usr/lib/systemd/oc-hugetlb-reserve-pages.sh
 [Install]
 WantedBy=sysinit.targe
 ```
+
+配置后需要重启宿主机生效。重启后，服务启动脚本根据设置的环境变量预留非大页内存，并将获取的预留内存值上报到控制台，用户可以在控制台查看实际的预留内存大小。
