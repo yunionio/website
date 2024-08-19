@@ -25,7 +25,7 @@ edition: ce
 - 网络:
 	- 当前可用的网段: 虚拟机可以直接使用和计算节点所在的扁平网段，需要预先划分保留对应端给云平台虚拟机使用，防止被其它设备占用，最后 IP 冲突
 
-import OcbootEnv from '../_parts/_quickstart-ocboot-env.mdx';
+import OcbootEnv from '../_parts/_quickstart-ocboot-k3s-env.mdx';
 
 <OcbootEnv />
 
@@ -35,7 +35,7 @@ import OcbootEnv from '../_parts/_quickstart-ocboot-env.mdx';
 
 ## 使用 ocboot 添加对应节点
 
-以下操作在控制节点进行，在控制节点使用 `ocboot.py add-node` 命令把对应计算节点添加进来。
+以下操作在控制节点进行，在控制节点使用 `ocboot.sh add-node` 命令把对应计算节点添加进来。
 
 假设要给控制节点 10.168.26.216 添加计算节点 10.168.222.140 首先需要 ssh root 免密码登录对应的计算节点以及控制节点自身。
 
@@ -66,10 +66,10 @@ $ ssh root@10.168.222.140 "hostname"
 $ cd /root/ocboot
 
 # 使用 ocboot 添加节点
-$ ./ocboot.py add-node 10.168.26.216 10.168.222.140
+$ ./ocboot.sh add-node 10.168.26.216 10.168.222.140
 
 # 其他选项，使用 '--help' 参考帮助
-$ ./ocboot.py add-node --help
+$ ./ocboot.sh add-node --help
 usage: ocboot.py add-node [-h] [--user SSH_USER] [--key-file SSH_PRIVATE_FILE] [--port SSH_PORT] [--node-port SSH_NODE_PORT]
                           FIRST_MASTER_HOST TARGET_NODE_HOSTS [TARGET_NODE_HOSTS ...]
 

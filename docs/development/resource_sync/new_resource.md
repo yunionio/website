@@ -731,7 +731,7 @@ func init() {
 $ make cmd/climc
 
 # 声明环境变量
-$ source <(ocadm cluster rcadmin)
+$ source /root/.onecloud_rcadmin
 
 # 执行列出 ElasticSearch 资源命令
 $ ./_output/bin/climc --debug elastic-search-list # 由于此时还未同步elastic search资源，返回结果为空
@@ -818,7 +818,7 @@ $ ARCH=all TAG=v3.8.es REGISTRY=registry.cn-beijing.aliyuncs.com/你的镜像命
 # 替换镜像，重启服务
 $ kubectl edit deployments. -n onecloud default-region # 替换配置文件中的image为上面打包的镜像
 # 声明环境变量
-$ source <(ocadm cluster rcadmin)
+$ source /root/.onecloud_rcadmin
 $ climc cloud-account-sync --force --full-sync 阿里云账号id
 # 等待资源同步完成, 查看资源是否同步下来
 $ climc elastic-search-list --scope system
