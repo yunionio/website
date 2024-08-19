@@ -1536,7 +1536,7 @@ $ kubectl rollout restart deployment -n kube-system coredns
 2. 选择云平台为Cloudpods，单击 **_"下一步：配置云账号"_** 按钮，进入配置云账号页面。
 3. 配置以下参数：
     - 名称：Cloudpods云账号的名称。
-    - 认证地址：即对应的keystone服务地址，可在Cloudpods控制节点通过`ocadm cluster rcadmin`命令获取OS_AUTH_URL。一般为http://域名(IP地址):30500/v3。
+    - 认证地址：即对应的keystone服务地址，可在Cloudpods控制节点通过`cat /root/.onecloud_rcadmin`命令获取OS_AUTH_URL。一般为http://域名(IP地址):30500/v3。
     - 密钥ID/密码：通过Access Key验证方式对接Cloudpods，获取方式请参考[Cloudpods相关参数获取方式](#cloudpods相关参数获取方式)
     - 域：选择云账号所属的域。当云账号私有状态下，域下所有项目用户都可以使用云账号创建资源。
     - 资源归属方式：默认指定项目，还支持根据云上项目归属。

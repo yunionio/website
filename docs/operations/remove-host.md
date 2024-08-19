@@ -49,11 +49,11 @@ Chassis "e6268b2e-4311-4f6d-a6e2-ddd09f49beef"
 
 4. 在该宿主机上清理kubelet环境，在该宿主机上执行：
 
-```bash
-$ kubeadm reset -f
-```
+import OcbootUninstall from '@site/src/components/OcbootUninstall'
 
-5. 删除该宿主机对应的k8s节点信息，在控制节点执行：
+<OcbootUninstall />
+
+5. 删除该宿主机对应的集群节点信息，在控制节点执行：
 
 ```bash
 $ kubectl get nodes # 查找该节点的k8s node名称
