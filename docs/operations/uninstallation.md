@@ -7,34 +7,17 @@ sidebar_position: 25
 
 根据平台安装方式，卸载方式各有不同，方式如下。
 
-##  Ocboot 快速安装
+##  Ocboot 安装 {#ocboot}
 
-Ocboot 快速安装是指以 All in One 的方式，在服务器上安装了一个Kubernets集群，进而在集群中部署了Cloudpods。
-因此卸载Cloupods只需要卸载安装的Kubernetes集群，以及在服务器上安装的相关包。
+Ocboot 快速安装是指以 All in One 的方式，在服务器上安装了一个 K3s 或者 Kubernets 集群，进而在集群中部署了Cloudpods。
 
-卸载服务器上的Kubernetes服务:
+因此卸载Cloupods只需要卸载安装的 K3s 或者 Kubernetes 集群，以及在服务器上安装的相关包。
 
-```bash
-$ ocadm reset --force
-$ kubeadm reset --force
-$ ipvsadm --clear
-```
+import OcbootUninstall from '@site/src/components/OcbootUninstall'
 
-停止并禁用相关服务：
+<OcbootUninstall />
 
-```bash
-$ systemctl disable --now docker.socket docker kubelet yunion-executor
-```
-
-卸载kubelet, yunion-executor等包，并清除相关的数据目录，下面以 centos 举例：
-
-```bash
-$ rpm -qa |grep kube |xargs -I {} yum -y remove {} 
-$ rpm -qa |grep yunion |xargs -I {} yum -y remove {}
-$ rm -rf /etc/kubernetes/ /var/lib/etcd/ /root/.kube/ /opt/cloud/
-```
-
-卸载数据库:
+卸载数据库(以 CentOS 举例):
 
 ```bash
 $ yum -y remove mariadb*
