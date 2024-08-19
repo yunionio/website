@@ -41,7 +41,7 @@ Cloudpods 相关的组件运行在 Kubernetes 之上，环境以及相关的软�
 Cloudpods Helm Chart 位于 https://github.com/yunionio/ocboot 仓库，使用以下命令下载到本地：
 
 ```bash
-$ git clone https://github.com/yunionio/ocboot && cd charts/cloudpods
+$ git clone -b release/3.11 https://github.com/yunionio/ocboot && cd charts/cloudpods
 ```
 
 :::tip 注意

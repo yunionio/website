@@ -27,7 +27,7 @@ ocboot 只能升级通过 ocboot 部署的环境，如果你的环境是通过 d
 import ReleaseVersion from '@site/src/components/ReleaseVersion'
 
 1. 使用 git 拉取最新的 [ocboot](https://github.com/yunionio/ocboot) 代码，切换到 <ReleaseVersion /> 的 tag
-2. 使用 [ocboot](https://github.com/yunionio/ocboot) 里面的 `./ocboot.py upgrade` 命令进行版本升级
+2. 使用 [ocboot](https://github.com/yunionio/ocboot) 里面的 `./ocboot.sh upgrade` 命令进行版本升级
 
 ## 查看当前版本
 
@@ -41,21 +41,15 @@ import GetClusterVersion from '@site/src/components/GetClusterVersion'
 
 如果本地已经有 ocboot 工具可以跳过此步，只用把代码更新到对应的分支。
 
-```bash
-# 本地安装 ansible
-$ python3 -m pip install --upgrade pip setuptools wheel
-$ python3 -m pip install 'ansible<=9.0.0' paramiko
-```
+下载 ocboot 工具到本地：
 
-下载 ocboot 工具到本地
-
-import OcbootClone from '@site/src/components/OcbootClone';
+import OcbootClone from '@site/src/components/OcbootK3sClone';
 
 <OcbootClone />
 
 ## 更新 ocboot 代码
 
-import OcbootFetchCheckout from '@site/src/components/OcbootFetchCheckout';
+import OcbootFetchCheckout from '@site/src/components/OcbootK3sFetchCheckout';
 
 <OcbootFetchCheckout />
 
@@ -76,11 +70,11 @@ import OcbootFetchCheckout from '@site/src/components/OcbootFetchCheckout';
 
 下面命令使用 ocboot 相关服务升级到高版本，该步骤会因为拉取 docker 镜像等待较长时间，请耐心等待。
 
-import OcbootUpgrade from '@site/src/components/OcbootUpgrade';
+import OcbootUpgrade from '@site/src/components/OcbootK3sUpgrade';
 
 <OcbootUpgrade />
 
-另外可以使用 `./ocboot.py upgrade --help` 查看其它可选参数。
+另外可以使用 `./ocboot.sh upgrade --help` 查看其它可选参数。
 
 - --user 可以指定其它 ssh 用户
 - --port 指定 ssh 端口
@@ -105,22 +99,6 @@ $ kubectl get pods -n onecloud --watch
 
 如果遇到问题请到 [GitHub 提 issue](https://github.com/yunionio/cloudpods/issues) 或者 [联系我们](../../contact/) 获取帮助。
 :::
-
-### 执行降级
-
-降级的原理是修改各个服务的 image version，比如现在的版本是 v3.10.7，然后想要降级到 v3.10.6。
-
-登录到第一个控制节点执行如下命令，会降级服务到 v3.10.6 。
-
-```bash
-$ /opt/yunion/bin/ocadm cluster update --version v3.10.6 --wait
-```
-
-降级会重新拉取新的镜像，可以再开一个窗口，登录第一个控制节点，使用下面的命令查看每个 pod 的更新情况。
-
-```bash
-$ kubectl -n onecloud get pods -w
-```
 
 ## 回滚操作
 
