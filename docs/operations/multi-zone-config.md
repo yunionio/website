@@ -58,20 +58,7 @@ default-esxi-agent-my-zone-1        1/1     1            1           3m42s
 
 ### 启用 baremetal-agent 
 
-```bash
-# $listen_interface 指的是 baremetal-agent 监听的网卡名称
-$ ocadm baremetal enable --node $node_name --listen-interface $listen_interface
-# 观察 baremetal agent pod 状态查看是否启动成功
-$ watch "kubectl get pods -n onecloud | grep baremetal"
-default-baremetal-agent-7c84996c9b-hhllw   1/1     Running   0          3m10s
-# 启动成功确认 baremetal-agent 注册到控制节点
-$ climc agent-list
-+--------------------------------------+--------------------------+----------------+-----------------------------+---------+------------+------------------------------------------+--------------------------------------+
-|                  ID                  |           Name           |   Access_ip    |         Manager_URI         | Status  | agent_type |                 version                  |               zone_id                |
-+--------------------------------------+--------------------------+----------------+-----------------------------+---------+------------+------------------------------------------+--------------------------------------+
-| f3c2c671-c41d-4f30-8d04-e022b49bb9b5 | baremetal-10.168.222.150 | 10.168.222.150 | https://10.168.222.150:8879 | enabled | baremetal  | remotes/origin/master(5e415506120011509) | 6230b485-2e54-480e-8284-33360b8202a8 |
-+--------------------------------------+--------------------------+----------------+-----------------------------+---------+------------+------------------------------------------+--------------------------------------+
-```
+参考文档：[启用 baremetal-agent](../getting-started/onpremise/baremetal)。
 
 ## 宿主机服务
 
@@ -118,7 +105,7 @@ $ climc network-create \
 子网创建好后，就可以使用部署工具 ocboot 的 `add-node` 命令添加目标宿主机到平台了，详细添加方法可以参考[添加计算节点](../getting-started/onpremise/host)，假设目标宿主机 IP 为 192.168.121.61 ，控制节点 IP 为 192.168.121.21，对应命令如下：
 
 ```bash
-$ ./ocboot.py add-node 192.168.121.21 192.168.121.61
+$ ./ocboot.sh add-node 192.168.121.21 192.168.121.61
 ```
 
 等待命令执行完成后，查看宿主机所属的可用区是否为 my-zone-1：

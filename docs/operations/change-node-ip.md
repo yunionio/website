@@ -12,22 +12,21 @@ sidebar_position: 24
 
 ## AllInOne节点更换IP
 
-### 1. 清理Kubelet
+### 1. 清理节点环境
 
-```bash
-$ ocadm reset -f
-$ kubeadm reset -f
-```
+import OcbootUninstall from '@site/src/components/OcbootUninstall'
+
+<OcbootUninstall />
 
 ### 2. 修改旧的config.yml
 
 :::warning
-- 如果第一次部署是直接运行的 `./run.py <full|cmp|virt> ` 这种方式，生成的配置文件就在 ocboot 目录下的 config-allinone-current.yml 文件
+- 如果第一次部署是直接运行的 `ocboot.sh run.py <full|cmp|virt> ` 这种方式，生成的配置文件就在 ocboot 目录下的 config-allinone-current.yml 文件
 - 如果第一次部署是用的自定义配置文件，请使用相关配置文件
 :::
 
 
-下面假设第一次部署运行的命令为 `./run.py $ip` 这种形式，所以生成的配置文件在运行 ocboot 目录下的 config-allinone-current.yml 文件。
+下面假设第一次部署运行的命令为 `ocboot.sh run.py $ip` 这种形式，所以生成的配置文件在运行 ocboot 目录下的 config-allinone-current.yml 文件。
 
 在第一次运行 ocboot 目录下保存有当时部署时使用的 config-allinone-current.yml 配置文件。备份该 yaml 文件，并修改文件，将旧的 IP 地址替换为新的 IP 地址。
 
@@ -44,7 +43,7 @@ $ vim config.yml
 使用 ocboot 重新部署 AllInOne 节点
 
 ```
-$ ./ocboot.py install config.yml
+$ ./ocboot.sh install config.yml
 ```
 
 ## 私有云计算节点更换IP
@@ -53,12 +52,9 @@ $ ./ocboot.py install config.yml
 
 ### 1. 清理Kubelet
 
-下面命令在计算节点上运行，清理节点上的 kubelet
+下面命令在计算节点上运行，清理节点上的K3s或K8s运行环境。
 
-```bash
-$ ocadm reset -f
-$ kubeadm reset -f
-```
+<OcbootUninstall />
 
 ### 2. 删除 node 信息
 
@@ -73,7 +69,7 @@ $ kubectl delete node $nodename
 ### 3. 使用 ocboot 重新加入节点
 
 ```bash
-$ ./ocboot.py add-node $primary_master_ip $target_node_ip
+$ ./ocboot.sh add-node $primary_master_ip $target_node_ip
 ```
 
 ## FAQ
