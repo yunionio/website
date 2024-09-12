@@ -88,7 +88,7 @@
   os_version: 22.04(Jammy)
   build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64-disk-kvm.img
+  url: https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: aarch64
@@ -102,7 +102,7 @@
   os_version: 20.04(Focal)
   build: current
   source: cloud-images.ubuntu.com
-  url: https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64-disk-kvm.img
+  url: https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: aarch64
