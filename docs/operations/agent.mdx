@@ -8,20 +8,29 @@ sidebar_position: 50
 
 ### 前提条件
 
-虚拟机监控Agent采集的监控数据需要上报到平台的InfluxDB数据库中，因此需要获取InfluxDB地址的对外地址，并需要判断虚拟机是否可以直接连接到InfluxDB数据库。
+虚拟机监控Agent采集的监控数据需要上报到平台的监控数据库中。在3.10之前，默认安装的监控数据库是influxdb，在3.10(含）开始，默认安装的监控数据库是victoria-metrics. 但无论influxdb还是victoria-metrics，监控agent都以相同的协议上报监控数据。
 
-- 若虚拟机可以直接连接InfluxDB数据库，则直接安装监控Agent，配置telegraf采集的监控指标即可
-- 若虚拟机无法直接连接到InfluxDB数据库，需要配置SSH代理节点，建立虚拟机与InfluxDB数据库的连接后，再安装监控Agent，配置telegraf采集的监控指标。
+因此需要获取监控数据库（influxdb或victoria-metrics）的对外地址，并需要判断虚拟机是否可以直接连接到监控数据库。
 
-#### 获取InfluxDB地址
+- 若虚拟机可以直接连接监控数据库，则直接安装监控Agent，配置telegraf采集的监控指标即可
+- 若虚拟机无法直接连接到监控数据库，需要配置SSH代理节点，建立虚拟机与监控数据库的连接后，再安装监控Agent，配置telegraf采集的监控指标。
+
+#### 获取监控数据库地址
 
 ```bash
-# 获取InfluxDB的对外地址及端口号
+# 3.10之前获取InfluxDB的对外地址及端口号，3.10（含）之后，获取victoria-metrics的对外地址及端口号
 $ climc endpoint-list --service influxdb --interface public
 +----------------------------------+-----------+----------------------------------+---------------------------+-----------+---------+
 |                ID                | Region_ID |            Service_ID            |            URL            | Interface | Enabled |
 +----------------------------------+-----------+----------------------------------+---------------------------+-----------+---------+
 | 6b798cb7614149a48bd6d49e23d87b01 | region0   | 294631b8534b48d2896fe83b82081855 | https://192.168.0.2:30086 | public    | true    |
++----------------------------------+-----------+----------------------------------+---------------------------+-----------+---------+
+***  Total: 1 Pages: 1 Limit: 20 Offset: 0 Page: 1  ***
+$ climc endpoint-list --service victoria-metrics --interface public
++----------------------------------+-----------+----------------------------------+---------------------------+-----------+---------+
+|                ID                | Region_ID |            Service_ID            |            URL            | Interface | Enabled |
++----------------------------------+-----------+----------------------------------+---------------------------+-----------+---------+
+| 6b798cb7614149a48bd6d49e23d87b01 | region0   | 294631b8534b48d2896fe83b82081855 | https://192.168.0.2:30428 | public    | true    |
 +----------------------------------+-----------+----------------------------------+---------------------------+-----------+---------+
 ***  Total: 1 Pages: 1 Limit: 20 Offset: 0 Page: 1  ***
 ```
@@ -36,11 +45,11 @@ $ climc proxy-endpoint-list --vpc-id <vpc的ID>
 # 若VPC下IP子网之间网络隔离，则需要查询虚拟机所在IP子网下是否存在SSH代理节点
 $ climc proxy-endpoint-list --network-id <IP子网的ID>
 ```
-2. 若虚拟机所在网络下存在SSH代理节点，则忽略新建SSH代理节点的步骤，直接在SSH代理节点下配置到InfluxDB的remote规则，使监控数据可以上报到InfluxDB。
+2. 若虚拟机所在网络下存在SSH代理节点，则忽略新建SSH代理节点的步骤，直接在SSH代理节点下配置到监控数据库的remote规则，使监控数据可以上报到监控数据库。
 
 #### 新建SSH代理节点
 
-若虚拟机所在网络无法直接与平台的InfluxDB数据库进行通信，则需要在虚拟机所在VPC或IP子网中选择一台Linux操作系统的虚拟机作为SSH代理节点。虚拟机需要满足以下配置要求
+若虚拟机所在网络无法直接与平台的监控数据库进行通信，则需要在虚拟机所在VPC或IP子网中选择一台Linux操作系统的虚拟机作为SSH代理节点。虚拟机需要满足以下配置要求
 
 **虚拟机配置要求**
 
@@ -72,12 +81,12 @@ $ climc proxy-endpoint-list --network-id <IP子网的ID>
 
 #### 配置Remote规则
 
-后续在配置telegraf文件时，需要配置的InfluxDB的地址为“ssh代理节点的地址:\<映射绑定的端口号\>”
+后续在配置telegraf文件时，需要配置的监控数据库的地址为“ssh代理节点的地址:\<映射绑定的端口号\>”
 
 ```bash
-# 在ssh代理节点上配置到InfluxDB的remote规则，使监控数据可以上报到平台的InfluxDB数据库。
-$ climc proxy-forward-create --proxy-endpoint-id <ssh代理节点的ID> --type remote --remote-addr <influxdb的IP地址> --remote-port <InfluxDB的端口号> --bind-port-req <映射绑定的端口号> <remote规则的名称>
-# 下面举例介绍如何创建对应的remote规则，即将10.127.100.2:30086地址映射为10.0.9.254:30086，后续telegraf配置中的InfluxDB地址“https://10.0.9.254:30086”
+# 在ssh代理节点上配置到监控数据库的remote规则，使监控数据可以上报到平台的监控数据库。
+$ climc proxy-forward-create --proxy-endpoint-id <ssh代理节点的ID> --type remote --remote-addr <influxdb/victoria-metrics的IP地址> --remote-port <influxdb/victoria-metrics的端口号> --bind-port-req <映射绑定的端口号> <remote规则的名称>
+# 下面举例介绍如何创建对应的remote规则，即将10.127.100.2:30086地址映射为10.0.9.254:30086，后续telegraf配置中的监控数据库地址“https://10.0.9.254:30086”
 $ climc proxy-forward-create --proxy-endpoint-id dba57f12-4f9f-4d60-8789-7dc0fe4efc6a --type remote --remote-addr 10.127.100.2 --remote-port 30086 --bind-port-req 30086 remote-influxdb
 +-------------------+--------------------------------------+
 |       Field       |                Value                 |
@@ -204,7 +213,7 @@ global_tags里包含虚拟机的ID、名称、宿主机、域、项目、区域�
 ```
 ##### OUTPUTS
 
-用于设置将监控数据传输到数据库地址，平台使用InfluxDB，数据库名称为telegraf，平台数据库的地址默认为“https:\/\/控制节点IP地址:30086”，具体平台InfluxDB数据库地址请参考[获取InfluxDB地址](#获取influxdb地址)步骤。
+用于设置将监控数据传输到数据库地址，平台数据库的地址默认为“https:\/\/控制节点IP地址:30428”，具体平台监控数据库地址请参考上文。
 
 - 如果虚拟机可以直接连接到平台，urls地址可以直接设置为数据的访问地址；
 - 如果虚拟机不可以直接连接到平台，则需要通过代理的方式，该urls地址为代理地址，即为: "http://\<ssh代理节点的地址\>:\<remote规则的映射端口号\>"。
@@ -215,7 +224,7 @@ global_tags里包含虚拟机的ID、名称、宿主机、域、项目、区域�
 ##################################################################
 
 [[outputs.influxdb]]
-    urls = ["https://192.168.12.251:30086"]
+    urls = ["https://192.168.12.251:30428"]
     database = "telegraf"
     insecure_skip_verify = true  
 ```
@@ -311,7 +320,7 @@ global_tags里包含虚拟机的ID、名称、宿主机、域、项目、区域�
 ##################################################################
 #                                 OUTPUTS                      #
 ##################################################################
-# 本例中是通过SSH代理的方式将监控数据转发到INfluxDB数据库。
+# 本例中是通过SSH代理的方式将监控数据转发到监控数据库。
 [[outputs.influxdb]]
     urls = ["https://192.168.12.251:50041"]
     database = "telegraf"
