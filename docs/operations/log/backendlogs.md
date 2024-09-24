@@ -60,3 +60,7 @@ loki 的日志服务查询是按标签进行过滤的，常用的标签 "app" �
 查询条件可设置为`{app="region"} |= "error"`，时间过滤设置为“Last 3 hours” 。
 
 ![](/img/docs/operations/log/explore-region.png)
+
+### 关闭grafana
+
+通过修改oc，设置monitorStack->grafana->disable为true来关闭grafna
