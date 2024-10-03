@@ -1,0 +1,36 @@
+import OcbootReleaseDownload from '../_parts/_quickstart-ocboot-release-download.mdx';
+
+<OcbootReleaseDownload />
+
+### 运行部署工具
+
+接下来执行 `ocboot.sh run.py` 部署服务。其中 **host_ip** 为部署节点的 IP 地址，该参数为可选项。如果不指定则选择默认路由出去的那张网卡部署服务。如果你的节点有多张网卡，可以通过指定 **host_ip** 选择对应网卡监听服务。
+
+import OcbootRun from '@site/src/components/OcbootK3sRun';
+
+<OcbootRun productVersion={props.productVersion} />
+
+`./ocboot.sh run.py` 脚本会调用 ansible 部署服务，如果部署过程中遇到问题导致脚本退出，可以重复执行该脚本进行重试。
+
+## 部署完成
+
+```bash
+....
+# 部署完成后会有如下输出，表示运行成功
+# 浏览器打开 https://10.168.26.216 ，该 ip 为之前设置 <host_ip>
+# 使用 admin/admin@123 用户密码登录就能访问前端界面
+Initialized successfully!
+Web page: https://10.168.26.216
+User: admin
+Password: admin@123
+```
+
+然后用浏览器访问 https://10.168.26.216 ，用户名输入 `admin`，密码输入 `admin@123` 就会进入 Cloudpods 的界面。
+
+![登录页](../images/index.png)
+
+#### 使用域名访问环境时，需要修改 api_server 接入端（可选）
+
+`api_server` 配置是整个平台的接入端地址，会影响前端虚拟机 VNC 或者 Web SSH、CloudShell 的连接。一般无法通过 Web SSH 进入虚拟机或者打开 CloudShell，是因为没有正确设置 api_server 配置造成的。
+
+需要参考文档：[修改服务 api_server 入口配置](../../operations/fe/config-ssl-certs#change-api-server-via-climc)，根据自己环境的网络情况手动修改。

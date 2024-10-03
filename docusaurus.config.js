@@ -16,6 +16,7 @@ const config = {
     pre_release_branch: 'release/3.10',
     release_version: 'v3.11.6',
     pre_release_version: 'v3.10.15',
+    ocboot_release_version: 'master-20240903.0',
   },
 
   // Set the production url of your site here

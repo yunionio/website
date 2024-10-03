@@ -38,7 +38,7 @@ $ climc credential-get-aksk
 ::::
 
 ```
-$ ocadm cluster rcadmin
+$ cat /root/.onecloud_rcadmin
 export OS_AUTH_URL=https://10.211.55.9:30500/v3
 export OS_USERNAME=sysadmin
 export OS_PASSWORD=qNVaPTw9fCCMJ7eJ
