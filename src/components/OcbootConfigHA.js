@@ -118,7 +118,7 @@ MASTER_2_INTERFACE="eth0"
 MASTER_2_IP=10.127.90.103
 
 # ${translate({ id: "ocbootConfigHA.generateConfigYAML", message: "生成 yaml 部署配置文件" })}
-cat > config-k8s-ha.yml <<EOF
+cat > config-ha.yml <<EOF
 ${config}
 EOF`
         }
