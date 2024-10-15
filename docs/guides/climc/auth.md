@@ -36,7 +36,7 @@ climc 请求云平台后端服务的流程如下:
 
 ```bash
 # 获取环境变量
-$ ocadm  cluster rcadmin
+$ cat /root/.onecloud_rcadmin
 export OS_AUTH_URL=https://192.168.0.246:5000/v3
 export OS_USERNAME=sysadmin
 export OS_PASSWORD=3hV3***84srk
@@ -46,20 +46,20 @@ export OS_REGION_NAME=region0
 export OS_ENDPOINT_TYPE=publicURL
 
 # 认证环境变量
-$ source <(ocadm cluster rcadmin)
+$ source /root/.onecloud_rcadmin
 ```
-注意: 如果执行 climc 时出现 *Error: Missing OS_AUTH_URL* 的错误提示时，请重新执行 `source <(ocadm cluster rcadmin)` 命令。
+注意: 如果执行 climc 时出现 *Error: Missing OS_AUTH_URL* 的错误提示时，请重新执行 `source /root/.onecloud_rcadmin` 命令。
 
 ### 非控制节点认证配置
 
-在非控制节点做认证配置上首先需要在对应的控制节点上执行`ocadm cluster rcadmin`；
+在非控制节点做认证配置上首先需要在对应的控制节点上执行: `cat /root/.onecloud_rcadmin`；
 将输出的认证信息保存到本地的文件中，通过source命令认证配置。
 
 以下为用户名／密码认证的配置文件模板，通过OS_USERNAME, OS_DOMAIN_NAME, OS_PASSWORD, OS_PROJECT_NAME, OS_PROJECT_DOMAIN等字段指定用户的信息和项目的信息。
 
 ```bash
 # 在控制节点上获取认证所需要的配置信息。
-$ ocadm cluster rcadmin
+$ cat /root/.onecloud_rcadmin
 export OS_AUTH_URL=https://192.168.0.246:5000/v3
 export OS_USERNAME=sysadmin
 export OS_PASSWORD=3hV3***84srk

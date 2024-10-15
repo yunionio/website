@@ -27,7 +27,6 @@ baremetal-agent 通过 PXE 的方式管理物理机，如果物理机的 BMC 支
 登陆控制节点，选择一个 node 启用 baremetal-agent(这里可以选择第一个 master 节点)。
 
 - $node_name: 为使用 `kubectl get nodes` 显示的节点名称，选择一个 node 来运行 baremetal-agent 服务。
-- $listen_interface: 指的是 baremetal-agent 服务监听的网卡名称，即 baremetal-agent 所在节点 ip 所在的网卡名称。
 
 ```bash
 # 假设想把 baremetal-agent 部署到 ip 为 10.168.222.150 的节点上
@@ -40,8 +39,9 @@ $ ip a show |grep 10.168.222.150
     inet 10.168.222.150/24 brd 10.168.222.255 scope global br0
 
 # 启用 baremetal-agent
-# ocadm baremetal enable --node $node_name --listen-interface $listen_interface
-$ ocadm baremetal enable --node k8s-dev2 --listen-interface br0
+# kubectl label nodes $node_name onecloud.yunion.io/baremetal=enable
+$ kubectl label nodes k8s-dev2 onecloud.yunion.io/baremetal=enable
+
 # 观察 baremetal agent pod 状态查看是否启动成功
 $ watch "kubectl get pods -n onecloud | grep baremetal"
 default-baremetal-agent-7c84996c9b-hhllw   1/1     Running   0          3m10s
@@ -104,5 +104,6 @@ $ kubectl delete pods -n onecloud default-host-xdc7x
 可以在启用 baremetal-agent 的节点中选择节点禁止 baremetal-agent 调度到该节点。
 
 ```bash
-ocadm baremetal disable --node $node_name
+# 删掉对应节点上的 onecloud.yunion.io/baremetal 标签
+$ kubectl label nodes $node_name onecloud.yunion.io/baremetal-
 ```
