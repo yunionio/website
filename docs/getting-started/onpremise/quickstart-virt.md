@@ -60,6 +60,10 @@ import FAQReset from '../_parts/_quickstart-faq-reset.md';
 
 参考文档 [添加计算节点](./host) 。
 
-### 6. 其它问题？
+### 6. 如何升级？
+
+参考文档 [通过 ocboot 升级](../../operations/upgrading/ocboot-upgrade) 。
+
+### 7. 其它问题？
 
 其它问题欢迎在 Cloudpods github issues 界面提交: [https://github.com/yunionio/cloudpods/issues](https://github.com/yunionio/cloudpods/issues) , 我们会尽快回复。
