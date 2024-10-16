@@ -2,11 +2,11 @@ import CodeBlock from '@theme/CodeBlock';
 import { getCustomField } from './utils';
 
 export default function OcbootFetchCheckout() {
-  const version = getCustomField('release_version')
+  const branch = getCustomField('release_branch')
   return (
     <CodeBlock language='bash'>
       {
-        `$ git fetch\n` + `$ git checkout ${version}`
+        `$ git fetch --all\n` + `$ git checkout origin/${branch}`
       }
     </CodeBlock>
   )
