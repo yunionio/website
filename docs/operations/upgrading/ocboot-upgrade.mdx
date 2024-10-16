@@ -8,9 +8,7 @@ sidebar_position: 1
 介绍如何通过 ocboot 升级服务版本到指定版本。
 
 :::tip
-ocboot 只能升级通过 ocboot 部署的环境，如果你的环境是通过 docker compose 部署的，请参考以下文档升级：
-
-- [通过 docker compose 升级](./docker-compose-upgrade)
+ocboot 只能升级通过 ocboot 部署的环境，如果你的环境是通过 docker compose 或者 helm 部署的，请参考对应部署文档里面的升级操作。
 :::
 
 ## 前提条件
@@ -26,7 +24,7 @@ ocboot 只能升级通过 ocboot 部署的环境，如果你的环境是通过 d
 
 import ReleaseVersion from '@site/src/components/ReleaseVersion'
 
-1. 使用 git 拉取最新的 [ocboot](https://github.com/yunionio/ocboot) 代码，切换到 <ReleaseVersion /> 的 tag
+1. 下载 [ocboot](https://github.com/yunionio/ocboot/releases) 对应版本代码
 2. 使用 [ocboot](https://github.com/yunionio/ocboot) 里面的 `./ocboot.sh upgrade` 命令进行版本升级
 
 ## 查看当前版本
@@ -37,21 +35,15 @@ import GetClusterVersion from '@site/src/components/GetClusterVersion'
 
 <GetClusterVersion />
 
-## 拉取 ocboot 工具
+## 下载 ocboot 工具
 
-如果本地已经有 ocboot 工具可以跳过此步，只用把代码更新到对应的分支。
+:::tip
+如果本地已经有都应版本的代码，可以跳过下面的步骤，但一般情况下，随着每次新版本发布，都会有对应的 ocboot 部署工具发布，需要使用对应的版本来更新。
+:::
 
-下载 ocboot 工具到本地：
+import OcbootReleaseDownload from '../../getting-started/_parts/_quickstart-ocboot-release-download.mdx';
 
-import OcbootClone from '@site/src/components/OcbootK3sClone';
-
-<OcbootClone />
-
-## 更新 ocboot 代码
-
-import OcbootFetchCheckout from '@site/src/components/OcbootK3sFetchCheckout';
-
-<OcbootFetchCheckout />
+<OcbootReleaseDownload />
 
 ## 升级服务组件
 
