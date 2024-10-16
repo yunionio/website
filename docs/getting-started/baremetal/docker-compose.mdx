@@ -192,7 +192,8 @@ LISTEN_INTERFACE=eth0 PUBLIC_IP=10.168.222.205 docker compose up
 
 ```bash
 # 所有服务放到后台运行
-$ docker compose up -d
+# 下面命令假设 eth0 网卡上的 ip 地址为 10.168.222.205，具体设置请根据自己的环境设置。
+$ LISTEN_INTERFACE=eth0 PUBLIC_IP=10.168.222.205 docker compose up -d
 
 # 服务放到后台后，可以通过 logs 自命令查看输出日志
 $ docker compose logs -f
@@ -265,4 +266,31 @@ data
 ```bash
 # 删除服务
 $ docker compose down
+```
+
+## 升级
+
+通过 docker compose 升级很方便，只用更新 docker-compose.yml 的配置文件，然后重启服务就行。
+
+### 更新 compose 配置文件
+
+当上游的 [ocboot/compose/baremetal/docker-compose.yml](https://github.com/yunionio/ocboot/blob/master/compose/baremetal/docker-compose.yml) 更新了，就可以通过 curl 命令下载最新的配置文件，然后重新启动就可以了，步骤如下：
+
+```bash
+# 注意切换到对应的 cloudpods-baremetal 目录
+$ cd cloudpods-baremetal
+
+# 下载配置文件
+$ curl https://raw.githubusercontent.com/yunionio/ocboot/master/compose/baremetal/docker-compose.yml -o docker-compose.yaml
+```
+
+### 重启 compose 服务
+
+拉取最新的 docker-compose.yml 配置文件后，使用下面命令重启服务就行了。
+
+```bash
+$ docker compose down
+
+# 下面命令假设 eth0 网卡上的 ip 地址为 10.168.222.205，具体设置请根据自己的环境设置。
+$ LISTEN_INTERFACE=eth0 PUBLIC_IP=10.168.222.205 docker compose up
 ```

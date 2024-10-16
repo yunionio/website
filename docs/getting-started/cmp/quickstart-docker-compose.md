@@ -132,6 +132,37 @@ data
 $ docker compose down
 ```
 
+## 升级
+
+通过 docker compose 升级很方便，只用更新 docker-compose.yml 的配置文件。
+
+当上游的 [ocboot/compose/docker-compose.yml](https://github.com/yunionio/ocboot/blob/master/compose/docker-compose.yml) 更新了，就可以通过 git pull 命令，拉取最新的代码，然后重新启动就可以了，步骤如下：
+
+
+### 更新 ocboot 代码
+
+登录运行 docker compose 的节点，进入 ocboot 代码目录。
+
+```bash
+$ cd ocboot
+```
+
+拉取最新的代码，并 checkout 到对应的发布版本。
+
+import OcbootFetchCheckout from '@site/src/components/OcbootFetchCheckout';
+
+<OcbootFetchCheckout />
+
+### 重启 compose 服务
+
+拉取最新的 docker-compose.yml 配置文件后，使用下面命令重启服务就行了。
+
+```bash
+$ cd compose
+$ docker compose down
+$ docker compose up -d
+```
+
 ## 常见问题
 
 ### 1. docker 服务没有打开 iptables 和 bridge 导致容器网路无法创建
@@ -148,7 +179,3 @@ Cloudpods CMP 多云管理版本包含了很多服务，如果一个一个手写
 ```bash
 $ python3 generate-compose.py > compose/docker-compose.yml
 ```
-
-### 3. 如何升级服务?
-
-参考文档：[通过 docker compose 升级](../../operations/upgrading/docker-compose-upgrade) 。
