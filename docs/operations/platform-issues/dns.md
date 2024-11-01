@@ -31,7 +31,7 @@ climc service-config-edit region2
 default:
   ...
   # 也是删除 dns_domain: cloud.yunion.io 这项
-  dns_domain: office.yunion.io
+  dns_domain: cloud.yunion.io
   ...
 ```
 
