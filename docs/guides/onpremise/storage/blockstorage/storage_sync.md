@@ -12,9 +12,9 @@ sidebar_position: 6
 
 块存储的信息采集由宿主机的host服务负责。
 
-配置一个存储后，平台会从关联的宿主机中根据一致性Hash算法选择一台MastHost用于这个存储的信息采集。
+配置一个存储后，平台会从关联的宿主机中根据一致性Hash算法选择一台主宿主机(MasterHost)用于这个存储的信息采集。
 
-该Host周期性调用GetStorageInfo的接口，获取存储的容量信息
+MasterHost负责周期性调用GetStorageInfo的接口，获取存储的容量信息
 
 ## 采集频率
 
