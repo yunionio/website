@@ -283,7 +283,7 @@ HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation
 
 #### 禁用快速启动
 
-（可选）若是Windows 10操作系统的虚拟机需要禁用快速启动。请参考[禁用方法](https://jingyan.baidu.com/article/ca00d56c7a40e6e99febcf4f.html)。
+若是Windows 10操作系统的虚拟机需要禁用快速启动。请参考[禁用方法](https://jingyan.baidu.com/article/ca00d56c7a40e6e99febcf4f.html)。
 
 #### 系统激活
 
