@@ -62,9 +62,6 @@ $ ssh root@10.168.222.140 "hostname"
 以下命令都是在之前部署的控制节点运行，控制节点应该提前安装好了 [ocboot](https://github.com/yunionio/ocboot) 部署工具。
 
 ```bash
-# 假设 ocboot 部署工具在 /root/ocboot 目录下
-$ cd /root/ocboot
-
 # 使用 ocboot 添加节点
 $ ./ocboot.sh add-node 10.168.26.216 10.168.222.140
 
