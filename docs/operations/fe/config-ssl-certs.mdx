@@ -70,7 +70,48 @@ $ kubectl delete pods -n onecloud $(kubectl get pods -n onecloud | egrep 'webcon
 配置完成后，等待 webconsole 和 apigateway pod 重启后，就可以通过 `https://foo.bar.com` 访问前端了。
 
 ## 更改前端HTTPS 443端口为其它端口的方法步骤
-假设平台登陆地址为https://10.127.90.221，更改443端口为8443
+
+假设平台登陆地址为 `https://10.127.90.221`，更改443端口为8443，步骤如下：
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="K3s" label="K3s" default>
+
+到**第一个控制节点**执行下面的命令：
+
+```bash
+# 进入对应 manifests 目录
+$ cd /var/lib/rancher/k3s/server/manifests
+
+# 编辑 traefik-ds.yaml
+$ vim traefik-ds.yaml
+```
+
+修改里面的entrypoints.websecure.address端口。
+
+```yaml
+......
+      containers:
+      - args:
+        - --entrypoints.web.address=:80/tcp
+        # 修改这里的 entrypoints.websecure.address 为 8443 端口
+        - --entrypoints.websecure.address=:8443/tcp
+        - --api.dashboard=false
+        - --ping=false
+.....
+```
+
+等待 traefik pod 重建变为 Runing :
+
+```bash
+$ kubectl get pods -n kube-system | grep traefik	
+traefik-t5b6l                             1/1     Running     0             21s
+```
+
+  </TabItem>
+  <TabItem value="K8s" label="K8s">
 
 ```bash
 # 编辑 traefik-ingress-lb 的configmap，找到address = ":443"，把443改为8443
@@ -108,6 +149,9 @@ $ kubectl get pods -n kube-system |grep traefik-ingress | awk '{print $1}' |xarg
 # 等新的traefik-ingress-controller pods状态为Running，修改8443端成功
 $ kubectl get pods  -n kube-system  | grep  traefik-ingress  
 traefik-ingress-controller-49fmk             1/1     Running   0          42s
-
-# 浏览器输入https://10.127.90.221:8443访问控制台，ip为原控制台的地址
 ```
+
+  </TabItem>
+</Tabs>
+
+浏览器输入 `https://10.127.90.221:8443` 访问控制台，ip为原控制台的地址。
