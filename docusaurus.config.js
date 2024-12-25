@@ -14,9 +14,9 @@ const config = {
   customFields: {
     release_branch: 'release/3.11',
     pre_release_branch: 'release/3.10',
-    release_version: 'v3.11.8',
+    release_version: 'v3.11.9',
     pre_release_version: 'v3.10.15',
-    ocboot_release_version: 'master-v3.11.8-3',
+    ocboot_release_version: 'master-v3.11.9-1',
   },
 
   // Set the production url of your site here
