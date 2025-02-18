@@ -90,10 +90,12 @@ UNLOCK TABLES;
 
 ### 从节点操作
 
-再登入当前从节点的MariaDB，执行如下命名停止从节点的主从同步。
+再登入当前从节点的MariaDB，执行如下命名停止从节点的主从同步，同时删除除information_schema,performance_schema,mysql之外的数据库。
 
 ```
 STOP SLAVE;
+drop database yunioncloud;
+drop database ...;
 ```
 
 退出MariaDB，将主节点dump的数据导入从节点数据库： 
