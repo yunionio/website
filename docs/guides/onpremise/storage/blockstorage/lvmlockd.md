@@ -20,6 +20,15 @@ $ yum install -y sanlock.x86_64
 $ vi /etc/lvm/lvm.conf
 use_lvmlockd = 1
 
+# 在 activation 中设置 auto_activation_volume_list = []
+activation {
+    # 设置为空列表，禁止自动激活任何 LV
+    auto_activation_volume_list = []
+
+    # 或者，只允许特定的 LV 自动激活
+    # auto_activation_volume_list = ["vg1/lv1", "vg2/lv2"]
+}
+
 # Assign each host a unique host_id in the range 1-2000 by setting
 $ vi /etc/lvm/lvmlocal.conf
     host_id = 2
