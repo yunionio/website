@@ -232,6 +232,66 @@
 - distribution: openEuler
   os_name: Linux
   os_arch: x86_64
+  os_version: 24.03 LTS SP1
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS-SP1/virtual_machine_img/x86_64/openEuler-24.03-LTS-SP1-x86_64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 24.03 LTS SP1
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS-SP1/virtual_machine_img/aarch64/openEuler-24.03-LTS-SP1-aarch64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: riscv64
+  os_version: 24.03 LTS SP1
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS-SP1/virtual_machine_img/riscv64/openEuler-24.03-LTS-SP1-riscv64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: loongarch64
+  os_version: 24.03 LTS SP1
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS-SP1/virtual_machine_img/loongarch64/openEuler-24.03-LTS-SP1-loongarch64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: x86_64
+  os_version: 24.03 LTS
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS/virtual_machine_img/x86_64/openEuler-24.03-LTS-x86_64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 24.03 LTS
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS/virtual_machine_img/aarch64/openEuler-24.03-LTS-aarch64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: riscv64
+  os_version: 24.03 LTS
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS/virtual_machine_img/riscv64/openEuler-24.03-LTS-riscv64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: loongarch64
+  os_version: 24.03 LTS
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS/virtual_machine_img/loongarch64/openEuler-24.03-LTS-loongarch64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: x86_64
+  os_version: 22.03 LTS SP4
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-22.03-LTS-SP4/virtual_machine_img/x86_64/openEuler-22.03-LTS-SP4-x86_64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 22.03 LTS SP4
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-22.03-LTS-SP4/virtual_machine_img/aarch64/openEuler-22.03-LTS-SP4-aarch64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: x86_64
   os_version: 22.03 LTS SP3
   source: tuna
   url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-22.03-LTS-SP3/virtual_machine_img/x86_64/openEuler-22.03-LTS-SP3-x86_64.qcow2.xz
