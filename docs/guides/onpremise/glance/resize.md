@@ -45,7 +45,7 @@ sidebar_position: 4
 - 将/dev/sdd分区并格式化
 - 将/dev/sdd1挂载到/mnt目录(mount /dev/sdd1 /mnt)
 - 将/opt/cloud/workspace/data/glance镜像转移至/mnt(rsync -avp /opt/cloud/workspace/data/glance/* /mnt/)
-- 卸载/dev/sdd1(unmount /dev/sdd1)
+- 卸载/dev/sdd1(umount /dev/sdd1)
 - 将/dev/sdd1挂载到 /opt/cloud/workspace/data/glance 目录, 并且将挂载信息写入/etc/fstab
 - mount /dev/sdd1 /opt/cloud/workspace/data/glance
 
