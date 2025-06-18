@@ -70,4 +70,4 @@ Cloudpods 帮助客户在一个地方管理所有云计算资源。统一管理�
 
 :::
 
-关于开源版本与商业版本的详细功能对比，请参考这个页面：[云联壹云版本对比](https://www.yunion.cn/comparison-info)。
+关于开源版本与商业版本的详细功能对比，请参考这个页面：[云联壹云版本对比](https://www.yunion.cn/subscription/index.html)。
