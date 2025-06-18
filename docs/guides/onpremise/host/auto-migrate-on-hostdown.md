@@ -10,7 +10,7 @@ sidebar_position: 4
 
 ### 原理介绍
 
-宕机检测依赖 etcd watch 机制。host-agent 启动时向 etcd 注册一个 key。 region watch 到 host key 消失后一段时间时(60s)发起宕机迁移，将宿主机上共享存储的虚机乔伊到其他宿主机上。
+宕机检测依赖 etcd watch 机制。host-agent 启动时向 etcd 注册一个 key。 region watch 到 host key 消失后一段时间时(60s)发起宕机迁移，将宿主机上共享存储的虚机迁移到其他宿主机上。
 
 所以宕机自动迁移依赖 onecloud operator 部署的 etcd。
 ```bash
