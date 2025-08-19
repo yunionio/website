@@ -34,3 +34,94 @@ p > img {
   box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
 }
+
+/* GitHub Star Component Styles */
+.github-star-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 5px;
+  font-size: 10px;
+  font-weight: 500;
+  border-radius: 2px;
+  position: relative;
+  margin-left: 8px;
+  transition: all 0.2s ease;
+  /* transform: translateY(-5px); */
+}
+
+.github-star-badge::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid;
+}
+
+.github-star-badge::after {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 7px solid;
+  z-index: -1;
+}
+
+[data-theme='light'] .github-star-badge {
+  background-color: #f6f8fa;
+  color: #656d76;
+  border: 1px solid #d0d7de;
+}
+
+[data-theme='light'] .github-star-badge::before {
+  border-right-color: #f6f8fa;
+}
+
+[data-theme='light'] .github-star-badge::after {
+  border-right-color: #d0d7de;
+}
+
+[data-theme='dark'] .github-star-badge {
+  background-color: #30363d;
+  color: #c9d1d9;
+  border: 1px solid #21262d;
+}
+
+[data-theme='dark'] .github-star-badge::before {
+  border-right-color: #30363d;
+}
+
+[data-theme='dark'] .github-star-badge::after {
+  border-right-color: #21262d;
+}
+
+/* GitHub导航项样式 */
+.github-nav-item {
+  display: flex !important;
+  align-items: center;
+  gap: 4px;
+}
+
+.github-nav-item::before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='currentColor'%3E%3Cpath d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.github-nav-item span {
+  display: none;
+}
