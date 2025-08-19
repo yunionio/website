@@ -46,6 +46,10 @@ const config = {
       src: 'https://hm.baidu.com/hm.js?3c5253cd6530122d0f774cab69e3c07f',
       async: true,
     },
+    {
+      src: '/js/github-star.js',
+      async: true,
+    },
   ],
 
   presets: [
@@ -156,6 +160,7 @@ const config = {
             href: 'https://github.com/yunionio/cloudpods',
             label: 'GitHub',
             position: 'right',
+            className: 'GitHubLink-custom',
           },
         ],
       },
