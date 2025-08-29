@@ -24,4 +24,4 @@ climc guest-image-create <name> --image <id_of_root_image> --image <id_of_data_i
 
 ### 如何将vmware的ova虚拟机文件导入成为主机镜像？
 
-ova其实是一个zip压缩目录。首先将ova解压缩为一个目录，目录内部包含ovf文件描述虚拟机的配置信息，以及诺干vmdk磁盘文件。将vmdk磁盘文件分别上传平台成为磁盘镜像。然后按上述步骤将这些vmdk的磁盘镜像合并为一个主机镜像，注意这些vmdk镜像的顺序需要严格按照ova中的顺序。
+ova其实是一个zip压缩目录。首先将ova解压缩为一个目录，目录内部包含ovf文件描述虚拟机的配置信息，以及若干vmdk磁盘文件。将vmdk磁盘文件分别上传平台成为磁盘镜像。然后按上述步骤将这些vmdk的磁盘镜像合并为一个主机镜像，注意这些vmdk镜像的顺序需要严格按照ova中的顺序。
