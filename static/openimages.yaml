@@ -1,6 +1,27 @@
 - distribution: Debian
   os_name: Linux
   os_arch: x86_64
+  os_version: 13 (Trixie)
+  build: latest
+  source: cloud.debian.org
+  url: https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-amd64.qcow2
+- distribution: Debian
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 13 (Trixie)
+  build: latest
+  source: cloud.debian.org
+  url: https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-arm64.qcow2
+- distribution: Debian
+  os_name: Linux
+  os_arch: risc64
+  os_version: 13 (Trixie)
+  build: latest
+  source: cloud.debian.org
+  url: https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-riscv64.qcow2
+- distribution: Debian
+  os_name: Linux
+  os_arch: x86_64
   os_version: 12 (Bookworm)
   build: 20240507-1740
   source: cloud.debian.org
