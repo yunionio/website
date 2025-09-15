@@ -40,10 +40,10 @@ $ climc endpoint-list --service victoria-metrics --interface public
 1. 查询虚拟机所在VPC或IP子网下是否存在SSH代理节点。
 
 ```bash
-# 查询虚拟机所在VPC下是否存在SSH代理节点
-$ climc proxy-endpoint-list --vpc-id <vpc的ID>
+# 查询虚拟机所在VPC下是否存在SSH代理节点, 这里的vpcID是同步到云管后生成的UUID, 不是公有云原始的vpcID
+$ climc proxy-endpoint-list --vpc-id <vpc的ID> --scope system
 # 若VPC下IP子网之间网络隔离，则需要查询虚拟机所在IP子网下是否存在SSH代理节点
-$ climc proxy-endpoint-list --network-id <IP子网的ID>
+$ climc proxy-endpoint-list --network-id <IP子网的ID> --scope system
 ```
 2. 若虚拟机所在网络下存在SSH代理节点，则忽略新建SSH代理节点的步骤，直接在SSH代理节点下配置到监控数据库的remote规则，使监控数据可以上报到监控数据库。
 
