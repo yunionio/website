@@ -64,6 +64,27 @@
 - distribution: Ubuntu Server
   os_name: Linux
   os_arch: x86_64
+  os_version: 25.04(Plucky)
+  build: current
+  source: cloud-images.ubuntu.com
+  url: https://cloud-images.ubuntu.com/plucky/current/plucky-server-cloudimg-amd64.img
+- distribution: Ubuntu Server
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 25.04(Plucky)
+  build: current
+  source: cloud-images.ubuntu.com
+  url: https://cloud-images.ubuntu.com/plucky/current/plucky-server-cloudimg-arm64.img
+- distribution: Ubuntu Server
+  os_name: Linux
+  os_arch: riscv64
+  os_version: 25.04(Plucky)
+  build: current
+  source: cloud-images.ubuntu.com
+  url: https://cloud-images.ubuntu.com/plucky/current/plucky-server-cloudimg-riscv64.img
+- distribution: Ubuntu Server
+  os_name: Linux
+  os_arch: x86_64
   os_version: 24.10(Oracular)
   build: current
   source: cloud-images.ubuntu.com
