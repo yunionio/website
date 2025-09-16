@@ -14,7 +14,7 @@
   url: https://cloud.debian.org/images/cloud/trixie/latest/debian-13-generic-arm64.qcow2
 - distribution: Debian
   os_name: Linux
-  os_arch: risc64
+  os_arch: riscv64
   os_version: 13 (Trixie)
   build: latest
   source: cloud.debian.org
@@ -271,6 +271,30 @@
   build: 1907
   source: cloud.centos.org
   url: https://cloud.centos.org/centos/6/images/CentOS-6-x86_64-GenericCloud-1907.qcow2c
+- distribution: openEuler
+  os_name: Linux
+  os_arch: x86_64
+  os_version: 24.03 LTS SP2
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS-SP2/virtual_machine_img/x86_64/openEuler-24.03-LTS-SP2-x86_64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 24.03 LTS SP2
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS-SP2/virtual_machine_img/aarch64/openEuler-24.03-LTS-SP2-aarch64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: riscv64
+  os_version: 24.03 LTS SP2
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS-SP2/virtual_machine_img/riscv64/openEuler-24.03-LTS-SP2-riscv64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: loongarch64
+  os_version: 24.03 LTS SP2
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS-SP2/virtual_machine_img/loongarch64/openEuler-24.03-LTS-SP2-loongarch64.qcow2.xz
 - distribution: openEuler
   os_name: Linux
   os_arch: x86_64
