@@ -197,17 +197,31 @@
 - distribution: CentOS
   os_name: Linux
   os_arch: aarch64
-  os_version: Stream 9
-  build: 20240513.0
+  os_version: Stream 10
+  build: latest
   source: cloud.centos.org
-  url: https://cloud.centos.org/centos/9-stream/aarch64/images/CentOS-Stream-GenericCloud-9-20240513.0.aarch64.qcow2
+  url: https://cloud.centos.org/centos/10-stream/aarch64/images/CentOS-Stream-GenericCloud-10-latest.aarch64.qcow2
+- distribution: CentOS
+  os_name: Linux
+  os_arch: x86_64
+  os_version: Stream 10
+  build: latest
+  source: cloud.centos.org
+  url: https://cloud.centos.org/centos/10-stream/x86_64/images/CentOS-Stream-GenericCloud-x86_64-10-latest.x86_64.qcow2
+- distribution: CentOS
+  os_name: Linux
+  os_arch: aarch64
+  os_version: Stream 9
+  build: latest
+  source: cloud.centos.org
+  url: https://cloud.centos.org/centos/9-stream/aarch64/images/CentOS-Stream-GenericCloud-9-latest.aarch64.qcow2
 - distribution: CentOS
   os_name: Linux
   os_arch: x86_64
   os_version: Stream 9
-  build: 20240513.0
+  build: latest
   source: cloud.centos.org
-  url: https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-9-20240513.0.x86_64.qcow2
+  url: https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-GenericCloud-x86_64-9-latest.x86_64.qcow2
 - distribution: CentOS
   os_name: Linux
   os_arch: aarch64
