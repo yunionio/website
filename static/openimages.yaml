@@ -775,6 +775,20 @@
 - distribution: AlmaLinux
   os_name: Linux
   os_arch: x86_64
+  os_version: 10
+  build: latest
+  source: mirrors.neusoft.edu.cn
+  url: https://mirrors.neusoft.edu.cn/almalinux/10/cloud/x86_64/images/AlmaLinux-10-GenericCloud-latest.x86_64.qcow2
+- distribution: AlmaLinux
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 10
+  build: latest
+  source: mirrors.neusoft.edu.cn
+  url: https://mirrors.neusoft.edu.cn/almalinux/10/cloud/aarch64/images/AlmaLinux-10-GenericCloud-latest.aarch64.qcow2
+- distribution: AlmaLinux
+  os_name: Linux
+  os_arch: x86_64
   os_version: 9.x
   build: latest
   source: mirrors.neusoft.edu.cn
