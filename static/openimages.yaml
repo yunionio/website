@@ -744,6 +744,34 @@
   build: latest
   source: rockylinux.org
   url: https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-LVM.latest.x86_64.qcow2
+- distribution: RockyLinux
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 10
+  build: latest
+  source: rockylinux.org
+  url: https://dl.rockylinux.org/pub/rocky/10/images/aarch64/Rocky-10-GenericCloud-Base.latest.aarch64.qcow2
+- distribution: RockyLinux
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 10 LVM
+  build: latest
+  source: rockylinux.org
+  url: https://dl.rockylinux.org/pub/rocky/10/images/aarch64/Rocky-10-GenericCloud-LVM.latest.aarch64.qcow2
+- distribution: RockyLinux
+  os_name: Linux
+  os_arch: x86_64
+  os_version: 10
+  build: latest
+  source: rockylinux.org
+  url: https://dl.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-Base.latest.x86_64.qcow2
+- distribution: RockyLinux
+  os_name: Linux
+  os_arch: x86_64
+  os_version: 10 LVM
+  build: latest
+  source: rockylinux.org
+  url: https://dl.rockylinux.org/pub/rocky/10/images/x86_64/Rocky-10-GenericCloud-LVM.latest.x86_64.qcow2
 - distribution: AlmaLinux
   os_name: Linux
   os_arch: x86_64
