@@ -444,27 +444,33 @@
 - distribution: AnolisOS
   os_name: Linux
   os_arch: x86_64
-  os_version: 8.8 ANCK
+  os_version: 8.10 GA ANCK
   source: openanolis
-  url: https://mirrors.openanolis.cn/anolis/8.8/isos/GA/x86_64/AnolisOS-8.8-x86_64-ANCK.qcow2
+  url: https://mirrors.openanolis.cn/anolis/8.10/isos/GA/x86_64/AnolisOS-8.10-x86_64-ANCK.qcow2
 - distribution: AnolisOS
   os_name: Linux
   os_arch: x86_64
-  os_version: 8.8 RHCK
+  os_version: 8.10 GA RHCK
   source: openanolis
-  url: https://mirrors.openanolis.cn/anolis/8.8/isos/GA/x86_64/AnolisOS-8.8-x86_64-RHCK.qcow2
+  url: https://mirrors.openanolis.cn/anolis/8.10/isos/GA/x86_64/AnolisOS-8.10-x86_64-RHCK.qcow2
 - distribution: AnolisOS
   os_name: Linux
   os_arch: aarch64
-  os_version: 8.8 ANCK
+  os_version: 8.10 GA ANCK
   source: openanolis
-  url: https://mirrors.openanolis.cn/anolis/8.8/isos/GA/aarch64/AnolisOS-8.8-aarch64-ANCK.qcow2
+  url: https://mirrors.openanolis.cn/anolis/8.10/isos/GA/aarch64/AnolisOS-8.10-aarch64-ANCK.qcow2
 - distribution: AnolisOS
   os_name: Linux
   os_arch: aarch64
-  os_version: 8.8 RHCK
+  os_version: 8.10 GA RHCK
   source: openanolis
-  url: https://mirrors.openanolis.cn/anolis/8.8/isos/GA/aarch64/AnolisOS-8.8-aarch64-RHCK.qcow2
+  url: https://mirrors.openanolis.cn/anolis/8.10/isos/GA/aarch64/AnolisOS-8.10-aarch64-RHCK.qcow2
+- distribution: AnolisOS
+  os_name: Linux
+  os_arch: loongarch64
+  os_version: 8.10 GA
+  source: openanolis
+  url: https://mirrors.openanolis.cn/anolis/8.10/isos/GA/loongarch64/AnolisOS-8.10-loongarch64.qcow2
 - distribution: AnolisOS
   os_name: Linux
   os_arch: x86_64
@@ -489,6 +495,30 @@
   os_version: 8.9 RHCK
   source: openanolis
   url: https://mirrors.openanolis.cn/anolis/8.9/isos/GA/aarch64/AnolisOS-8.9-aarch64-RHCK.qcow2
+- distribution: AnolisOS
+  os_name: Linux
+  os_arch: x86_64
+  os_version: 8.8 ANCK
+  source: openanolis
+  url: https://mirrors.openanolis.cn/anolis/8.8/isos/GA/x86_64/AnolisOS-8.8-x86_64-ANCK.qcow2
+- distribution: AnolisOS
+  os_name: Linux
+  os_arch: x86_64
+  os_version: 8.8 RHCK
+  source: openanolis
+  url: https://mirrors.openanolis.cn/anolis/8.8/isos/GA/x86_64/AnolisOS-8.8-x86_64-RHCK.qcow2
+- distribution: AnolisOS
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 8.8 ANCK
+  source: openanolis
+  url: https://mirrors.openanolis.cn/anolis/8.8/isos/GA/aarch64/AnolisOS-8.8-aarch64-ANCK.qcow2
+- distribution: AnolisOS
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 8.8 RHCK
+  source: openanolis
+  url: https://mirrors.openanolis.cn/anolis/8.8/isos/GA/aarch64/AnolisOS-8.8-aarch64-RHCK.qcow2
 - distribution: AnolisOS
   os_name: Linux
   os_arch: aarch64
@@ -540,6 +570,24 @@
 - distribution: AnolisOS
   os_name: Linux
   os_arch: aarch64
+  os_version: 23.2 GA
+  source: openanolis
+  url: https://mirrors.openanolis.cn/anolis/23.2/isos/GA/aarch64/AnolisOS-23.2-aarch64.qcow2
+- distribution: AnolisOS
+  os_name: Linux
+  os_arch: x86_64
+  os_version: 23.2 GA
+  source: openanolis
+  url: https://mirrors.openanolis.cn/anolis/23.2/isos/GA/x86_64/AnolisOS-23.2-x86_64.qcow2
+- distribution: AnolisOS
+  os_name: Linux
+  os_arch: loongarch64
+  os_version: 23.2 GA
+  source: openanolis
+  url: https://mirrors.openanolis.cn/anolis/23.2/isos/GA/loongarch64/AnolisOS-23.2-loongarch64.qcow2
+- distribution: AnolisOS
+  os_name: Linux
+  os_arch: aarch64
   os_version: Stream 23.0
   source: openanolis
   url: https://mirrors.openanolis.cn/anolis/23/isos/GA/aarch64/AnolisOS-23.0-aarch64.qcow2
@@ -549,6 +597,41 @@
   os_version: Stream 23.0
   source: openanolis
   url: https://mirrors.openanolis.cn/anolis/23/isos/GA/x86_64/AnolisOS-23.0-x86_64.qcow2
+- distribution: OpenCloudOS
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 9.4
+  build: 20250820
+  source: opencloudos
+  url: https://mirrors.opencloudos.tech/opencloudos/9.4/images/qcow2/aarch64/OpenCloudOS-GenericCloud-9.4-20250820.0.aarch64.qcow2
+- distribution: OpenCloudOS
+  os_name: Linux
+  os_arch: x86_64
+  os_version: 9.4
+  build: 20250820
+  source: opencloudos
+  url: https://mirrors.opencloudos.tech/opencloudos/9.4/images/qcow2/x86_64/OpenCloudOS-GenericCloud-9.4-20250820.0.x86_64.qcow2
+- distribution: OpenCloudOS
+  os_name: Linux
+  os_arch: loongarch64
+  os_version: 9.4
+  build: 20250820
+  source: opencloudos
+  url: https://mirrors.opencloudos.tech/opencloudos/9.4/images/qcow2/loongarch64/OpenCloudOS-GenericCloud-9.4-20250820.0.loongarch64.qcow2
+- distribution: OpenCloudOS
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 9.2
+  build: 20250421
+  source: opencloudos
+  url: https://mirrors.opencloudos.tech/opencloudos/9.2/images/qcow2/aarch64/OpenCloudOS-GenericCloud-9.2-20250421.0.aarch64.qcow2
+- distribution: OpenCloudOS
+  os_name: Linux
+  os_arch: x86_64
+  os_version: 9.2
+  build: 20250421
+  source: opencloudos
+  url: https://mirrors.opencloudos.tech/opencloudos/9.2/images/qcow2/x86_64/OpenCloudOS-GenericCloud-9.2-20250421.0.x86_64.qcow2
 - distribution: OpenCloudOS
   os_name: Linux
   os_arch: aarch64
@@ -563,6 +646,20 @@
   build: 20230329
   source: opencloudos
   url: https://mirrors.opencloudos.tech/opencloudos/9.0/images/x86_64/opencloudos-v9.0-20230329-x86_64.qcow2
+- distribution: OpenCloudOS
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 8.10
+  build: 20240729
+  source: opencloudos
+  url: https://mirrors.opencloudos.tech/opencloudos/8.10/images/aarch64/OpenCloudOS-GenericCloud-8.10-20240729.0-20240730.1138-aarch64.qcow2
+- distribution: OpenCloudOS
+  os_name: Linux
+  os_arch: x86_64
+  os_version: 8.10
+  build: 20240729
+  source: opencloudos
+  url: https://mirrors.opencloudos.tech/opencloudos/8.10/images/x86_64/OpenCloudOS-GenericCloud-8.10-20240729.0-20240730.1137-x86_64.qcow2
 - distribution: OpenCloudOS
   os_name: Linux
   os_arch: aarch64
