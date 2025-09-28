@@ -1,0 +1,11 @@
+---
+sidebar_position: 15
+---
+
+# 大模型
+
+介绍如何基于 Cloudpods 容器主机一键部署大模型工具。
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />
