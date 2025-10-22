@@ -38,16 +38,7 @@ default_runtime_name = "nvidia"
 $ systemctl restart yunion-containerd.service
 ```
 
-## 创建基于 ollama 的容器主机
-### 使用 ollama 官方模型库进行创建
-在[ ollama 官方模型列表](https://ollama.com/library)中选择感兴趣的模型，记住模型名称以及量化版本使用下面的命令进行创建
-```shell
-climc llm-create --allow-delete\
-  --disk medium=rotate,size=128m,format=raw\
-  --net cnet18 -p 'index=0,port=11434,host_port=20434,protocol=tcp'\
-  test-llm-create-$(date +'%Y%m%d%H%M%S') 4096\
-  docker.io/ollama/ollama:latest qwen2:0.5b 
-```
+<!--
 ### 使用非官方的 GGUF 文件创建
 首先在[ Hhugging Face ](https://huggingface.co/)或者[魔搭社区](https://modelscope.cn/)挑选一个合适的模型，然后使用 gguf 文件链接进行创建
 ```shell
@@ -67,16 +58,60 @@ climc llm-create --allow-delete\
   docker.io/ollama/ollama:latest qwen2:0.5b\
   --gguf "file=/root/qwen2-0_5b.gguf,source=host,parameter=[temperature=0.6|stop=AI assistant:|num_ctx=2048|top_k=100]"
 ```
-对于 modelfile 参数的含义及设置方式，具体可参考[ ollama 的官方文档](https://github.com/ollama/ollama/blob/main/docs/modelfile.md)，其中的 `ADAPTER` 参数暂未支持
+对于 modelfile 参数的含义及设置方式，具体可参考[ ollama 的官方文档](https://github.com/ollama/ollama/blob/main/docs/modelfile.md)，其中的 `ADAPTER` 参数暂未支持 -->
+
+## 创建 Ollama 镜像
+使用下面的命令创建一个 `Ollama` 镜像条目
+```sh
+climc llm-image-create ollama-latest <YOUR-OLLAMA-IMAGE-NAME> latest
+```
+
+## 创建 llm 模板
+使用下面的命令创建一个 `llm` 的构建模板
+```sh
+climc llm-model-create ollama-qwen3-8b \
+  1 1023 1024 ollama-latest ollama qwen3:8b \
+  --devices 'GeForce RTX 4060' --port-mappings 'tcp:11434'
+```
+
+## 使用 llm 构建模板启动一个 qwen3:8b 的大模型服务
+使用下面的命令创建：
+```sh
+climc llm-create qwen3-8b ollama-qwen3-8b
+```
+
 ## 访问大模型服务
 可使用下面的方法进行测试
 ```shell
-curl http://cloudpods-ip:20435/v1/chat/completions\
+curl http://cloudpods-ip:host-port/v1/chat/completions\
   -H "Content-Type: application/json" \
   -d '{
-    "model": "qwen2:0.5b",
+    "model": "qwen3:8b",
     "messages": [
       {"role": "user", "content": "Hello, how are you?"}
     ]
   }'
+```
+如果部署成功会有类似下面的输出
+```json
+{
+  "id":"chatcmpl-991",
+  "object":"chat.completion",
+  "created":1761122201,
+  "model":"qwen3:8b",
+  "system_fingerprint":"fp_ollama",
+  "choices":[{
+    "index":0,
+    "message":{
+      "role":"assistant",
+      "content":"\u003cthink\u003e\nOkay, the user greeted me with \"Hello, how are you?\" I need to respond appropriately. First, I should acknowledge their greeting and express that I'm here to help. Since I'm an AI, I don't have feelings, so I should mention that I don't have emotions but can assist with various tasks. I should keep the tone friendly and open-ended to encourage them to ask questions or share what they need help with. Maybe add an emoji to keep it approachable. Let me check for any errors and make sure the response is clear and welcoming.\n\u003c/think\u003e\n\nHello! I'm just a virtual assistant, so I don't have feelings, but I'm here and ready to help you with anything you need! 😊 What can I assist you with today?"
+    },
+    "finish_reason":"stop"
+  }],
+  "usage":{
+    "prompt_tokens":14,
+    "completion_tokens":159,
+    "total_tokens":173
+  }
+}
 ```
