@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # 登录虚拟机
@@ -86,4 +86,3 @@ $ ssh root@10.168.222.226
 ```bash
 $ climc server-ssh <server_name>
 ```
-
