@@ -340,6 +340,46 @@ func (self *GuestStopTask) OnGuestStopTaskCompleteFailed(ctx context.Context, gu
 }
 ```
 
+### 父Task调用子Task
+
+允许一个Task启动子Task。子Task运行后，父Task停留在调用子Task前设置的Stage，等待等子task执行完成后，父Task继续运行当前Stage对应的方法。
+
+#### 调用本服务内子Task
+
+```go
+    ....
+    parentTask.SetStage('OnWaitLocalSubTaskComplete', nil)
+    childTask := taskman.NewTask(..., parenTask.GetTaskId(), ...)
+    childTask.ScheduleRun()
+    ...
+    ...
+
+func (task *SExampleTask) OnWaitLocalSubTaskComplete(tx context.Context, obj db.IStandaloneModel, body jsonutils.JSONObject) {
+   // parent task to continue ...
+   ...
+}
+```
+
+#### 调用其他服务的子Task
+
+```go
+   ...
+    parentTask.SetStage('OnWaitRemoteSubTaskComplete', nil)
+    err := session.WithTaskCallback(parentTask.GetTaskId(), func() error {
+         _, err := compute.Servers.PerformAction(session, 'stop', serverId, params)
+         if err != nil {
+             return errors.Wrap(err, "perform_action_stop")
+         }
+         return nil
+    })
+   ...
+
+func (task *SExampleTask) OnWaitRemoteSubTaskComplete(tx context.Context, obj db.IStandaloneModel, body jsonutils.JSONObject) {
+   // parent task to continue ...
+   ...
+}
+```
+
 ## 如何增加一个新的服务
 
 - 在keystone注册一个服务启用用的账户
