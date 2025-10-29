@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3.1
+sidebar_position: 4.1
 ---
 
 # 清除虚拟机记录
