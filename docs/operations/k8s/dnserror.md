@@ -22,15 +22,19 @@ Pod内通过集群的coredns进行域名解析。CoreDNS配置了10.96.0.10的se
 
 平台采用calico作为容器网络的插件，采用IP-in-IP或VXLAN隧道作为Pod之间报文的封装协议。
 
-如果采用IP-in-IP隧道，则在每个节点上都有一个 tunl0 的三层虚拟网络接口，该接口作为该节点IP-in-IP隧道的端点。
-
 如果采用VXLAN隧道，则在每个节点上都有一个 vxlan.calico 的二层虚拟网络接口，该接口作为该节点 VXLAN 隧道的端点。
+
+如果采用IP-in-IP隧道，则在每个节点上都有一个 tunl0 的三层虚拟网络接口，该接口作为该节点IP-in-IP隧道的端点。
 
 Pod的IP从10.40.0.0/16 (该网络前缀可以在ocboot初始化时配置) 随机分配。每个节点上都会为集群中其他节点的Pod所在的/26网段（含64个IP地址）配置通过tunl0且下一跳为该Pod所在节点IP的静态路由。如果缺少对应Pod的路由，则也会出现Pod之间网络不通。
 
 ### Calico隧道协议的切换
 
-平台默认采用IP-in-IP隧道协议，可以在Kubernetes控制节点执行以下命令将Calico隧道协议切换为 VXLAN。常见切换原因为底层网络不支持IP-in-IP协议。
+:::tip 注意
+从v3.11.12版本后，平台的 calico 容器网络默认采用 VXLAN 隧道协议，下面切换的步骤仅适用于 v3.11.11 以及之前默认使用 IP-in-IP 的版本。
+:::
+
+可以在控制节点执行以下命令将Calico隧道协议切换为 VXLAN。常见切换原因为底层网络不支持IP-in-IP协议。
 
 ```bash
 export DATASTORE_TYPE=kubernetes
