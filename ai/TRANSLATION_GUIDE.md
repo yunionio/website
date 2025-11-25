@@ -245,8 +245,8 @@ A:
 ## 📚 相关资源
 
 - [Docusaurus i18n 文档](https://docusaurus.io/docs/i18n/tutorial)
-- [项目 README](./README.md)
-- [缺失翻译列表](./missing-translations.txt)
+- [项目 README](../README.md)
+- [缺失翻译列表](../missing-translations.txt)
 
 ## 💡 提示
 

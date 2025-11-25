@@ -63,11 +63,11 @@ const config = {
   ],
 
   plugins: [
-    // 共享文档实例（使用 default ID 以兼容搜索插件）
+    // 共享文档实例
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'default',
+        id: 'shared',
         path: 'docs/shared',
         routeBasePath: 'docs/shared',
         sidebarPath: './sidebars/shared.js',
@@ -144,30 +144,30 @@ const config = {
       },
     ],
     // 重定向插件（用于向后兼容）
-    // [
-    //   '@docusaurus/plugin-client-redirects',
-    //   {
-    //     redirects: [
-    //       // 示例重定向规则，实际使用时需要添加完整的映射
-    //       {
-    //         from: '/docs/getting-started/onpremise/quickstart-virt',
-    //         to: '/docs/onpremise/getting-started/quickstart-virt',
-    //       },
-    //       {
-    //         from: '/docs/guides/onpremise/vminstance',
-    //         to: '/docs/onpremise/guides/vminstance',
-    //       },
-    //       {
-    //         from: '/docs/getting-started/cmp/quickstart-ocboot',
-    //         to: '/docs/cmp/getting-started/quickstart-ocboot',
-    //       },
-    //       {
-    //         from: '/docs/introduction',
-    //         to: '/docs/shared/introduction',
-    //       },
-    //     ],
-    //   },
-    // ],
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          // 示例重定向规则，实际使用时需要添加完整的映射
+          {
+            from: '/docs/getting-started/onpremise/quickstart-virt',
+            to: '/docs/onpremise/getting-started/quickstart-virt',
+          },
+          {
+            from: '/docs/guides/onpremise/vminstance',
+            to: '/docs/onpremise/guides/vminstance',
+          },
+          {
+            from: '/docs/getting-started/cmp/quickstart-ocboot',
+            to: '/docs/cmp/getting-started/quickstart-ocboot',
+          },
+          {
+            from: '/docs/introduction',
+            to: '/docs/shared/introduction',
+          },
+        ],
+      },
+    ],
   ],
 
   themes: [
@@ -177,10 +177,11 @@ const config = {
       ({
         hashed: true,
         language: ['en', 'zh'],
-        // 搜索插件会自动索引所有文档插件的内容
         docsRouteBasePath: '/docs',
         indexBlog: true,
         ignoreFiles: [/docs\/development\/changelog\/.*/],
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
       }),
     ],
   ],
@@ -208,28 +209,24 @@ const config = {
             items: [
               {
                 type: 'docSidebar',
-                docsPluginId: 'onpremise',
                 sidebarId: 'onpremiseSidebar',
                 label: '私有云管理',
                 to: '/docs/onpremise/getting-started',
               },
               {
                 type: 'docSidebar',
-                docsPluginId: 'cmp',
                 sidebarId: 'cmpSidebar',
                 label: '多云管理',
                 to: '/docs/cmp/getting-started',
               },
               {
                 type: 'docSidebar',
-                docsPluginId: 'baremetal',
                 sidebarId: 'baremetalSidebar',
                 label: '物理机管理',
                 to: '/docs/baremetal/getting-started',
               },
               {
                 type: 'docSidebar',
-                docsPluginId: 'default',
                 sidebarId: 'sharedSidebar',
                 label: '通用文档',
                 to: '/docs/shared/introduction',
@@ -241,7 +238,6 @@ const config = {
           { to: 'https://apifox.com/apidoc/shared-f917f6a6-db9f-4d6a-bbc3-ea58c945d7fd', label: 'API', position: 'left' },
           {
             type: 'docsVersionDropdown',
-            docsPluginId: 'default',
             position: 'right',
             dropdownActiveClassDisabled: true,
             dropdownItemsAfter: [
