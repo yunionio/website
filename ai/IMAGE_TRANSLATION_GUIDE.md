@@ -201,6 +201,7 @@ python3 scripts/image-translation-helper.py analyze \
 
 - [图片翻译任务清单](./image-translation-checklist.md)
 - [翻译指南](./TRANSLATION_GUIDE.md)
+- [文档重构方案](./refactor.md)
 - [Adobe Firefly](https://firefly.adobe.com/)
 - [Figma](https://www.figma.com/)
 - [GIMP](https://www.gimp.org/)
