@@ -62,7 +62,7 @@ import FAQReset from '../../getting-started/_parts/_quickstart-faq-reset.md';
 
 ### 6. 如何升级？
 
-参考文档 [通过 ocboot 升级](../../operations/upgrading/ocboot-upgrade) 。
+参考文档 [通过 ocboot 升级](../operations/upgrading/ocboot-upgrade) 。
 
 ### 7. 其它问题？
 
