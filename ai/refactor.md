@@ -279,29 +279,49 @@ products: ['onpremise', 'cmp']  # 标记适用于哪些产品
 1. ✅ 创建新的目录结构
 2. ✅ 创建共享文档目录 `docs/shared/`
 3. ✅ 分析现有文档，分类为：
-   - 完全通用 → `docs/shared/`
-   - 产品特定 → 对应产品目录
-   - 部分通用 → 拆分或使用引用
+   - ✅ 完全通用 → `docs/shared/`（已完成）
+     - `introduction/` → `shared/introduction/`
+     - `development/` → `shared/development/`
+     - `release-notes/` → `shared/release-notes/`
+     - `contact/` → `shared/contact/`
+     - `guides/auth_security/` → `shared/guides/auth_security/`
+     - `guides/climc/` → `shared/guides/climc/`
+     - `operations/` 通用部分 → `shared/operations/`（fe/, ha/, k8s/, databases/, log/, monitoring/, platform-issues/, upgrading/, component.mdx, agent.mdx, recovery.md）
+   - ⚠️ 产品特定 → 对应产品目录（部分完成）
+     - ✅ `operations/` 产品特定部分 → `onpremise/operations/`（change-node-ip.md, clean-kvm-security-groups.md, remove-host.md, uninstallation.md, hidden-feature-config.md, multi-zone-config.md）
+     - ✅ `getting-started/onpremise/` → `onpremise/getting-started/`（已完成）
+     - ✅ `getting-started/cmp/` → `cmp/getting-started/`（已完成）
+     - ✅ `getting-started/baremetal/` → `baremetal/getting-started/`（已完成）
+     - ✅ `guides/onpremise/` → `onpremise/guides/`（已完成）
+     - ✅ `guides/cmp/` → `cmp/guides/`（已完成）
+   - ⏳ 部分通用 → 拆分或使用引用（待处理）
+     - `getting-started/full/`（需判断是否通用）
+     - `guides/k8s/`（需判断是否通用）
+     - `guides/misc/`（需判断是否通用）
+     - `guides/monitor_ops/`（需判断是否通用）
 
 #### 阶段2：迁移文档（2-3周）
 
-1. 迁移通用文档到 `docs/shared/`
-   - `introduction/` → `shared/introduction/`
-   - `development/` → `shared/development/`
-   - `release-notes/` → `shared/release-notes/`
-   - `contact/` → `shared/contact/`
+1. ✅ 迁移通用文档到 `docs/shared/`（已完成）
+   - ✅ `introduction/` → `shared/introduction/`
+   - ✅ `development/` → `shared/development/`
+   - ✅ `release-notes/` → `shared/release-notes/`
+   - ✅ `contact/` → `shared/contact/`
+   - ✅ `guides/auth_security/` → `shared/guides/auth_security/`
+   - ✅ `guides/climc/` → `shared/guides/climc/`
+   - ✅ `operations/` 通用部分 → `shared/operations/`
 
-2. 迁移产品特定文档
-   - `getting-started/onpremise/` → `onpremise/getting-started/`
-   - `getting-started/cmp/` → `cmp/getting-started/`
-   - `getting-started/baremetal/` → `baremetal/getting-started/`
-   - `guides/onpremise/` → `onpremise/guides/`
-   - `guides/cmp/` → `cmp/guides/`
+2. ✅ 迁移产品特定文档（已完成）
+   - ✅ `getting-started/onpremise/` → `onpremise/getting-started/`
+   - ✅ `getting-started/cmp/` → `cmp/getting-started/`
+   - ✅ `getting-started/baremetal/` → `baremetal/getting-started/`
+   - ✅ `guides/onpremise/` → `onpremise/guides/`
+   - ✅ `guides/cmp/` → `cmp/guides/`
 
-3. 处理混合文档
-   - `guides/auth_security/` → `shared/guides/auth_security/`（通用）
-   - `guides/climc/` → `shared/guides/climc/`（通用）
-   - `operations/` → 按内容拆分到各产品和 shared
+3. ✅ 处理混合文档（已完成）
+   - ✅ `guides/auth_security/` → `shared/guides/auth_security/`（通用）
+   - ✅ `guides/climc/` → `shared/guides/climc/`（通用）
+   - ✅ `operations/` → 按内容拆分到各产品和 shared
 
 #### 阶段3：配置更新（1周）
 
@@ -371,22 +391,6 @@ redirect_from:
 2. **搜索配置**：需要配置搜索插件支持多个文档实例
 3. **i18n 支持**：多语言翻译文件也需要相应调整结构
 4. **构建时间**：多个文档实例可能略微增加构建时间
-
-### 替代方案（简化版）
-
-如果多文档实例配置复杂，可以考虑**单文档实例 + 产品标签**的方案：
-
-1. 保持单一文档实例
-2. 使用 frontmatter 标记文档所属产品：
-   ```markdown
-   ---
-   products: ['onpremise', 'cmp']  # 适用于哪些产品
-   ---
-   ```
-3. 在侧边栏中按产品分组显示
-4. 使用自定义组件过滤显示
-
-**缺点**：无法完全隔离不同产品的文档，URL 路径不够清晰。
 
 ### 推荐实施
 
