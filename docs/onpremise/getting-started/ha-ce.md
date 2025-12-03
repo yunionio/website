@@ -9,13 +9,13 @@ edition: ce
 
 ## 环境准备
 
-import HAEnv from '../_parts/_ha-env.mdx';
+import HAEnv from '../../getting-started/_parts/_ha-env.mdx';
 
 <HAEnv />
 
 ## 开始安装
 
-import OcbootReleaseDownload from '../_parts/_quickstart-ocboot-release-download.mdx';
+import OcbootReleaseDownload from '../../getting-started/_parts/_quickstart-ocboot-release-download.mdx';
 
 <OcbootReleaseDownload />
 

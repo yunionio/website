@@ -5,6 +5,6 @@ draft: true
 ---
 # Ocboot k3s 快速安装
 
-import BuildahK3s from '../_parts/_quickstart-buildah-k3s.mdx'
+import BuildahK3s from '../../getting-started/_parts/_quickstart-buildah-k3s.mdx'
 
 <BuildahK3s productVersion='virt' />

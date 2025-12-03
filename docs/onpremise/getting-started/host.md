@@ -25,7 +25,7 @@ edition: ce
 - 网络:
 	- 当前可用的网段: 虚拟机可以直接使用和计算节点所在的扁平网段，需要预先划分保留对应端给云平台虚拟机使用，防止被其它设备占用，最后 IP 冲突
 
-import OcbootEnv from '../_parts/_quickstart-ocboot-k3s-env.mdx';
+import OcbootEnv from '../../getting-started/_parts/_quickstart-ocboot-k3s-env.mdx';
 
 <OcbootEnv />
 
