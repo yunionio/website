@@ -695,9 +695,12 @@ products: ['onpremise', 'cmp']  # 标记适用于哪些产品
      - ✅ `guides/cmp/` → `cmp/guides/`（已完成）
    - ⏳ 部分通用 → 拆分或使用引用（待处理）
      - `getting-started/full/`（需判断是否通用）
-     - `guides/k8s/`（需判断是否通用）
-     - `guides/misc/`（需判断是否通用）
-     - `guides/monitor_ops/`（需判断是否通用）
+     - ✅ `guides/k8s/` (onpreimise 和 cmp 通用)
+     - ✅ `guides/misc/`通用
+     - ✅ `guides/monitor_ops/` 通用
+     - ✅ guides/climc
+     - ✅ guides/auth_security
+     - docs/cmp/guides/vmware/vmware_v2v：这个属于私有云
 
 #### 阶段2：迁移文档（2-3周）
 
