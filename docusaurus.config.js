@@ -212,7 +212,7 @@ const config = {
                 type: 'docSidebar',
                 docsPluginId: 'onpremise',
                 sidebarId: 'onpremiseSidebar',
-                label: '私有云管理',
+                label: '私有云',
                 to: '/docs/onpremise/getting-started',
               },
               {

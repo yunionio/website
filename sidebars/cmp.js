@@ -11,7 +11,7 @@ const cmpSidebar = {
     // 侧边栏顶部固定标题
     {
       type: 'html',
-      value: '<div class="sidebar-doc-type-title"><span class="sidebar-doc-type-icon">☁️</span><span class="sidebar-doc-type-label">多云管理</span></div>',
+      value: '<div class="sidebar-doc-type-title"><span class="sidebar-doc-type-icon" style="background: linear-gradient(135deg, #29784c 0%, #3cad6e 100%); width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center;"><img src="/img/feature_cloud_manager.svg" alt="多云管理" style="width: 20px; height: 20px; filter: brightness(0) invert(1);" /></span><span class="sidebar-doc-type-label">多云管理</span></div>',
       defaultStyle: true,
     },
     // 自动生成当前文档实例的所有文档
