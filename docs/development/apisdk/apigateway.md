@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # API 访问方式
 
-Cloudpods 的API由各个后端服务分别提供，因此为了访问API，需要API的调用方必须能够直接访问各个服务。每个服务的APi可以通过两个URL地址访问。一个是EndpointType类型为internal的URL，该URL只能在Kubernetes集群内访问；另一个是EndpointType类型为public的URL，该URL为托管平台服务的宿主机的Node Port的访问URL。
+云管平台的API由各个后端服务分别提供，因此为了访问API，需要API的调用方必须能够直接访问各个服务。每个服务的API可以通过两个URL地址访问。一个是EndpointType类型为internal的URL，该URL只能在Kubernetes集群内访问；另一个是EndpointType类型为public的URL，该URL为托管平台服务的宿主机的Node Port的访问URL。
 
 调用API的服务有几种部署方案：
 
