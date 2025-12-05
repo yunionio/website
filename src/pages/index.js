@@ -7,6 +7,7 @@ import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import HomepageBrands from '@site/src/components/HomepageBrands';
 import HomepageFooter from '@site/src/components/HomepageFooter';
+import ProductCards from '@site/src/components/ProductCards';
 // import HomepagePanel from '@site/src/components/HomepagePanel';
 // import GitHubButton from 'react-github-btn'
 
@@ -22,28 +23,17 @@ function HomepageHeader() {
   return (
     <section className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
-        <div className="row">
-          <div className={clsx('col', styles.alignCenter)}>
+        <div className={styles.heroContent}>
+          <div className={styles.heroTitleRow}>
             <Heading as="h1" className="hero__title">
               {siteConfig.title}
             </Heading>
-            <p className="hero__subtitle">
-              <Translate id="homepage.subtitle">云原生的开源融合云平台</Translate>
-            </p>
-            <p className="hero__title">
-              <Translate id="homepage.buildown">构建您专属的云上之云</Translate>
-            </p>
-            <div className={styles.buttons}>
-              <Link
-                className="button button--secondary button--lg"
-                to="/docs/getting-started/">
-                <Translate id="homepage.getStarted">快速开始</Translate>
-              </Link>
-            </div>
-          </div>
-          <div className="col">
             <Svg className={styles.heroImg} />
           </div>
+          <p className="hero__subtitle">
+            <Translate id="homepage.subtitle">云原生的开源融合云平台</Translate>
+          </p>
+          <ProductCards />
         </div>
       </div>
     </section>

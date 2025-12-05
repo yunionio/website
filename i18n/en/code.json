@@ -289,6 +289,60 @@
   "homepage.getStarted": {
     "message": "Get Started"
   },
+  "homepage.getStartedOnpremise": {
+    "message": "Private Cloud"
+  },
+  "homepage.getStartedCmp": {
+    "message": "Multi-Cloud Management"
+  },
+  "homepage.getStartedBaremetal": {
+    "message": "Bare Metal Management"
+  },
+  "productCards.onpremise.name": {
+    "message": "Private Cloud"
+  },
+  "productCards.onpremise.description": {
+    "message": "Lightweight private cloud with KVM virtualization, GPU passthrough, and VMware integration"
+  },
+  "productCards.cmp.name": {
+    "message": "Multi-Cloud Management"
+  },
+  "productCards.cmp.description": {
+    "message": "Unified management of multiple public and private cloud platforms, simplifying multi-cloud complexity"
+  },
+  "productCards.baremetal.name": {
+    "message": "Bare Metal Management"
+  },
+  "productCards.baremetal.description": {
+    "message": "Full lifecycle management of physical machines with OS installation and RAID configuration"
+  },
+  "productCards.title": {
+    "message": "Quick Start"
+  },
+  "productCards.subtitle": {
+    "message": "Choose your deployment method and start using Cloudpods"
+  },
+  "productCards.quickStart": {
+    "message": "Quick Start"
+  },
+  "productSelector.viewDocs": {
+    "message": "View Documentation"
+  },
+  "productSelector.restart": {
+    "message": "Restart Selection"
+  },
+  "productSelector.back": {
+    "message": "Back"
+  },
+  "productSelector.consultTitle": {
+    "message": "Consult Assistant"
+  },
+  "productSelector.consultDesc": {
+    "message": "If you have other requirements or are unsure which product to choose, please contact our technical support team for assistance."
+  },
+  "productSelector.contactSupport": {
+    "message": "Contact Support"
+  },
   "homepage.subtitle": {
     "message": "A cloud-native open-source unified cloud platform"
   },
