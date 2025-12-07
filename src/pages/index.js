@@ -24,16 +24,18 @@ function HomepageHeader() {
     <section className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <div className={styles.heroContent}>
-          <div className={styles.heroTitleRow}>
-            <Heading as="h1" className="hero__title">
-              {siteConfig.title}
-            </Heading>
-            <Svg className={styles.heroImg} />
-          </div>
           <p className="hero__subtitle">
             <Translate id="homepage.subtitle">云原生的开源融合云平台</Translate>
           </p>
-          <ProductCards />
+          <div className={styles.heroTitleRow}>
+            <Svg className={styles.heroImg} />
+            <Heading as="h1" className="hero__title">
+              {siteConfig.title}
+            </Heading>
+          </div>
+          <p className={styles.heroTagline}>
+            <Translate id="homepage.tagline">构建您专属的云上之云</Translate>
+          </p>
         </div>
       </div>
     </section>
@@ -48,6 +50,7 @@ export default function Home() {
       description="">
       <main>
         <HomepageHeader />
+        <ProductCards />
         {/* <HomepagePanel /> */}
         <HomepageFeatures />
         <HomepageBrands />
