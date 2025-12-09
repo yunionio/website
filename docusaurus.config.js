@@ -16,8 +16,8 @@ const config = {
     ocboot_release_version: 'master-v3.11.12-5',
   },
 
-  url: 'https://www.cloudpods.org',
-  baseUrl: '/',
+  url: process.env.DOCUSAURUS_URL || 'https://www.cloudpods.org',
+  baseUrl: process.env.DOCUSAURUS_BASE_URL || '/',
 
   organizationName: 'yunionio',
   projectName: 'cloudpods',
@@ -144,30 +144,38 @@ const config = {
       },
     ],
     // 重定向插件（用于向后兼容）
-    // [
-    //   '@docusaurus/plugin-client-redirects',
-    //   {
-    //     redirects: [
-    //       // 示例重定向规则，实际使用时需要添加完整的映射
-    //       {
-    //         from: '/docs/getting-started/onpremise/quickstart-virt',
-    //         to: '/docs/onpremise/getting-started/quickstart-virt',
-    //       },
-    //       {
-    //         from: '/docs/guides/onpremise/vminstance',
-    //         to: '/docs/onpremise/guides/vminstance',
-    //       },
-    //       {
-    //         from: '/docs/getting-started/cmp/quickstart-ocboot',
-    //         to: '/docs/cmp/getting-started/quickstart-ocboot',
-    //       },
-    //       {
-    //         from: '/docs/introduction',
-    //         to: '/docs/shared/introduction',
-    //       },
-    //     ],
-    //   },
-    // ],
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          // 明确的重定向规则（用于根路径）
+          {
+            from: '/docs/introduction',
+            to: '/',
+          },
+          {
+            from: '/docs/getting-started',
+            to: '/',
+          },
+          {
+            from: '/docs/contact',
+            to: '/docs/onpremise/contact',
+          },
+          {
+            from: '/docs/release-notes',
+            to: '/docs/onpremise/release-notes',
+          },
+          {
+            from: '/docs/development',
+            to: '/docs/onpremise/development',
+          },
+          {
+            from: '/docs/development/changelog',
+            to: '/docs/onpremise/development/changelog',
+          },
+        ],
+      },
+    ],
   ],
 
   themes: [

@@ -5,7 +5,8 @@
 
 .heroBanner {
   padding: 0;
-  min-height: 400px;
+  min-height: 320px;
+  max-height: 380px;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -49,7 +50,7 @@
   gap: 3rem;
   position: relative;
   z-index: 2;
-  padding: 2rem 0;
+  padding: 1.5rem 0;
 }
 
 .heroContent {
@@ -59,25 +60,25 @@
 }
 
 .heroTitle {
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-weight: 700;
   line-height: 1.1;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   letter-spacing: -0.02em;
   color: #ffffff;
 }
 
 .heroSubtitle {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 400;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   opacity: 0.9;
   color: #ffffff;
   line-height: 1.3;
 }
 
 .heroSlogan {
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 700;
   margin-bottom: 0;
   line-height: 1.3;
@@ -91,20 +92,20 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  min-height: 280px;
+  min-height: 240px;
 }
 
 .cloudIllustration {
   position: relative;
   width: 100%;
-  max-width: 500px;
-  height: 280px;
+  max-width: 450px;
+  height: 240px;
 }
 
 .mainCloud {
   position: absolute;
-  width: 350px;
-  height: 350px;
+  width: 300px;
+  height: 300px;
   color: rgba(255, 255, 255, 0.4);
   top: 50%;
   left: 50%;
@@ -126,13 +127,14 @@
 
 @media screen and (max-width: 996px) {
   .heroBanner {
-    min-height: 350px;
+    min-height: 280px;
+    max-height: 320px;
   }
 
   .heroWrapper {
     flex-direction: column;
-    gap: 1.5rem;
-    padding: 2rem 0;
+    gap: 0.875rem;
+    padding: 1.25rem 0;
     text-align: center;
   }
 
@@ -158,16 +160,16 @@
 
   .heroVisual {
     justify-content: center;
-    min-height: 220px;
+    min-height: 180px;
   }
 
   .cloudIllustration {
-    height: 220px;
+    height: 180px;
   }
 
   .mainCloud {
-    width: 280px;
-    height: 280px;
+    width: 240px;
+    height: 240px;
   }
 
   .heroBgCircle1 {
@@ -183,53 +185,54 @@
 
 @media screen and (max-width: 768px) {
   .heroBanner {
-    min-height: 320px;
+    min-height: 240px;
+    max-height: 280px;
   }
 
   .heroWrapper {
-    padding: 1.5rem 0;
-    gap: 1rem;
+    padding: 0.875rem 0;
+    gap: 0.625rem;
   }
 
   .heroTitle {
-    font-size: 2.25rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.875rem;
+    margin-bottom: 0.25rem;
   }
 
   .heroSubtitle {
-    font-size: 1.15rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
   }
 
   .heroSlogan {
-    font-size: 1.35rem;
+    font-size: 1.1rem;
     margin-bottom: 0;
   }
 
   .heroVisual {
-    min-height: 180px;
+    min-height: 120px;
   }
 
   .cloudIllustration {
-    height: 180px;
+    height: 120px;
   }
 
   .mainCloud {
-    width: 220px;
-    height: 220px;
+    width: 160px;
+    height: 160px;
   }
 
   .heroBgCircle1 {
-    width: 300px;
-    height: 300px;
-    top: -50px;
-    right: -50px;
+    width: 220px;
+    height: 220px;
+    top: -30px;
+    right: -30px;
   }
 
   .heroBgCircle2 {
-    width: 200px;
-    height: 200px;
-    bottom: -30px;
+    width: 130px;
+    height: 130px;
+    bottom: -15px;
     left: 5%;
   }
 }

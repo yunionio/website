@@ -32,7 +32,7 @@ kubectl rollout restart deployment -n onecloud $(kubectl get deployment -n onecl
 相关问题:
 
 - [纳管VMware vSAN，上传qcow2镜像后，使用镜像创建虚拟机报错“磁盘分配失败”](https://github.com/yunionio/cloudpods/issues/18774)
-- [关闭自动转换vmdk镜像](../../onpremise/glance/sysimage/upload#turn-off-image-formats)
+- [关闭自动转换vmdk镜像](../../../onpremise/guides/glance/sysimage/upload#turn-off-image-formats)
 
 
 ## VMware同步后主机没有IP

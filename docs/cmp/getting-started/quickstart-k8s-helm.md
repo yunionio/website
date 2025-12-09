@@ -217,7 +217,7 @@ default-cloudpods-web   *       10.127.100.207          80, 443   7h52m
 
 `api_server` 配置是整个平台的接入端地址，会影响前端 CloudShell、 虚拟机 VNC 或者 Web SSH 的连接。一般无法打开 CloudShell 或者通过前端 SSH 进入虚拟机，是因为没有正确设置 api_server 配置。
 
-需要参考文档：[修改服务 api_server 入口配置](../../operations/fe/config-ssl-certs#change-api-server-via-climc)，根据自己环境的网络情况手动修改。
+需要参考文档：[修改服务 api_server 入口配置](../../onpremise/operations/fe/config-ssl-certs#change-api-server-via-climc)，根据自己环境的网络情况手动修改。
 
 ## 升级
 

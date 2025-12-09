@@ -18,7 +18,7 @@ authors:
 - [Rook](https://rook.io/docs/rook/v1.7): 是一个分布式存储编排系统，目的是在 Kubernetes 上提供存储解决方案，本身不提供存储，而是在 Kubernetes 和存储系统之间提供适配层，简化存储系统的部署和维护工作。其支持的 Ceph 存储为 Stable 生产可用的状态。
 - [Ceph](https://docs.ceph.com/): 是开源的分布式存储系统，主要功能包含 RBD 块存储以及 CephFS 分布式文件系统存储。
 
-Cloudpods 服务以容器化的方式运行在 Kubernetes 集群之上，按照 [安装部署](/docs/getting-started/) 文档部署完 Cloudpods 之后，环境就有了一个完整的 Kubernetes 集群。
+Cloudpods 服务以容器化的方式运行在 Kubernetes 集群之上，按照 [安装部署](../../docs/onpremise/getting-started) 文档部署完 Cloudpods 之后，环境就有了一个完整的 Kubernetes 集群。
 
 但 Cloudpods 内置私有云虚拟机使用的是本地存储，本文主要介绍使用 Rook 在 Cloudpods Kubernetes 集群里面的计算节点上部署 Ceph 集群，然后把 Rook 管理的 Ceph 集群暴露出来对接 Cloudpods 的私有云虚拟机。
 
@@ -40,7 +40,7 @@ Cloudpods 内置私有云提供虚拟化功能， Rook 管理的 Ceph 提供分�
 
 ## 使用 Rook 部署 Ceph
 
-接下来介绍使用 Rook 在已有的 Cloudpods Kubernetes 集群上部署 Ceph 集群，这里有个前提是已经按照 [安装部署/添加节点](/docs/getting-started/onpremise/host) 文档，部署了一个多节点的 Cloudpods 集群。
+接下来介绍使用 Rook 在已有的 Cloudpods Kubernetes 集群上部署 Ceph 集群，这里有个前提是已经按照 [安装部署/添加节点](../../docs/onpremise/getting-started/host) 文档，部署了一个多节点的 Cloudpods 集群。
 
 ### 节点信息
 

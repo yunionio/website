@@ -25,6 +25,13 @@ docker-start-en:
 build:
 	yarn build
 
+build-with-url:
+	@if [ -z "$(URL)" ]; then \
+		echo "用法: make build-with-url URL=http://10.127.100.2:8080"; \
+		exit 1; \
+	fi
+	DOCUSAURUS_URL=$(URL) DOCUSAURUS_BASE_URL=/ yarn build
+
 oneline-build:
 	./scripts/build.py --edition=ce --multi-versions --no-out-fetch
 
