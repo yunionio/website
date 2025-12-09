@@ -201,7 +201,7 @@ $ climc --debug monitor-unifiedmonitor-query --from 2023-12-07T23:54:42.123Z --t
 
 平台现在支持把监控数据存到 VictoriaMetrics 或者 Influxdb，可以使用下面的方法查询相关时序数据库的监控数据。
 
-关于 Influxdb 到 VictoriaMetrics 的切换，可以参考文档：[切换 Influxdb 到 VictoriaMetrics](../../operations/monitoring/migrating-to-vm.md)。
+关于 Influxdb 到 VictoriaMetrics 的切换，可以参考文档：[切换 Influxdb 到 VictoriaMetrics](../../../onpremise/operations/monitoring/migrating-to-vm)。
 
 ### 查询 VictoriaMetrics 数据 {#query-victoric-metrics-data}
 

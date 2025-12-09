@@ -109,4 +109,4 @@ $ climc host-enable lzx-allinone-standalone
 
 ## 常见问题排查
 
-计算节点常见问题排查请参考：[Host服务问题排查](../../guides/onpremise/host/troubleshooting)。
+计算节点常见问题排查请参考：[Host服务问题排查](../guides/host/troubleshooting)。

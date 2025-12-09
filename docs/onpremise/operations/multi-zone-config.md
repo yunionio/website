@@ -58,7 +58,7 @@ default-esxi-agent-my-zone-1        1/1     1            1           3m42s
 
 ### 启用 baremetal-agent 
 
-参考文档：[启用 baremetal-agent](../getting-started/onpremise/baremetal)。
+参考文档：[启用 baremetal-agent](../getting-started/baremetal)。
 
 ## 宿主机服务
 
@@ -102,7 +102,7 @@ $ climc network-create \
 
 ### 添加计算节点
 
-子网创建好后，就可以使用部署工具 ocboot 的 `add-node` 命令添加目标宿主机到平台了，详细添加方法可以参考[添加计算节点](../getting-started/onpremise/host)，假设目标宿主机 IP 为 192.168.121.61 ，控制节点 IP 为 192.168.121.21，对应命令如下：
+子网创建好后，就可以使用部署工具 ocboot 的 `add-node` 命令添加目标宿主机到平台了，详细添加方法可以参考[添加计算节点](../getting-started/host)，假设目标宿主机 IP 为 192.168.121.61 ，控制节点 IP 为 192.168.121.21，对应命令如下：
 
 ```bash
 $ ./ocboot.sh add-node 192.168.121.21 192.168.121.61
