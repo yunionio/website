@@ -4,130 +4,233 @@
  */
 
 .heroBanner {
-  padding: 1.5rem 0;
-  text-align: center;
+  padding: 0;
+  min-height: 400px;
   position: relative;
   overflow: hidden;
-  display: block;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #076f38 0%, #205d3b 100%);
+  color: #ffffff;
+}
+
+[data-theme='dark'] .heroBanner {
+  background: linear-gradient(135deg, #076f38 0%, #1a8870 100%);
+}
+
+/* Decorative Background Circles */
+.heroBgCircle1,
+.heroBgCircle2 {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+}
+
+.heroBgCircle1 {
+  width: 600px;
+  height: 600px;
+  top: -100px;
+  right: -100px;
+}
+
+.heroBgCircle2 {
+  width: 400px;
+  height: 400px;
+  bottom: -50px;
+  left: 10%;
+}
+
+.heroWrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  position: relative;
+  z-index: 2;
+  padding: 2rem 0;
 }
 
 .heroContent {
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  max-width: 900px;
+  flex: 1;
+  max-width: 800px;
+  text-align: left;
 }
 
-.heroTitleRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.875rem;
-  margin-bottom: 0;
-  width: 100%;
-}
-
-.heroTitleRow .hero__title {
-  flex: 0 1 auto;
-  margin: 0;
+.heroTitle {
   font-size: 4rem;
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+  color: #ffffff;
 }
 
-.heroImg {
-  width: 52px;
-  height: 52px;
-  flex-shrink: 0;
-  opacity: 0.9;
-  margin-left: 0;
-  transition: transform 0.3s ease;
-}
-
-.heroImg:hover {
-  transform: scale(1.05);
-}
-
-.hero__subtitle {
-  font-size: 2.5rem;
-  line-height: 1.25;
-  margin: 0 0 0.125rem 0;
-  opacity: 0.85;
-  font-weight: 500;
-}
-
-.heroTagline {
-  font-size: 1.5rem;
-  line-height: 1.35;
-  margin: 0.125rem 0 0 0;
-  opacity: 0.75;
+.heroSubtitle {
+  font-size: 1.75rem;
   font-weight: 400;
+  margin-bottom: 0.75rem;
+  opacity: 0.9;
+  color: #ffffff;
+  line-height: 1.3;
 }
+
+.heroSlogan {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+.heroVisual {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 280px;
+}
+
+.cloudIllustration {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  height: 280px;
+}
+
+.mainCloud {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  color: rgba(255, 255, 255, 0.4);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: float 6s ease-in-out infinite;
+  opacity: 1;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(-50%, -50%) translateY(0px);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-20px);
+  }
+}
+
 
 @media screen and (max-width: 996px) {
   .heroBanner {
-    padding: 1.25rem 1.5rem;
+    min-height: 350px;
   }
 
-  .heroTitleRow {
-    gap: 0.625rem;
+  .heroWrapper {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem 0;
+    text-align: center;
+  }
+
+  .heroContent {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .heroTitle {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.35rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .heroSlogan {
+    font-size: 1.75rem;
     margin-bottom: 0;
   }
 
-  .heroTitleRow .hero__title {
-    font-size: 4rem;
-    line-height: 1.05;
+  .heroVisual {
+    justify-content: center;
+    min-height: 220px;
   }
 
-  .heroImg {
-    width: 44px;
-    height: 44px;
+  .cloudIllustration {
+    height: 220px;
   }
 
-  .hero__subtitle {
-    font-size: 1.5rem;
-    line-height: 1.25;
-    margin: 0 0 0.125rem 0;
+  .mainCloud {
+    width: 280px;
+    height: 280px;
   }
 
-  .heroTagline {
-    font-size: 1.15rem;
-    line-height: 1.35;
-    margin: 0.125rem 0 0 0;
+  .heroBgCircle1 {
+    width: 400px;
+    height: 400px;
+  }
+
+  .heroBgCircle2 {
+    width: 300px;
+    height: 300px;
   }
 }
 
 @media screen and (max-width: 768px) {
   .heroBanner {
-    padding: 1rem 1rem;
+    min-height: 320px;
   }
 
-  .heroTitleRow {
-    gap: 0.5rem;
-    flex-wrap: wrap;
+  .heroWrapper {
+    padding: 1.5rem 0;
+    gap: 1rem;
+  }
+
+  .heroTitle {
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .heroSlogan {
+    font-size: 1.35rem;
     margin-bottom: 0;
   }
 
-  .heroTitleRow .hero__title {
-    font-size: 2.5rem;
-    line-height: 1.05;
+  .heroVisual {
+    min-height: 180px;
   }
 
-  .heroImg {
-    width: 40px;
-    height: 40px;
+  .cloudIllustration {
+    height: 180px;
   }
 
-  .hero__subtitle {
-    font-size: 1.35rem;
-    line-height: 1.25;
-    margin: 0 0 0.125rem 0;
+  .mainCloud {
+    width: 220px;
+    height: 220px;
   }
 
-  .heroTagline {
-    font-size: 1rem;
-    line-height: 1.35;
-    margin: 0.125rem 0 0 0;
+  .heroBgCircle1 {
+    width: 300px;
+    height: 300px;
+    top: -50px;
+    right: -50px;
+  }
+
+  .heroBgCircle2 {
+    width: 200px;
+    height: 200px;
+    bottom: -30px;
+    left: 5%;
   }
 }
 
