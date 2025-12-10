@@ -10,7 +10,7 @@ const ProductCards = () => {
       id: 'onpremise',
       name: '私有云',
       nameId: 'productCards.onpremise.name',
-      description: '管理海量KVM虚拟机和containerd容器资源',
+      description: '管理海量KVM虚拟机资源',
       descriptionId: 'productCards.onpremise.description',
       icon: require('@site/static/img/feature_private_cloud.svg').default,
       link: '/docs/onpremise/getting-started',
