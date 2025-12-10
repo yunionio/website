@@ -25,6 +25,13 @@ docker-start-en:
 build:
 	yarn build
 
+build-with-url:
+	@if [ -z "$(URL)" ]; then \
+		echo "用法: make build-with-url URL=http://10.127.100.2:8080"; \
+		exit 1; \
+	fi
+	DOCUSAURUS_URL=$(URL) DOCUSAURUS_BASE_URL=/ yarn build
+
 oneline-build:
 	./scripts/build.py --edition=ce --multi-versions --no-out-fetch
 
@@ -48,3 +55,19 @@ sync-changelog:
 			s|(.*) CHANGELOG 汇总，最近发布版本: (.*) , 时间: (.*)|\1 CHANGELOG Summary, most recent version: \2, time: \3|g; \
 			s|发布时间|Released at|g; \
 			s|仓库地址|Repo|g"
+
+# 检查缺失的英文翻译文档
+check-missing-translations:
+	python3 scripts/check-missing-translations.py
+
+# 复制单个文件到英文目录（用于翻译）
+copy-translation-file:
+	@if [ -z "$(FILE)" ]; then \
+		echo "用法: make copy-translation-file FILE=docs/path/to/file.md"; \
+		exit 1; \
+	fi
+	python3 scripts/translate-helper.py $(FILE)
+
+# 批量复制缺失的文件到英文目录
+batch-copy-translations:
+	python3 scripts/translate-helper.py --batch missing-translations.txt
