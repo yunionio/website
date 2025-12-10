@@ -10,7 +10,7 @@ const ProductCards = () => {
       id: 'onpremise',
       name: '私有云',
       nameId: 'productCards.onpremise.name',
-      description: '一个可以管理海量KVM虚拟机的轻量级私有云',
+      description: '管理海量KVM虚拟机和containerd容器资源',
       descriptionId: 'productCards.onpremise.description',
       icon: require('@site/static/img/feature_private_cloud.svg').default,
       link: '/docs/onpremise/getting-started',
@@ -43,7 +43,7 @@ const ProductCards = () => {
       id: 'cmp',
       name: '多云管理',
       nameId: 'productCards.cmp.name',
-      description: '管理多云资源,统一管控主流公有云和私有云',
+      description: '统一管理主流公有云和私有云资源',
       descriptionId: 'productCards.cmp.description',
       icon: require('@site/static/img/feature_cloud_manager.svg').default,
       link: '/docs/cmp/getting-started',
@@ -76,7 +76,7 @@ const ProductCards = () => {
       id: 'baremetal',
       name: '裸金属',
       nameId: 'productCards.baremetal.name',
-      description: '一个能进行物理机全生命周期管理的裸机云',
+      description: '物理机全生命周期自动化管理',
       descriptionId: 'productCards.baremetal.description',
       icon: require('@site/static/img/feature_baremetal.svg').default,
       link: '/docs/baremetal/getting-started',
@@ -136,21 +136,6 @@ const ProductCards = () => {
                   <p className={styles.productCardDescription}>
                     <Translate id={product.descriptionId}>{product.description}</Translate>
                   </p>
-                  <div className={styles.productCardSteps}>
-                    {product.steps.map((step, index) => (
-                      <div key={index} className={styles.productCardStep}>
-                        <div className={styles.stepNumber}>{index + 1}</div>
-                        <div className={styles.stepContent}>
-                          <div className={styles.stepTitle}>
-                            <Translate id={step.titleId}>{step.title}</Translate>
-                          </div>
-                          <div className={styles.stepDescription}>
-                            <Translate id={step.descriptionId}>{step.description}</Translate>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
                   <Link
                     to={product.link}
                     className={styles.productCardButton}
