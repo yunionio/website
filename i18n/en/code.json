@@ -289,8 +289,128 @@
   "homepage.getStarted": {
     "message": "Get Started"
   },
+  "homepage.getStartedOnpremise": {
+    "message": "Private Cloud"
+  },
+  "homepage.getStartedCmp": {
+    "message": "Multi-Cloud Management"
+  },
+  "homepage.getStartedBaremetal": {
+    "message": "Baremetal Management"
+  },
+  "productCards.onpremise.name": {
+    "message": "Private Cloud"
+  },
+  "productCards.onpremise.description": {
+    "message": "Lightweight private cloud with KVM virtualization, GPU passthrough, and VMware integration"
+  },
+  "productCards.cmp.name": {
+    "message": "Multi-Cloud Management"
+  },
+  "productCards.cmp.description": {
+    "message": "Unified management of multiple public and private cloud platforms, simplifying multi-cloud complexity"
+  },
+  "productCards.baremetal.name": {
+    "message": "Baremetal Management"
+  },
+  "productCards.baremetal.description": {
+    "message": "Full lifecycle management of physical machines with OS installation and RAID configuration"
+  },
+  "productCards.title": {
+    "message": "Quick Start"
+  },
+  "productCards.subtitle": {
+    "message": "Choose your deployment method and start using Cloudpods"
+  },
+  "productCards.quickStart": {
+    "message": "Quick Start"
+  },
+  "productCards.onpremise.step1.title": {
+    "message": "Install Cloudpods"
+  },
+  "productCards.onpremise.step1.description": {
+    "message": "One-click deployment of private cloud environment"
+  },
+  "productCards.onpremise.step2.title": {
+    "message": "Create Virtual Machine"
+  },
+  "productCards.onpremise.step2.description": {
+    "message": "Create VM using Web UI or CLI"
+  },
+  "productCards.onpremise.step3.title": {
+    "message": "Manage Resources"
+  },
+  "productCards.onpremise.step3.description": {
+    "message": "Monitor, scale and optimize your private cloud"
+  },
+  "productCards.onpremise.button": {
+    "message": "Start using Private Cloud >"
+  },
+  "productCards.cmp.step1.title": {
+    "message": "Access Cloud Account"
+  },
+  "productCards.cmp.step1.description": {
+    "message": "Add Alibaba Cloud, AWS, Tencent Cloud, etc."
+  },
+  "productCards.cmp.step2.title": {
+    "message": "Unified View"
+  },
+  "productCards.cmp.step2.description": {
+    "message": "View all cloud resources in a unified interface"
+  },
+  "productCards.cmp.step3.title": {
+    "message": "Batch Operations"
+  },
+  "productCards.cmp.step3.description": {
+    "message": "Cross-cloud platform batch management of resources"
+  },
+  "productCards.cmp.button": {
+    "message": "Start using Multi-Cloud Management >"
+  },
+  "productCards.baremetal.step1.title": {
+    "message": "Discover Servers"
+  },
+  "productCards.baremetal.step1.description": {
+    "message": "Automatically discover physical machines and add them to management"
+  },
+  "productCards.baremetal.step2.title": {
+    "message": "Deploy Operating System"
+  },
+  "productCards.baremetal.step2.description": {
+    "message": "Automated deployment via PXE"
+  },
+  "productCards.baremetal.step3.title": {
+    "message": "Monitoring and Maintenance"
+  },
+  "productCards.baremetal.step3.description": {
+    "message": "Hardware monitoring and remote management"
+  },
+  "productCards.baremetal.button": {
+    "message": "Start using Baremetal >"
+  },
+  "productSelector.viewDocs": {
+    "message": "View Documentation"
+  },
+  "productSelector.restart": {
+    "message": "Restart Selection"
+  },
+  "productSelector.back": {
+    "message": "Back"
+  },
+  "productSelector.consultTitle": {
+    "message": "Consult Assistant"
+  },
+  "productSelector.consultDesc": {
+    "message": "If you have other requirements or are unsure which product to choose, please contact our technical support team for assistance."
+  },
+  "productSelector.contactSupport": {
+    "message": "Contact Support"
+  },
   "homepage.subtitle": {
     "message": "A cloud-native open-source unified cloud platform"
+  },
+  "homepage.tagline": {
+    "message": "Build your own cloud on clouds"
   },
   "homepage.buildown": {
     "message": "Build your own cloud on clouds"
@@ -323,7 +443,7 @@
     "message": "A lightweight private cloud capable of managing massive KVM virtual machines"
   },
   "homepage.featureBaremetal": {
-    "message": "Bare metal"
+    "message": "Baremetal"
   },
   "homepage.featureBaremetalDesc": {
     "message": "A bare metal cloud capable of managing the entire lifecycle of physical machines"
