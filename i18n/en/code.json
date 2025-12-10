@@ -302,19 +302,19 @@
     "message": "Private Cloud"
   },
   "productCards.onpremise.description": {
-    "message": "Lightweight private cloud with KVM virtualization, GPU passthrough, and VMware integration"
+    "message": "Manage massive KVM virtual machines and containerd container resources"
   },
   "productCards.cmp.name": {
     "message": "Multi-Cloud Management"
   },
   "productCards.cmp.description": {
-    "message": "Unified management of multiple public and private cloud platforms, simplifying multi-cloud complexity"
+    "message": "Unified management of mainstream public and private cloud resources"
   },
   "productCards.baremetal.name": {
     "message": "Baremetal Management"
   },
   "productCards.baremetal.description": {
-    "message": "Full lifecycle management of physical machines with OS installation and RAID configuration"
+    "message": "Full lifecycle management and automation of physical machines"
   },
   "productCards.title": {
     "message": "Quick Start"
