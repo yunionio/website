@@ -302,7 +302,7 @@
     "message": "Private Cloud"
   },
   "productCards.onpremise.description": {
-    "message": "Manage massive KVM virtual machines and containerd container resources"
+    "message": "Manage massive KVM virtual machines resources"
   },
   "productCards.cmp.name": {
     "message": "Multi-Cloud Management"
