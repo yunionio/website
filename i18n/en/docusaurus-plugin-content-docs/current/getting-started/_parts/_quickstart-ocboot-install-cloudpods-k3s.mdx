@@ -1,0 +1,36 @@
+import OcbootReleaseDownload from '../_parts/_quickstart-ocboot-release-download.mdx';
+
+<OcbootReleaseDownload />
+
+### Run Deployment Tool
+
+Next, execute `ocboot.sh run.py` to deploy the service. Where **host_ip** is the IP address of the deployment node, this parameter is optional. If not specified, the network interface that goes out through the default route will be selected to deploy the service. If your node has multiple network interfaces, you can select the corresponding network interface to listen to the service by specifying **host_ip**.
+
+import OcbootRun from '@site/src/components/OcbootK3sRun';
+
+<OcbootRun productVersion={props.productVersion} />
+
+The `./ocboot.sh run.py` script will call ansible to deploy the service. If the script exits due to problems during the deployment process, you can repeat the script to retry.
+
+## Deployment Complete
+
+```bash
+....
+# After deployment is complete, there will be the following output, indicating successful operation
+# Open https://10.168.26.216 in the browser, this ip is the <host_ip> set earlier
+# Use admin/admin@123 username and password to log in to access the frontend interface
+Initialized successfully!
+Web page: https://10.168.26.216
+User: admin
+Password: admin@123
+```
+
+Then use a browser to access https://10.168.26.216, enter `admin` for username and `admin@123` for password to enter the Cloudpods interface.
+
+![Login Page](../images/index.png)
+
+#### When accessing the environment using a domain name, you need to modify the api_server access endpoint (optional)
+
+The `api_server` configuration is the access endpoint address of the entire platform, which will affect the connection of frontend virtual machine VNC or Web SSH and CloudShell. Generally, if you cannot enter the virtual machine through Web SSH or open CloudShell, it is because the api_server configuration is not set correctly.
+
+You need to refer to the documentation: [Modify Service api_server Entry Configuration](../../operations/fe/config-ssl-certs#change-api-server-via-climc), and manually modify it according to your environment's network situation.

@@ -1,0 +1,37 @@
+:::tip Notes:
+- The operating system needs to be a clean version, because the deployment tool will build a k3s cluster of the specified version from scratch, so ensure that the system does not have kubernetes, containerd and other container management tools installed, otherwise conflicts will occur causing installation exceptions.
+- Minimum configuration requirements: CPU 8 cores, memory 8GiB, storage 200GiB.
+- The storage paths for virtual machines and services are all under the **/opt** directory, so ideally it is recommended to set up a separate mount point for the **/opt** directory.
+    - For example, partition /dev/sdb1 separately as ext4 and mount it to the /opt directory via /etc/fstab.
+:::
+
+
+Depending on the CPU architecture, the supported distributions are also different. The currently supported distributions are as follows:
+
+Note: 3.11, 3.10, etc. represent Release/3.11, Release/3.10. The same applies to others.
+
+| Operationg system and Arch             | 3.11 | 3.10 |
+| -------------------------------------- | ---- | ---- |
+| OpenEuler 22.03 LTS SP3 x86_64+aarch64 | ✅    | ✅    |
+| OpenEuler 22.03 LTS SP4 x86_64+aarch64 | ✅    |       |
+| OpenEuler 24.03 LTS SP2 x86_64+aarch64 | ✅    |       |
+| CentOS 7 2009 x86_64+aarch64           | ✅    | ✅    |
+| CentOS 8 Stream x86_64+aarch64         | ✅    |       |
+| CentOS 9 Stream x86_64+aarch64         | ✅    |       |
+| CentOS 10 Stream x86_64+aarch64        | ✅    |       |
+| Debian 11 x86_64+aarch64               | ✅    | ✅    |
+| Debian 12 x86_64+aarch64               | ✅    |       |
+| Debian 13 x86_64+aarch64               | ✅    |       |
+| Ubuntu 20.04 LTS x86_64+aarch64        | ✅    |       |
+| Ubuntu 22.04 LTS x86_64+aarch64        | ✅    |       |
+| Ubuntu 24.04 LTS x86_64+aarch64        | ✅    |       |
+| Ubuntu 25.04 x86_64+aarch64            | ✅    |       |
+| Rocky Linux 8.x  x86_64+aarch64        | ✅    |       |
+| Rocky Linux 9.x  x86_64+aarch64        | ✅    |       |
+| Rocky Linux 10.x x86_64+aarch64        | ✅    |       |
+| AlmaLinux 8.x  x86_64+aarch64          | ✅    |       |
+| AlmaLinux 9.x  x86_64+aarch64          | ✅    |       |
+| AlmaLinux 10.x x86_64+aarch64          | ✅    |       |
+| OpencloudOS 8.x x86_64+aarch64         | ✅    |       |
+| OpencloudOS 9.x x86_64+aarch64         | ✅    |       |
+| AnolisOS 8.x x86_64+aarch64            | ✅    |       |

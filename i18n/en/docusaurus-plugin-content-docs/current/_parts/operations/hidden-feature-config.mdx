@@ -1,0 +1,92 @@
+## Hidden Feature Configuration
+
+### Introduction
+
+Cloudpods has been under development since 2017, with a long accumulation period. However, the codebase is large, with many features, and some code has not been iteratively maintained for a long time. Therefore, in the community free version frontend, we selectively hide some features that have the following characteristics:
+
+1. Not mature enough;
+2. Lack of maintenance;
+3. Rarely used;
+4. Feature components that are complex and difficult to understand and use;
+
+This reduces maintenance and support costs while improving the user experience.
+
+The code for hidden features is still maintained in the open source project repository.
+
+Based on these reasons, starting from v3.8.7, we have gradually hidden some features. If users need these features, they can choose the following ways to enable them:
+
+1. Submit an issue to request enabling this feature;
+2. Some features can be enabled via climc;
+3. Fork your own frontend version and enable this feature.
+
+### Enable Hidden Feature Using climc
+
+For example, in version 3.9, we hide k8s container cluster management, JD Cloud public cloud management, and other features by default; we enable commonly used Alibaba Cloud, AWS, and other public cloud management features by default. Users can enable or disable corresponding features according to their needs using the climc command-line tool.
+
+#### Example
+
+```bash
+# View all supported features
+$ climc --help | grep feature-config
+```
+
+The format and parameters of the subcommand are as follows:
+
+```bash
+$ climc feature-config-$feature --switch {on|off}
+# $feature: represents the specific feature name, such as: k8s, s3, jdcloud, etc.
+# on: means enable
+# off: means disable
+```
+
+For example, the command to enable/disable k8s container cluster management feature is:
+
+```bash
+# Enable
+$ climc feature-config-k8s --switch on
+
+# Disable
+$ climc feature-config-k8s --switch off
+```
+
+For example, the command to enable/disable JD Cloud management feature is:
+
+```bash
+# Enable
+$ climc feature-config-jdcloud --switch on
+
+# Disable
+$ climc feature-config-jdcloud --switch off
+```
+
+#### Feature Reference Table
+
+| Name      | Feature                    | climc Subcommand             |
+|-----------|----------------------------|------------------------------|
+| onestack  | KVM Virtualization Management | `feature-config-onestack`  |
+| baremetal | Bare Metal Management      | `feature-config-baremetal` |
+| lb        | Load Balancer Management   | `feature-config-lb`        |
+| aliyun    | Alibaba Public Cloud Management | `feature-config-aliyun`    |
+| aws       | AWS Amazon Public Cloud Management | `feature-config-aws`       |
+| azure     | Azure Microsoft Public Cloud Management | `feature-config-azure`     |
+| google    | Google Public Cloud Management | `feature-config-google`    |
+| qcloud    | Tencent Public Cloud Management | `feature-config-qcloud`    |
+| ctyun     | China Telecom Public Cloud Management | `feature-config-ctyun`     |
+| huawei    | Huawei Public Cloud Management | `feature-config-huawei`    |
+| ucloud    | UCloud Public Cloud Management | `feature-config-ucloud`    |
+| ecloud    | China Mobile Public Cloud Management | `feature-config-ecloud`    |
+| jdcloud   | JD Cloud Public Cloud Management | `feature-config-jdcloud`   |
+| vmware    | VMWare Management          | `feature-config-vmware`    |
+| openstack | OpenStack Private Cloud Management | `feature-config-openstack` |
+| zstack    | ZStack Private Cloud Management | `feature-config-zstack`    |
+| apsara    | Alibaba Apsara Private Cloud Management | `feature-config-apsara`    |
+| cloudpods | Cloudpods Private Cloud Management | `feature-config-cloudpods` |
+| hcso      | Huawei HCSO Private Cloud Management | `feature-config-hcso`      |
+| nutanix   | Nutanix Hyper-converged Management | `feature-config-nutanix`   |
+| s3        | Generic S3 Object Storage Management | `feature-config-s3`        |
+| ceph      | Ceph Rados Object Storage Management | `feature-config-ceph`      |
+| xsky      | Xsky Storage Management    | `feature-config-xsky`      |
+| k8s       | K8S Container Cluster Management | `feature-config-k8s`       |
+| proxmox   | PVE Virtualization Management | `feature-config-proxmox`   |
+| volcengine   | Volcengine Public Cloud Management | `feature-config-volcengine`   |
+| oraclecloud   | Oracle Public Cloud Management | `feature-config-oraclecloud`   |

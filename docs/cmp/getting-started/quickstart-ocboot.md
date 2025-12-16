@@ -18,19 +18,19 @@ draft: true
 
 ### 机器配置要求
 
-import OcbootEnv from '../../getting-started/_parts/_quickstart-ocboot-env.mdx';
+import OcbootEnv from '../../shared/getting-started/_parts/_quickstart-ocboot-env.mdx';
 
 <OcbootEnv />
 
 ## 安装 ansible 和 git
 
-import OcbootAnsible from '../../getting-started/_parts/_quickstart-ocboot-ansible.mdx';
+import OcbootAnsible from '../../shared/getting-started/_parts/_quickstart-ocboot-ansible.mdx';
 
 <OcbootAnsible />
 
 ## 安装 Cloudpods
 
-import OcbootInstallCloudpods from '../../getting-started/_parts/_quickstart-ocboot-install-cloudpods.mdx';
+import OcbootInstallCloudpods from '../../shared/getting-started/_parts/_quickstart-ocboot-install-cloudpods.mdx';
 
 <OcbootInstallCloudpods productVersion="cmp" />
 
@@ -39,7 +39,7 @@ import OcbootInstallCloudpods from '../../getting-started/_parts/_quickstart-ocb
 
 ### 导入公有云或者其它私有云平台资源
 
-import UseCMP from '../../getting-started/_parts/_quickstart-use-cmp.mdx';
+import UseCMP from '../../shared/getting-started/_parts/_quickstart-use-cmp.mdx';
 
 <UseCMP />
 
@@ -47,7 +47,7 @@ import UseCMP from '../../getting-started/_parts/_quickstart-use-cmp.mdx';
 
 ### 1. 如何重装?
 
-import FAQReset from '../../getting-started/_parts/_quickstart-faq-reset.md';
+import FAQReset from '../../shared/getting-started/_parts/_quickstart-faq-reset.md';
 
 <FAQReset />
 

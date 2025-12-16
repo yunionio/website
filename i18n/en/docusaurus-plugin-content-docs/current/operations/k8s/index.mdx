@@ -1,0 +1,25 @@
+---
+sidebar_position: 6
+---
+
+# Kubernetes Operations
+
+Introduction to Kubernetes operations management as the platform foundation
+
+Cloudpods services deployed using ocboot run on Kubernetes. This chapter introduces Kubernetes cluster operations-related knowledge and techniques.
+
+Each service binary runs in Kubernetes Pods. For how to diagnose service component issues within Pods, please refer to [Troubleshooting Pod Abnormalities](./poderror).
+
+Container networking between Pods uses the Calico network plugin. For how to troubleshoot Pod network issues, please refer to [Troubleshooting Pod Network Issues](./dnserror).
+
+Kubernetes has a container eviction mechanism. When host CPU, memory, and storage usage reach certain thresholds, Kubernetes will actively stop containers. This mechanism is beneficial for stateless services, as it can proactively avoid service degradation due to insufficient host resources. However, for stateful services, such as the host service on each host, this mechanism amplifies the harm of resource shortages. What was originally just possible service capability degradation due to resource shortages becomes complete service unavailability due to the Eviction mechanism. Therefore, we should try to avoid Kubernetes triggering Eviction. [Adjusting Kubernetes Node Eviction Threshold](./eviction_threshold) introduces methods to adjust the Eviction mechanism of Kubernetes container clusters.
+
+Kubernetes does not have systemd's ability to stop and start services. [Pause Cluster Services](./halt_cluster) introduces methods to pause and restore services through operator.
+
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />
+
+
+

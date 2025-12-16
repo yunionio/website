@@ -1,0 +1,144 @@
+---
+sidebar_position: 5
+---
+
+# Deploy Load Balancer Cluster
+
+A load balancer cluster generally consists of two lbagents forming a high availability cluster with active-standby switching, where keepalived is used to achieve automatic active-standby switching.
+
+Lbagent is the node responsible for load balancer data forwarding and can be deployed on classic network virtual machines or physical machines.
+
+Lbagent deploys the following software internally to achieve high availability Layer 4 and Layer 7 load balancing:
+
+* haproxy: Responsible for TCP Layer 4 load balancing and http/https Layer 7 load balancing
+* gobetween: Responsible for UDP Layer 4 load balancing forwarding
+* keepalived: Responsible for active-standby node switching
+
+Before using the load balancing feature, you need to have a load balancer cluster composed of Lbagents that implements load balancing forwarding functionality.
+This article describes how to deploy Lbagents to form a load balancer cluster.
+
+## Deploy Lbagent for Versions 3.10 (Inclusive) and Later
+
+Since version 3.10 (inclusive), load balancing has begun to support load balancing for virtual machines within VPCs and can attach EIPs. At the same time, the deployment process has been updated to:
+
+1. Use ocboot to deploy existing virtual machines or physical machines as lbagent nodes
+2. Create lbcluster
+3. Associate a pair of lbagent nodes with an lbcluster to achieve automated configuration of lbagents
+
+### Lbagent Node Deployment
+
+Using ocboot, use the following command to deploy a classic network virtual machine or physical machine with address \<ip_of_lbagent_node\> as an lbagent:
+
+import OcbootReleaseDownload from '../../shared/getting-started/_parts/_quickstart-ocboot-release-download.mdx';
+
+<OcbootReleaseDownload />
+
+Deploy Lbagent node:
+
+```bash
+$ ./ocboot.sh add-lbagent <ip_of_master_node> <ip_of_lbagent_node>
+```
+
+The successfully deployed lbagent node is a node in the k8s cluster and has the following label:
+
+```
+onecloud.yunion.io/lbagent=enable
+```
+
+Then go to the Web frontend console to create a "Load Balancer Cluster" and associate "Nodes" to the corresponding cluster.
+
+Note: After version 3.10 (inclusive), load balancer nodes will not automatically associate with load balancer clusters after deployment. Manual association is required. After association, the load balancing components on the nodes will start working normally. You can associate in the web console, or associate through the following climc command:
+
+```bash
+$ climc lbagent-join-cluster --cluster-id CLUSTER_ID AGENT_ID
+```
+
+### Deploy Lbagent for Versions 3.9 (Inclusive) and Earlier
+
+Versions 3.9 (inclusive) and earlier only support classic network load balancing. Lbagent is deployed through the frontend interface. The deployment process is as follows:
+
+1. Create a load balancer cluster (lbcluster)
+2. Create a pair of lbagents for the lbcluster
+3. On the lbagent list in the frontend interface, click "Deploy" on the lbagent, enter the keystone account, repo address and other information required by the lbagent, and use the backend ansible script to automatically deploy the lbagent.
+
+#### Upgrade Lbagent from Versions 3.9 (Inclusive) and Earlier to 3.10
+
+For lbagent nodes that have deployed versions 3.9 (inclusive) and earlier, you can upgrade to 3.10 lbagent through the following steps:
+
+* Install 3.10 yum repo
+```bash
+cat > /etc/yum.repos.d/yunion.repo << EOF
+[yunion]
+name=Packages for Yunion- $basearch
+baseurl=https://iso.yunion.cn/centos/7/3.10/x86_64
+failovermethod=priority
+enabled=1
+gpgcheck=0
+sslverify=1
+EOF
+```
+
+Update yum database:
+
+```bash
+yum clean all
+yum makecache
+```
+
+* Update the node's kernel to the latest compute node kernel, restart the node to make the new kernel take effect
+
+```bash
+yum install -y kernel-5.4.130 linux-firmware
+```
+
+* Install ovs and ovn software packages
+
+```bash
+yum install -y openvswitch openvswitch-ovn-common openvswitch-ovn-host kmod-openvswitch
+```
+
+* Set ovs to start automatically on boot
+
+```bash
+systemctl enable --now openvswitch
+```
+
+* Initialize ovn-controller: 
+
+Where: xx is the IP address of the lbagent's main network interface, and yy is the IP address (access_ip) of the host where the ovn-northd container is located.
+```bash
+# Configure ovn
+ovn_encap_ip=xx							# Tunnel outer IP address, EIP gateway uses it to communicate with other compute nodes
+ovn_north_addr=yy:32242					# Address of ovn northbound database, yy is generally selected as the IP address of a host; the port defaults to 32242, corresponding to the port number in the k8s default-ovn-north service
+ovs-vsctl set Open_vSwitch . \
+	external_ids:ovn-bridge=brvpc \
+	external_ids:ovn-encap-type=geneve \
+	external_ids:ovn-encap-ip=$ovn_encap_ip \
+	external_ids:ovn-remote="tcp:$ovn_north_addr"
+# Start ovn-controller
+systemctl enable --now ovn-controller
+```
+
+* Modify lbagent configuration
+
+Modify /etc/yunion/lbagent.conf and add the following two parameters:
+
+```bash
+interface = 'eth0' # Name of lbagent's main network card, e.g., eth0
+access_ip = 'xx.xx.xx.xx' # Main IP address of the main network card
+```
+
+
+* Install the latest yunion-lbgent and restart
+
+```bash
+yum install -y yunion-lbagent
+systemctl daemon-reload
+systemctl restart yunion-lbagent
+```
+
+* Modify SSH listening port and address
+
+Generally, the SSH service listens on 0.0.0.0:22 by default, which causes if you configure a listener listening on port 22 on the lbagent, all addresses' port 22 will be occupied, resulting in listener configuration failure, which in turn causes all listeners to fail. Therefore, it is recommended to configure the lbagent's SSH service to listen on a specific IP's (e.g., management IP) port 22, or another port.
+
+For other services on the lbagent that listen on 0.0.0.0, similar configuration should be made to avoid conflicts with haproxy's listener listening ports.

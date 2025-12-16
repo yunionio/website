@@ -1,0 +1,418 @@
+---
+sidebar_position: 50
+---
+
+# Manually Install Monitoring Agent
+
+Introduction to manually installing monitoring Agent in platform virtual machines to collect monitoring information.
+
+### Prerequisites
+
+Monitoring data collected by virtual machine monitoring Agent needs to be reported to the platform's monitoring database. Before version 3.10, the default installed monitoring database was influxdb. Starting from version 3.10 (inclusive), the default installed monitoring database is victoria-metrics. However, regardless of influxdb or victoria-metrics, the monitoring agent reports monitoring data using the same protocol.
+
+Therefore, you need to obtain the external address of the monitoring database (influxdb or victoria-metrics) and determine whether the virtual machine can directly connect to the monitoring database.
+
+- If the virtual machine can directly connect to the monitoring database, directly install the monitoring Agent and configure the monitoring metrics collected by telegraf
+- If the virtual machine cannot directly connect to the monitoring database, you need to configure an SSH proxy node, establish a connection between the virtual machine and the monitoring database, then install the monitoring Agent and configure the monitoring metrics collected by telegraf.
+
+#### Get Monitoring Database Address
+
+```bash
+# Before 3.10, get the external address and port number of InfluxDB. After 3.10 (inclusive), get the external address and port number of victoria-metrics
+$ climc endpoint-list --service influxdb --interface public
++----------------------------------+-----------+----------------------------------+---------------------------+-----------+---------+
+|                ID                | Region_ID |            Service_ID            |            URL            | Interface | Enabled |
++----------------------------------+-----------+----------------------------------+---------------------------+-----------+---------+
+| 6b798cb7614149a48bd6d49e23d87b01 | region0   | 294631b8534b48d2896fe83b82081855 | https://192.168.0.2:30086 | public    | true    |
++----------------------------------+-----------+----------------------------------+---------------------------+-----------+---------+
+***  Total: 1 Pages: 1 Limit: 20 Offset: 0 Page: 1  ***
+$ climc endpoint-list --service victoria-metrics --interface public
++----------------------------------+-----------+----------------------------------+---------------------------+-----------+---------+
+|                ID                | Region_ID |            Service_ID            |            URL            | Interface | Enabled |
++----------------------------------+-----------+----------------------------------+---------------------------+-----------+---------+
+| 6b798cb7614149a48bd6d49e23d87b01 | region0   | 294631b8534b48d2896fe83b82081855 | https://192.168.0.2:30428 | public    | true    |
++----------------------------------+-----------+----------------------------------+---------------------------+-----------+---------+
+***  Total: 1 Pages: 1 Limit: 20 Offset: 0 Page: 1  ***
+```
+
+#### Configure SSH Proxy Node
+
+1. Query whether there is an SSH proxy node under the VPC or IP subnet where the virtual machine is located.
+
+```bash
+# Query whether there is an SSH proxy node under the VPC where the virtual machine is located. The vpcID here is the UUID generated after syncing to the cloud management, not the original vpcID of the public cloud
+$ climc proxy-endpoint-list --vpc-id <vpc的ID> --scope system
+# If networks are isolated between IP subnets under the VPC, you need to query whether there is an SSH proxy node under the IP subnet where the virtual machine is located
+$ climc proxy-endpoint-list --network-id <IP子网的ID> --scope system
+```
+2. If there is an SSH proxy node under the network where the virtual machine is located, skip the step of creating a new SSH proxy node, and directly configure the remote rule to the monitoring database under the SSH proxy node, so that monitoring data can be reported to the monitoring database.
+
+#### Create New SSH Proxy Node
+
+If the network where the virtual machine is located cannot directly communicate with the platform's monitoring database, you need to select a Linux operating system virtual machine in the VPC or IP subnet where the virtual machine is located as an SSH proxy node. The virtual machine needs to meet the following configuration requirements
+
+**Virtual Machine Configuration Requirements**
+
+- Currently only Linux operating system virtual machines are supported as SSH proxy nodes.
+- Please ensure the virtual machine is in running state;
+- Please ensure the virtual machine supports passwordless login through the platform; For a virtual machine to be passwordless login by the platform, it requires that the virtual machine and the platform network are connected (i.e., through EIP, NAT gateway, or SSH proxy, etc., to make the virtual machine and platform network connected) and that the platform's public key file exists in the virtual machine.
+- Please check the virtual machine's sshd configuration. GatewayPorts should be clientspecified. If this value is no, only binding to 127.0.0.1 address is allowed, making remote forward unable to work normally, causing virtual machines with monitoring Agent installed unable to report monitoring data to the platform, etc.
+
+**Operation Steps**
+
+1. On the SSH proxy node page#, click the **_"New"_** button above the list to enter the new SSH proxy node page.
+2. On the select virtual machine page, set the following parameters:
+    - Domain: Set the domain to which the SSH proxy node belongs, and filter optional virtual machines by domain.
+    - Name: Set the name of the SSH proxy node.
+    - Region: Filter VPCs by platform and region.
+    - Network: Filter virtual machines by VPC and network.
+    - Virtual Machine: Filter qualified virtual machines through the above filter conditions, and support searching for virtual machines by name and IP in the search box. If there is no suitable virtual machine, you can click the "New" hyperlink to jump to the virtual machine list page to create a virtual machine that meets the requirements.
+3. After selecting the virtual machine, click the **_"Next"_** button to start detecting the virtual machine's passwordless login status.
+    - If the virtual machine can be passwordless login, you can directly click the **_"OK"_** button to start creating the virtual machine.
+    - If the virtual machine cannot be passwordless login, please first click the **_"View"_** button in the list operation column to view the specific reason for the passwordless login detection failure.
+        - If the error reason indicates "none publickey", you can set the virtual machine to passwordless login status through the set passwordless login function. The passwordless login configuration parameters are as follows:
+            - Setting method: Supports key, password, script and other methods to upload the platform's public key to the virtual machine.
+            - When the setting method is "key", please use the root user or a user with sudo passwordless permission with their private key. Please ensure that you can connect to the corresponding virtual machine via ssh using the username and private key. Click the **_"OK"_** button to start setting and detecting whether the virtual machine's passwordless login status changes to passwordless login.
+            - When the setting method is "password", please use the root user or a user with sudo passwordless permission with their password. Please ensure that you can connect to the corresponding virtual machine via ssh using the username and password. Click the **_"OK"_** button to start setting and detecting whether the virtual machine's passwordless login status changes to passwordless login.
+            - When the setting method is "script", please use root or a user with sudo permission to execute the following script in the virtual machine. After execution is complete, click the **_"OK"_** button to start setting and detecting whether the virtual machine's passwordless login status changes to passwordless login.
+        - If the error reason indicates "network error", you need to return to the previous step to select another virtual machine, or bind EIP or NAT gateway to the virtual machine to make it connected to the platform network.
+4. Only when the virtual machine's passwordless login status is "passwordless login" can you click the **_"OK"_** button to start creating the SSH proxy node.
+5. When creating the SSH proxy node, the virtual machine's sshd configuration will be checked to see if it meets the virtual machine configuration requirements. If it does not meet the requirements, it will try to change the virtual machine's sshd configuration. This may cause the creation of the ssh proxy node to take a long time. If a timeout is prompted, please click the **_"OK"_** button again to create the SSH proxy node.
+
+#### Configure Remote Rule
+
+When configuring the telegraf file later, the monitoring database address to be configured is "SSH proxy node address:\<mapped bound port number\>"
+
+```bash
+# Configure the remote rule to the monitoring database on the ssh proxy node so that monitoring data can be reported to the platform's monitoring database.
+$ climc proxy-forward-create --proxy-endpoint-id <ssh代理节点的ID> --type remote --remote-addr <influxdb/victoria-metrics的IP地址> --remote-port <influxdb/victoria-metrics的端口号> --bind-port-req <映射绑定的端口号> <remote规则的名称>
+# The following example shows how to create the corresponding remote rule, that is, map the address 10.127.100.2:30086 to 10.0.9.254:30086. The monitoring database address in the subsequent telegraf configuration is "https://10.0.9.254:30086"
+$ climc proxy-forward-create --proxy-endpoint-id dba57f12-4f9f-4d60-8789-7dc0fe4efc6a --type remote --remote-addr 10.127.100.2 --remote-port 30086 --bind-port-req 30086 remote-influxdb
++-------------------+--------------------------------------+
+|       Field       |                Value                 |
++-------------------+--------------------------------------+
+| bind_addr         | 10.0.9.254                           |
+| bind_port         | 30086                                |
+| bind_port_req     | 0                                    |
+| can_delete        | true                                 |
+| can_update        | true                                 |
+| created_at        | 2021-12-09T06:30:32.000000Z          |
+| deleted           | false                                |
+| domain_id         | default                              |
+| freezed           | false                                |
+| id                | 3268655c-b816-4e4c-8250-88c67773ecff |
+| is_emulated       | false                                |
+| is_system         | false                                |
+| last_seen_timeout | 117                                  |
+| name              | remote-influxdb                      |
+| pending_deleted   | false                                |
+| project_src       | local                                |
+| proxy_agent       | proxyagent0                          |
+| proxy_agent_id    | 330e097e-59e4-4c65-8414-05d6d945e1c0 |
+| proxy_endpoint    | helanzhu                             |
+| proxy_endpoint_id | dba57f12-4f9f-4d60-8789-7dc0fe4efc6a |
+| remote_addr       | 10.127.100.2                         |
+| remote_port       | 30086                                |
+| status            | init                                 |
+| tenant_id         | 55bb511b62bf47dc86e82c731005ba10     |
+| type              | remote                               |
+| update_version    | 0                                    |
+| updated_at        | 2021-12-09T06:30:32.000000Z          |
++-------------------+--------------------------------------+
+```
+
+### Install Monitoring Agent
+
+Monitoring Agent installation package: [Download path](https://yunioniso.oss-cn-beijing.aliyuncs.com/rpms/telegraf/index.html)
+
+The installation package names are different for different operating systems. Please download the corresponding Agent installation package according to the specific system.
+
+| OS      | Arch   | Package Name                                  |
+| ------- | ------ | --------------------------------------------- |
+| RedHat  | x86_64 | telegraf-1.19.2-yn~fe11a96b-0.x86_64.rpm      |
+| RedHat  | arm64  | telegraf-1.19.2-yn~fe11a96b-0.aarch64.rpm     |
+| Debian  | x86_64 | telegraf_1.19.2-yn~fe11a96b-0_amd64.deb       |
+| Debian  | arm64  | telegraf_1.19.2-yn~fe11a96b-0_arm64.deb       |
+| Windows | x86_64 | telegraf-1.19.2-yn~3bc1d95c_windows_amd64.zip |
+| Windows | X86    | telegraf-1.19.2-yn~3bc1d95c_windows_i386.zip  |
+
+#### Download Monitoring Agent Installation Package
+
+The following uses $Package to represent the specific installation package name. Please replace it when using.
+
+**Linux**
+```bash
+# Download the installation package to /tmp directory
+$ wget https://yunioniso.oss-cn-beijing.aliyuncs.com/rpms/telegraf/$Package -P /tmp
+```
+**Windows**
+
+Manually download `/$Package` and extract it to a specified directory, such as `C:\\telegraf`
+
+
+#### Prepare Configuration File
+
+Prepare the monitoring Agent configuration file
+
+**Linux**
+
+```bash
+# Create a new telegraf configuration file in the tmp directory
+$ touch /tmp/telegraf.conf
+```
+
+**Windows**
+
+Create a new `telegraf.conf` file in the `C:\\telegraf` directory.
+
+The telegraf configuration file mainly includes the following content:
+
+##### global_tags
+
+global_tags contains information such as virtual machine ID, name, host, domain, project, region, availability zone, platform, etc. Please modify the content in global_tags according to the specific information of the virtual machine. The monitoring information returned later will also include these tags, so you can query the virtual machine's monitoring information through some conditions in monitoring queries.
+
+```bash
+[global_tags]
+    zone_ext_id = ""
+    os_type = "Linux"
+    scaling_group_id = ""
+    host_id = "3bce9607-2597-469f-8d9b-977345456739"
+    vm_id = "5b966ffa-1b4a-4648-8c6a-7617bb7bb76e"
+    zone_id = "3032cb4d-558a-4833-88e6-7b5bcabb47d1"
+    cloudregion = "Beijing"
+    domain_id = "default"
+    zone = "YunionHQ"
+    region_ext_id = ""
+    tenant = "system"
+    tenant_id = ""
+    brand = "OneCloud"
+    host = "office-03-host01"
+    vm_name = "test-agent"
+    status = "running"
+    cloudregion_id = "default"
+    project_domain = "Default"
+```
+##### agent configuration information
+
+Including monitoring collection, virtual machine name and other related configurations. Except for the virtual machine name, other parameters are recommended to keep the default.
+```bash
+# Configuration for telegraf agent
+[agent]
+    interval = "10s"
+    debug = false
+    hostname = "test-agent.test.io"
+    round_interval = true
+    flush_interval = "10s"
+    flush_jitter = "0s"
+    collection_jitter = "0s"
+    metric_batch_size = 1000
+    metric_buffer_limit = 10000
+    quiet = false
+    logfile = ""
+    omit_hostname = true
+```
+##### OUTPUTS
+
+Used to set the database address for transmitting monitoring data. The platform database address defaults to "https:\/\/control node IP address:30428". For the specific platform monitoring database address, please refer to the above.
+
+- If the virtual machine can directly connect to the platform, the urls address can be directly set to the data access address;
+- If the virtual machine cannot directly connect to the platform, it needs to be done through a proxy. The urls address is the proxy address, which is: "http://\<SSH proxy node address\>:\<remote rule mapped port number\>".
+
+```bash
+#################################################################
+#                          OUTPUTS                           #
+##################################################################
+
+[[outputs.influxdb]]
+    urls = ["https://192.168.12.251:30428"]
+    database = "telegraf"
+    insecure_skip_verify = true  
+```
+##### INPUTS
+
+Mainly used to set the monitoring metrics to be collected. It is recommended to keep the default.
+
+```bash
+  ##################################################################
+#                                 INPUTS                      #
+##################################################################
+
+[[inputs.cpu]]
+    name_prefix = "agent_"
+    percpu = true
+    totalcpu = true
+    collect_cpu_time = false
+    report_active = true
+[[inputs.disk]]
+    name_prefix = "agent_"
+    ignore_fs = ["tmpfs", "devtmpfs", "overlay", "squashfs", "iso9660"]
+[[inputs.diskio]]
+    name_prefix = "agent_"
+    skip_serial_number = false
+[[inputs.kernel]]
+    name_prefix = "agent_"
+[[inputs.kernel_vmstat]]
+    name_prefix = "agent_"
+[[inputs.mem]]
+    name_prefix = "agent_"
+[[inputs.processes]]
+    name_prefix = "agent_"
+[[inputs.swap]]
+    name_prefix = "agent_"
+[[inputs.system]]
+    name_prefix = "agent_"
+[[inputs.net]]
+    name_prefix = "agent_"
+[[inputs.netstat]]
+    name_prefix = "agent_"
+[[inputs.nstat]]
+    name_prefix = "agent_"
+[[inputs.ntpq]]
+    name_prefix = "agent_"
+    dns_lookup = false
+[[inputs.internal]]
+    name_prefix = "agent_"
+    collect_memstats = false  
+```
+##### telegraf configuration file example
+
+The following is a complete telegraf example file for user reference
+
+```bash
+### MANAGED BY ansible-telegraf ANSIBLE ROLE ###
+
+[global_tags]
+    zone_ext_id = ""
+    os_type = "windows"
+    scaling_group_id = ""
+    host_id = "3bce9607-2597-469f-8d9b-977345456739"
+    vm_id = "5b966ffa-1b4a-4648-8c6a-7617bb7bb76e"
+    zone_id = "3032cb4d-558a-4833-88e6-7b5bcabb47d1"
+    cloudregion = "Beijing"
+    domain_id = "default"
+    zone = "YunionHQ"
+    region_ext_id = ""
+    tenant = "system"
+    tenant_id = ""
+    brand = "OneCloud"
+    host = "office-03-host01"
+    vm_name = "test-agent"
+    status = "running"
+    cloudregion_id = "default"
+    project_domain = "Default"
+
+
+# Configuration for telegraf agent
+[agent]
+    interval = "10s"
+    debug = false
+    hostname = "test-agent.test.io"
+    round_interval = true
+    flush_interval = "10s"
+    flush_jitter = "0s"
+    collection_jitter = "0s"
+    metric_batch_size = 1000
+    metric_buffer_limit = 10000
+    quiet = false
+    logfile = ""
+    omit_hostname = true
+
+##################################################################
+#                                 OUTPUTS                      #
+##################################################################
+# In this example, monitoring data is forwarded to the monitoring database through SSH proxy.
+[[outputs.influxdb]]
+    urls = ["https://192.168.12.251:50041"]
+    database = "telegraf"
+    insecure_skip_verify = true
+
+##################################################################
+#                                 INPUTS                       #
+##################################################################
+
+[[inputs.cpu]]
+    name_prefix = "agent_"
+    percpu = true
+    totalcpu = true
+    collect_cpu_time = false
+    report_active = true
+[[inputs.disk]]
+    name_prefix = "agent_"
+    ignore_fs = ["tmpfs", "devtmpfs", "overlay", "squashfs", "iso9660"]
+[[inputs.diskio]]
+    name_prefix = "agent_"
+    skip_serial_number = false
+[[inputs.kernel]]
+    name_prefix = "agent_"
+[[inputs.kernel_vmstat]]
+    name_prefix = "agent_"
+[[inputs.mem]]
+    name_prefix = "agent_"
+[[inputs.processes]]
+    name_prefix = "agent_"
+[[inputs.swap]]
+    name_prefix = "agent_"
+[[inputs.system]]
+    name_prefix = "agent_"
+[[inputs.net]]
+    name_prefix = "agent_"
+[[inputs.netstat]]
+    name_prefix = "agent_"
+[[inputs.nstat]]
+    name_prefix = "agent_"
+[[inputs.ntpq]]
+    name_prefix = "agent_"
+    dns_lookup = false
+[[inputs.internal]]
+    name_prefix = "agent_"
+    collect_memstats = false
+
+
+##################################################################
+#                           PROCESSORS                       #
+##################################################################
+```
+
+#### Manually Install Monitoring Agent
+
+**RedHat/CentOS**
+
+```bash
+# Install
+rpm -ivh /tmp/$Package
+# Replace configuration file
+mv /tmp/telegraf.conf /etc/telegraf/telegraf.conf
+```
+**Debian/Ubuntu**
+```bash
+# Install
+dpkg -i /tmp/$Package
+# Replace configuration file
+mv /tmp/telegraf.conf /etc/telegraf/telegraf.conf
+```
+**Windows**
+
+When installing the Windows version of the monitoring Agent, you need to specify the telegraf configuration file from the above steps, for example `C:\\telegraf\telegraf.conf`
+
+```bash
+C:\\telegraf\telegraf.exe --config "C:\\telegraf\telegraf.conf" --service install
+```
+
+#### Start telegraf Service
+
+**Linux**
+
+```bash
+# Start service
+systemctl start telegraf
+# View service
+systemctl status telegraf
+```
+**Windows**
+```bash
+# Start service
+sc start telegraf
+# View service
+sc query telegraf
+```
+

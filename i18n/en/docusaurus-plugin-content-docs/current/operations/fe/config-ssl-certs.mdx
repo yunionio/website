@@ -1,0 +1,158 @@
+---
+sidebar_position: 1
+---
+
+# Replace Frontend Certificate
+
+Introduction to how to use custom certificates to replace the system frontend's default certificate.
+
+:::tip
+This article only applies to environments deployed using ocboot.
+
+If using a Helm-deployed environment, please replace certificates in your own kubernetes cluster.
+
+Also, docker compose deployed environments are generally only used for testing and do not support certificate replacement yet.
+:::
+
+After default deployment is complete, when accessing the frontend interface, the browser will prompt an insecure SSL connection because the frontend uses a self-signed certificate by default. This article introduces how to use custom certificates to replace the frontend's default certificate.
+
+## Frontend Certificate Replacement Steps
+
+Assume the prepared certificate files are: `cert.pem` and `cert.key`, and the domain name is `foo.bar.com`.
+
+### 1. Import Certificate into kubernetes Cluster
+
+kubernetes uses secret resources to save certificate content, and then the frontend service uses ingress to reference the corresponding certificate to provide HTTPS connection. To use custom certificates, need to first save the certificate to the cluster.
+
+```bash
+# Create certificate
+$ kubectl create secret tls yunion-io-web-secret --key cert.key --cert cert.pem -n onecloud
+```
+
+### 2. Edit ingress Rule
+
+Edit the `default-web` ingress rule to reference the yunion-io-web-secret certificate created earlier.
+
+```bash
+$ kubectl edit ingress -n onecloud default-web
+...
+  tls:
+  # Modify this secretName to yunion-io-web-secret
+  - secretName: yunion-io-web-secret
+...
+```
+
+### 3. Restart ingress controller
+
+After setting the default-web ingress rule, you can restart the ingress controller service to make the certificate take effect.
+
+```bash
+$ kubectl get pods -n kube-system | grep traefik | awk '{print $1}' | xargs kubectl delete pods -n kube-system
+```
+
+### 4. Modify Service api_server Entry Configuration {#change-api-server-via-climc}
+
+Because using domain name `foo.bar.com` to access, need to modify the cloud platform's default api_server configuration. This configuration affects the frontend VNC connection address. Change the old https://ip access address to `https://foo.bar.com`, as follows:
+
+```bash
+$ climc service-config-edit common
+default:
+  api_server: https://foo.bar.com
+  ...
+```
+
+Then restart the webconsole service, as follows:
+
+```bash
+$ kubectl delete pods -n onecloud $(kubectl get pods -n onecloud | egrep 'webconsole|apigateway' | awk '{print $1}')
+```
+
+After configuration is complete, wait for webconsole and apigateway pods to restart, then you can access the frontend via `https://foo.bar.com`.
+
+## Steps to Change Frontend HTTPS 443 Port to Another Port
+
+Assume the platform login address is `https://10.127.90.221`, change port 443 to 8443, steps as follows:
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="K3s" label="K3s" default>
+
+Execute the following commands on the **first control node**:
+
+```bash
+# Enter the corresponding manifests directory
+$ cd /var/lib/rancher/k3s/server/manifests
+
+# Edit traefik-ds.yaml
+$ vim traefik-ds.yaml
+```
+
+Modify the entrypoints.websecure.address port inside.
+
+```yaml
+......
+      containers:
+      - args:
+        - --entrypoints.web.address=:80/tcp
+        # Modify entrypoints.websecure.address here to port 8443
+        - --entrypoints.websecure.address=:8443/tcp
+        - --api.dashboard=false
+        - --ping=false
+.....
+```
+
+Wait for traefik pod to be recreated and become Running:
+
+```bash
+$ kubectl get pods -n kube-system | grep traefik	
+traefik-t5b6l                             1/1     Running     0             21s
+```
+
+  </TabItem>
+  <TabItem value="K8s" label="K8s">
+
+```bash
+# Edit traefik-ingress-lb's configmap, find address = ":443", change 443 to 8443
+$ kubectl edit cm -n kube-system traefik-ingress-lb
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: v1
+data:
+  traefik.toml: |
+    logLevel = "info"
+    insecureSkipVerify = true
+    defaultEntryPoints = ["http", "https"]
+
+    [api]
+      entryPoint = "traefik"
+      dashboard = false
+
+    [kubernetes]
+
+    [entryPoints]
+      [entryPoints.traefik]
+        address=":8091"
+      [entryPoints.http]
+        address = ":80"
+        [entryPoints.http.redirect]
+        entryPoint = "https"
+      [entryPoints.https]
+        address = ":8443"
+
+# Restart traefik-ingress-controller pods
+$ kubectl get pods -n kube-system |grep traefik-ingress | awk '{print $1}' |xargs kubectl delete pods -n kube-system
+
+# Wait for new traefik-ingress-controller pods status to be Running, port 8443 modification successful
+$ kubectl get pods  -n kube-system  | grep  traefik-ingress  
+traefik-ingress-controller-49fmk             1/1     Running   0          42s
+```
+
+  </TabItem>
+</Tabs>
+
+Enter `https://10.127.90.221:8443` in the browser to access the console, where the ip is the original console address.
+

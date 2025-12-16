@@ -14,13 +14,13 @@ edition: ce
 
 ## 环境准备
 
-import OcbootEnv from '../../getting-started/_parts/_quickstart-ocboot-k3s-env.mdx';
+import OcbootEnv from '../../shared/getting-started/_parts/_quickstart-ocboot-k3s-env.mdx';
 
 <OcbootEnv />
 
 ## 安装 Cloudpods
 
-import OcbootInstallCloudpods from '../../getting-started/_parts/_quickstart-ocboot-install-cloudpods-k3s.mdx';
+import OcbootInstallCloudpods from '../../shared/getting-started/_parts/_quickstart-ocboot-install-cloudpods-k3s.mdx';
 
 <OcbootInstallCloudpods productVersion="virt" />
 
@@ -28,7 +28,7 @@ import OcbootInstallCloudpods from '../../getting-started/_parts/_quickstart-ocb
 
 ### 创建第一台私有云虚拟机
 
-import UseVirt from '../../getting-started/_parts/_quickstart-use-virt.mdx';
+import UseVirt from '../../shared/getting-started/_parts/_quickstart-use-virt.mdx';
 
 <UseVirt />
 
@@ -36,13 +36,13 @@ import UseVirt from '../../getting-started/_parts/_quickstart-use-virt.mdx';
 
 ### 1. 在 All in One 部署完成后宿主机列表没有宿主机？
 
-import FAQVirtHost from '../../getting-started/_parts/_quickstart-faq-virt-host.md';
+import FAQVirtHost from '../../shared/getting-started/_parts/_quickstart-faq-virt-host.md';
 
 <FAQVirtHost />
 
 ### 2. 在 All in One 中找不到虚拟机界面？
 
-import FAQVirtVM from '../../getting-started/_parts/_quickstart-faq-virt-vm.md';
+import FAQVirtVM from '../../shared/getting-started/_parts/_quickstart-faq-virt-vm.md';
 
 <FAQVirtVM />
 
@@ -52,7 +52,7 @@ Cloudpods 底层使用了 Kubernetes 管理节点，Kubernetes 节点名称依�
 
 ### 4. 如何重装?
 
-import FAQReset from '../../getting-started/_parts/_quickstart-faq-reset.md';
+import FAQReset from '../../shared/getting-started/_parts/_quickstart-faq-reset.md';
 
 <FAQReset />
 

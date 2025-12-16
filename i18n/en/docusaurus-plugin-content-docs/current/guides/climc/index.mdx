@@ -1,0 +1,30 @@
+---
+edition: ce
+sidebar_position: -1
+hide_table_of_contents: true
+---
+
+# Command Line Tool
+
+Introduction to the usage methods and tips of the command line tool climc.
+
+The cloud platform's command line management tool is `climc`, which can send API requests to various backend services through this tool to manipulate resources.
+
+Currently, the platform uses the climc command line tool in the following ways:
+
+- Through Web frontend console: The Web console now supports cloudshell functionality. In the management console view, click the cloudshell icon in the upper right corner of the web console to directly enter the climc container and use climc commands.
+- Through ocboot installed environments, climc is installed on the first control node, and you can log in to the first control node to use it directly.
+- If using a docker compose installed environment, you can use the following command to enter the climc container.
+
+    ```bash
+    $ docker exec -ti compose-climc-1 bash
+    ```
+- If deployed to a kubernetes cluster via helm, you can enter the climc container using the following command.
+
+    ```bash
+    $ kubectl exec -ti -n onecloud $(kubectl get pods -n onecloud | grep climc | awk '{print $1}') -- /bin/bash
+    ```
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />
