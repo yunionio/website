@@ -1,0 +1,39 @@
+---
+sidebar_position: 6
+---
+
+# Kubernetes Management
+
+## Function Overview
+
+The platform's support for Kubernetes management is as follows:
+
+- Self-built Kubernetes clusters
+    - Support creating clusters based on built-in private cloud virtual machines
+    - Support creating clusters based on AWS virtual machines, default integration with AWS VPC CNI, CSI and cloud-provider and other native plugins
+- Manage existing Kubernetes clusters
+    - Manage through importing existing Kubernetes cluster's kubeconfig
+    - Sync public cloud clusters through cloud accounts, support is as follows:
+        - AWS EKS
+        - Alibaba Cloud ACK 
+        - Azure AKS 
+        - Tencent Cloud AKS
+
+## Web Interface Menu Switch
+
+:::tip
+Starting from version 3.9, the Web interface only displays commonly used stable function interfaces by default. Container management is used less frequently, so this function is hidden by default. The Web interface will not display it. If you need to display this function menu, use the following command line to turn it on or off:
+:::
+
+```bash
+# Enable k8s container cluster management menu
+$ climc feature-config-k8s --switch on
+
+# Disable k8s container cluster management menu
+$ climc feature-config-k8s --switch off
+```
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />
+

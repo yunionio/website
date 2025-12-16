@@ -1,0 +1,20 @@
+---
+sidebar_position: 2
+---
+
+# Authentication System
+
+Introduces Keystone's authentication system concepts and operations.
+
+The Keystone authentication system consists of *authentication sources*, *users*, and *groups*.
+
+Name   | Resource               | Description                   | Domain Resource | Notes
+-------|--------------------|------------------------|----|-----------------------------------------------
+Authentication Source | identity_providers	| Defines the source of user and group information | No | Authentication sources are independent of domains. Authentication sources can provide user authentication information to one or more domains
+User   | users              | Users are executors of all resource operations. Any operation within the platform needs to be executed as a user. Each service needs a service user. The operator of operations executed by that service is this service user | Yes | Users must belong to a domain
+Group     | groups             | Groups are collections of users. Adding a group to a project is equivalent to adding users in the group to the project | Yes | Groups must belong to a domain
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />
+

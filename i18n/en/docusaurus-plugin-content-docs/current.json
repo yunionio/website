@@ -38,5 +38,145 @@
   "sidebar.tutorialSidebar.category.network": {
     "message": "network",
     "description": "The label for category network in sidebar tutorialSidebar"
+  },
+  "sidebar.sharedSidebar.category.Introduction": {
+    "message": "Introduction",
+    "description": "The label for category 'Introduction' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.Operations": {
+    "message": "Operations",
+    "description": "The label for category 'Operations' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.Upgrade": {
+    "message": "Upgrade",
+    "description": "The label for category 'Upgrade' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.Kubernetes运维": {
+    "message": "Kubernetes运维",
+    "description": "The label for category 'Kubernetes运维' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.Databases": {
+    "message": "Databases",
+    "description": "The label for category 'Databases' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.高可用环境": {
+    "message": "高可用环境",
+    "description": "The label for category '高可用环境' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.控制节点替换流程": {
+    "message": "控制节点替换流程",
+    "description": "The label for category '控制节点替换流程' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.前端组件运维": {
+    "message": "前端组件运维",
+    "description": "The label for category '前端组件运维' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.日志运维": {
+    "message": "日志运维",
+    "description": "The label for category '日志运维' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.监控运维": {
+    "message": "监控运维",
+    "description": "The label for category '监控运维' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.平台常见问题": {
+    "message": "平台常见问题",
+    "description": "The label for category '平台常见问题' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.Development": {
+    "message": "Development",
+    "description": "The label for category 'Development' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.API 与 SDK": {
+    "message": "API 与 SDK",
+    "description": "The label for category 'API 与 SDK' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.多云资源对接": {
+    "message": "多云资源对接",
+    "description": "The label for category '多云资源对接' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.监控": {
+    "message": "监控",
+    "description": "The label for category '监控' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.CHANGELOG": {
+    "message": "CHANGELOG",
+    "description": "The label for category 'CHANGELOG' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.release/3.11": {
+    "message": "release/3.11",
+    "description": "The label for category 'release/3.11' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.release/3.10": {
+    "message": "release/3.10",
+    "description": "The label for category 'release/3.10' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.release/3.9": {
+    "message": "release/3.9",
+    "description": "The label for category 'release/3.9' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.release/3.8": {
+    "message": "release/3.8",
+    "description": "The label for category 'release/3.8' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.release/3.7": {
+    "message": "release/3.7",
+    "description": "The label for category 'release/3.7' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.release/3.6": {
+    "message": "release/3.6",
+    "description": "The label for category 'release/3.6' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.release/3.4": {
+    "message": "release/3.4",
+    "description": "The label for category 'release/3.4' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.release/3.3": {
+    "message": "release/3.3",
+    "description": "The label for category 'release/3.3' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.Release Notes": {
+    "message": "Release Notes",
+    "description": "The label for category 'Release Notes' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.guides": {
+    "message": "guides",
+    "description": "The label for category 'guides' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.命令行工具": {
+    "message": "命令行工具",
+    "description": "The label for category '命令行工具' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.物理机": {
+    "message": "物理机",
+    "description": "The label for category '物理机' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.Kubernetes 管理": {
+    "message": "Kubernetes 管理",
+    "description": "The label for category 'Kubernetes 管理' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.认证与权限": {
+    "message": "认证与权限",
+    "description": "The label for category '认证与权限' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.认证体系": {
+    "message": "认证体系",
+    "description": "The label for category '认证体系' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.认证源": {
+    "message": "认证源",
+    "description": "The label for category '认证源' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.监控与运维": {
+    "message": "监控与运维",
+    "description": "The label for category '监控与运维' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.其他功能": {
+    "message": "其他功能",
+    "description": "The label for category '其他功能' in sidebar 'sharedSidebar'"
+  },
+  "sidebar.sharedSidebar.category.消息中心": {
+    "message": "消息中心",
+    "description": "The label for category '消息中心' in sidebar 'sharedSidebar'"
   }
 }

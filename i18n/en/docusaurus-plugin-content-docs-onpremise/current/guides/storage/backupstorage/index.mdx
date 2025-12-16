@@ -1,0 +1,29 @@
+---
+sidebar_position: 2
+---
+
+# Backup Storage
+
+Backup storage is storage for storing virtual machine disk backups, mounted to the platform through external mounting. Currently mainly supports NFS storage.
+
+Disk backup is a backup of a virtual machine disk's snapshot at a certain point in time. Host backup is a collection of disk backups of all disks of a virtual machine.
+
+The method to obtain disk backup is: first snapshot the virtual machine disk, then export the snapshot data as a qcow2 file, which is the disk's backup.
+
+Currently only supports full disk backup.
+
+Both snapshots and backups save the state of virtual machine disks at a certain point in time, and can restore disks at a specified point in time. However, the differences between snapshots and backups are as follows:
+
+
+|         | Snapshot        | Backup                            |
+|---------|------------|---------------------------------|
+| Storage Location  | Inside Block Storage  | Independent storage outside block storage, such as NFS or object storage |
+| Retention Time  |  Short        | Long                              |
+| Recovery Time  | Short         | Long                              |
+| Export/Import  | Not Supported      | Supported                            |
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />
+
+
