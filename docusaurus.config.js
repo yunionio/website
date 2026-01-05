@@ -13,7 +13,7 @@ const config = {
     pre_release_branch: 'release/3.10',
     release_version: 'v3.11.12',
     pre_release_version: 'v3.10.15',
-    ocboot_release_version: 'master-v3.11.12-5',
+    ocboot_release_version: 'master-v3.11.12-6',
   },
 
   url: process.env.DOCUSAURUS_URL || 'https://www.cloudpods.org',
