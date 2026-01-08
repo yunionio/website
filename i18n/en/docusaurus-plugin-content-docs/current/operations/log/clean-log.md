@@ -2,32 +2,31 @@
 sidebar_position: 2
 ---
 
-# Clearing Logs
+# Clean Logs
 
-This article describes how to clear service logs and database logs.
+Introduction to how to clean service logs and database logs.
 
-## Clearing Service Logs
+## Clean Service Logs
 
 ```bash
-# View the log tables of a specific service
+# View split table logs of specific service
 $ climc logs-show --service <service_type> splitable
 ```
 
 ![](/img/docs/operations/log/logtable2.png)
 
 ```bash
-# Delete the splitable tables that are more than 6 months old
+# Delete split tables older than 6 months
 $ climc logs-purge-splitable --service <service_type>
 ```
-
 ![](/img/docs/operations/log/deletelogtable2.png)
 
-## Clearing Database Logs
+## Clean Database Logs
 
-Execute the following command on the server deployed with the database (`mariadb`):
+Execute on the server where the database (mariadb) is deployed:
 
 ```bash
-# Set the retention time for automatic binlog deletion
+# Set automatic binlog cleanup retention time
 $ vi /etc/my.cnf
 expire_logs_days = 30
 ```
@@ -38,3 +37,4 @@ systemctl restart mariadb
 ```
 
 ![](/img/docs/operations/log/binlog.png)
+

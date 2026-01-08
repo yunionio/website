@@ -10,7 +10,7 @@ draft: true
 
 ## 环境准备
 
-import HAEnv from '../../getting-started/_parts/_ha-env.mdx';
+import HAEnv from '../../shared/getting-started/_parts/_ha-env.mdx';
 
 <HAEnv />
 
@@ -40,6 +40,6 @@ $ ./ocboot.py install ./config-k8s-ha.yml
 
 ### 1. 如何手动重新添加控制控制节点？
 
-import HAFAQReadd from '../../getting-started/_parts/_ha-faq-readd.mdx';
+import HAFAQReadd from '../../shared/getting-started/_parts/_ha-faq-readd.mdx';
 
 <HAFAQReadd />

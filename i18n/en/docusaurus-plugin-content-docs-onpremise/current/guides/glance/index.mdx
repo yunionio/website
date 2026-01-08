@@ -1,0 +1,28 @@
+---
+sidebar_position: 2
+---
+
+# Image Templates
+
+Images are template files used for creating new virtual machines and bare metal. The following are explanations of some terms.
+
+- Image: Template files used for creating cloud servers (virtual machines) and bare metal (physical machines). Common types are qcow2, vmdk, raw, vhd, iso.
+
+- Guest Image: Only used for creating virtual machines. Save the entire virtual machine as an image through the virtual machine operation's save image function, etc. You can create virtual machines based on guest images later.
+
+- Image Service (glance): The cloud platform's image service is called glance, used to store and convert images uploaded by users or imported externally, and provide download functionality.
+
+- Cached Image: When creating public/private cloud virtual machines, you can directly use images already available on each cloud platform. These images are not stored in glance. The cloud platform only saves metadata and will directly use them when creating machines.
+
+The differences between image and cached-image resources are as follows:
+
+- image: Images managed by glance, uploaded by users or imported externally;
+- cached-image:
+  - Includes images from public clouds and other private clouds, not managed by glance, generally used when creating public/private cloud hosts outside the built-in private cloud platform;
+  - Does not provide creation interface, only query, refresh and delete;
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />
+
+

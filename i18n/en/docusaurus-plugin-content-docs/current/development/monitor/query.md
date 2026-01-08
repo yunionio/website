@@ -4,62 +4,62 @@ sidebar_position: 1
 
 # Query API
 
-Overview of the query interface for the `unifiedmonitor` monitoring service provided by monitor.
+Overview of the unifiedmonitor query interface of the monitor monitoring service, and some additional notes.
 
 ## Query Request
 
-Currently, the backend of the monitoring service interfaces with InfluxDB. Query requests are converted to InfluxDB query requests, and then related metrics are returned.
+Currently, the backend of the monitoring service connects to InfluxDB. Query requests sent will be converted to InfluxDB query requests, and then return converted related metrics.
 
-- Method: `POST`
-- Path: `/api/v1/unifiedmonitors/query/`
-- Body: See example below
+- Method: POST
+- Path: /api/v1/unifiedmonitors/query/
+- Body: Content reference examples below
 
-### Query Example
+### Query Examples
 
-The following query request will be converted to an InfluxDB query request:
+The following query requests will be converted to InfluxDB query requests:
 
-1. Query CPU usage of a virtual machine
+1. Query virtual machine CPU usage rate
 
 ```javascript
 {
     "metric_query": [
         {
             "model": {
-                "measurement": "vm_cpu", // Corresponding to measurement in InfluxDB
-                "select": [ // Corresponding to `SELECT`
+                "measurement": "vm_cpu", // Corresponds to measurement in InfluxDB
+                "select": [ // Corresponds to SELECT
                     [
                         {
                             "type": "field",
                             "params": [
-                                "usage_active" // The queried indicator field
+                                "usage_active" // Metric field to query
                             ]
                         },
                         {
-                            "type": "mean", // Take the average value, other supported types please refer to: https://github.com/yunionio/cloudpods/blob/v3.10.0-rc2/pkg/monitor/tsdb/driver/influxdb/query_part.go#L36-L116
+                            "type": "mean", // Get average value. For other supported types, refer to: https://github.com/yunionio/cloudpods/blob/v3.10.0-rc2/pkg/monitor/tsdb/driver/influxdb/query_part.go#L36-L116
                             "params": []
                         },
                         {
-                            "type": "alias", // Set the alias
+                            "type": "alias", // Set alias
                             "params": [
-                                "CPU usage"
+                                "CPU Usage Rate"
                             ]
                         }
                     ]
                 ],
-                "tags": [ // Corresponding to `WHERE`
+                "tags": [ // Corresponds to WHERE
                     {
                         "key": "vm_id",
                         "value": "49d1f759-138e-4495-8e35-94c2128374f1",
                         "operator": "="
                     },
                     {
-                        "condition": "OR", // Can be set to `OR` and `AND`
+                        "condition": "OR", // Can set OR and AND
                         "key": "hostname",
                         "value": "vm1",
                         "operator": "="
                     }
                 ],
-                "group_by": [ // Corresponding to `GROUP BY`
+                "group_by": [ // Corresponds to GROUP BY
                     {
                         "type": "tag",
                         "params": [
@@ -70,29 +70,29 @@ The following query request will be converted to an InfluxDB query request:
             }
         }
     ],
-    "scope": "system", // Query resource scope: system represents global scope, domain represents domain scope, project represents project scope
-        "from": "1h", // Query metrics from the past 1 hour
-        "to": "now", // Until now, not required, default is from to now
-        "interval": "1m", // Metric interval
-        "skip_check_series": false, // Whether to skip resource check by cloud platform and supplement missing tag
-        "signature": "3be888cf6e45cb72cc1103ec0fd789572e2f3dc93566a8fe86694518e83625e8" // Signature calculated based on the above fields
+    "scope": "system", // Query resource scope, system represents global scope, domain represents domain scope, project represents project scope
+    "from": "1h", // Query metrics from the past 1h
+    "to": "now", // To now, not required, default is from from to now
+    "interval": "1m", // Metric interval
+    "skip_check_series": false, // Whether to skip resource check with cloud platform and supplement missing tags
+    "signature": "3be888cf6e45cb72cc1103ec0fd789572e2f3dc93566a8fe86694518e83625e8" // Signature calculated from the above fields
 }
 ```
 
 The converted InfluxDB request is:
 
 ```sql
-SELECT mean("usage_active") AS "CPU Usage" FROM "vm_cpu"
+SELECT mean("usage_active") AS "CPU Usage Rate" FROM "vm_cpu"
 WHERE ("vm_id" = '49d1f759-138e-4495-8e35-94c2128374f1' OR "hostname" = 'vm1') and time > now() - 1h
 GROUP BY "vm_id", time(1m) fill(none)
-````
+```
 
-More supported queries can be found here:
+More supported query examples:
 
- [https://github.com/yunionio/cloudpods/blob/v3.10.0-rc2/pkg/monitor/tsdb/driver/influxdb/query_test.go](https://github.com/yunionio/cloudpods/blob/v3.10.0-rc2/pkg/monitor/tsdb/driver/influxdb/query_test.go)
+You can refer to: [https://github.com/yunionio/cloudpods/blob/v3.10.0-rc2/pkg/monitor/tsdb/driver/influxdb/query_test.go](https://github.com/yunionio/cloudpods/blob/v3.10.0-rc2/pkg/monitor/tsdb/driver/influxdb/query_test.go)
 
 ```
-# The following request body corresponds to the InfluxDB query: "SELECT mean(\"free\") / mean(\"total\") FROM \"disk\" WHERE (\"path\" = '/') AND time > now() - 1h GROUP BY *, time(2m) fill(none)"
+# The following request body corresponds to InfluxDB SQL: "SELECT mean(\"free\") / mean(\"total\") FROM \"disk\" WHERE (\"path\" = '/') AND time > now() - 1h GROUP BY *, time(2m) fill(none)"
 
 {
 	"database": "telegraf",
@@ -126,127 +126,126 @@ More supported queries can be found here:
 }
 ```
 
-2. Customized query time range
+2. Custom query time range
 
-By setting the `from` and `to` parameters, the query time range can be customized. InfluxDB retains metrics for 30 days by default.
+By setting the from and to parameters, you can define the query time range. Metrics in InfluxDB are retained for 30 days by default.
 
-The `from` and `to` parameters need to be converted to a Unix Epoch format. For example:
+Both from and to need to be converted to Unix epoch format, for example:
 
 ```javascript
 {
   "metric_query": [...],
-  "from": "1474973725473", // Tuesday, September 27, 2016, 6:55:25 PM GMT+08:00
-  "to":   "1474975757930", // Tuesday, September 27, 2016, 7:29:17 PM GMT+08:00
+  "from": "1474973725473", // Tuesday, September 27, 2016, 6:55 PM GMT+08:00
+  "to":   "1474975757930", // Tuesday, September 27, 2016, 7:29 PM GMT+08:00
 }
 ```
 
 ## SDK
 
-The following SDK can be used to construct monitoring query requests:
+You can use the following SDKs to construct monitoring query requests in a convenient way:
 
 - Go:
     - Construct query request: [MetricQueryInput](https://github.com/yunionio/cloudpods/blob/release/3.10/pkg/mcclient/modules/monitor/helper.go#L587-L672)
-    - Send a request: [PerformQuery](https://github.com/yunionio/cloudpods/blob/release/3.10/pkg/mcclient/modules/monitor/mod_unifiedmonitor.go#L52-L54)
+    - Make request: [PerformQuery](https://github.com/yunionio/cloudpods/blob/release/3.10/pkg/mcclient/modules/monitor/mod_unifiedmonitor.go#L52-L54)
     - Usage examples:
         - [Command line parameters](https://github.com/yunionio/cloudpods/blob/release/3.10/pkg/mcclient/options/monitor/unifiedmonitor.go#L67-L116)
-        - [Server-side Construction](https://github.com/yunionio/cloudpods/blob/release/3.10/pkg/monitor/models/unifiedmonitor.go#L533-L555)
+        - [Server-side construction](https://github.com/yunionio/cloudpods/blob/release/3.10/pkg/monitor/models/unifiedmonitor.go#L533-L555)
 
 - Java:
     - Construct query request: [MetricQueryInput](https://github.com/yunionio/mcclient_java/blob/v3.2.10/src/main/java/com/yunionyun/mcp/mcclient/managers/impl/monitor/MetricQueryInput.java)
-    - Request initiation: [PerformQuery](https://github.com/yunionio/mcclient_java/blob/v3.2.10/src/main/java/com/yunionyun/mcp/mcclient/managers/impl/monitor/UnifiedMonitorManager.java#L30-L32)
-    - Example usage: [Refer to this PR](https://github.com/yunionio/mcclient_java/pull/52/files#diff-64be3a95e81733de6ac3e486a4631b18b031c2720106473fbb16d25a9cae4dd9R19-R35)
+    - Make request: [PerformQuery](https://github.com/yunionio/mcclient_java/blob/v3.2.10/src/main/java/com/yunionyun/mcp/mcclient/managers/impl/monitor/UnifiedMonitorManager.java#L30-L32)
+    - Usage examples: [Refer to this PR](https://github.com/yunionio/mcclient_java/pull/52/files#diff-64be3a95e81733de6ac3e486a4631b18b031c2720106473fbb16d25a9cae4dd9R19-R35)
 
 ## Signature
 
-The purpose of a signature is to prevent tampering with query conditions. If this feature is not needed, the monitor service can be configured to disable it.
+The signature is used to prevent query conditions from being tampered with. If this function is not needed, you can configure the monitor service to disable it.
 
-### Disabling Signature
+### Disable Signature
 
 Use the following method to disable signature verification:
 
 ```bash
-# Edit the monitor service configmap
+# Modify monitor service configmap configuration
 $ kubectl edit configmap -n onecloud default-monitor
 ...
-    # Set this configuration to true
+    # Change this configuration to true
     disable_query_signature_check: true
 ...
 
-# Restart the monitor service
+# Restart monitor service
 $ kubectl rollout restart deployment -n onecloud default-monitor
 ```
 
 ### Calculation Method
 
-If you need to use the signature verification feature, you can refer to the following method to calculate the signature:
+If you need to use the signature verification function, you can refer to the following method to calculate signature:
 
-The calculation method of the signature can refer to the frontend JavaScript code here: [https://github.com/yunionio/dashboard/blob/v3.10.0-rc2/src/utils/crypto.js#L11-L18](https://github.com/yunionio/dashboard/blob/v3.10.0-rc2/src/utils/crypto.js#L11-L18)
+The signature calculation method can refer to this frontend JavaScript code: [https://github.com/yunionio/dashboard/blob/v3.10.0-rc2/src/utils/crypto.js#L11-L18](https://github.com/yunionio/dashboard/blob/v3.10.0-rc2/src/utils/crypto.js#L11-L18)
 
-## Command-line Tool
+## Command Line Tool
 
-The `climc monitor-unifiedmonitor-query` command can be used to query platform monitoring data.
+Use the `climc monitor-unifiedmonitor-query` command to query platform monitoring data.
 
 ```bash
-# Query the `usage_active` indicator in the vm_cpu measurement
+# Query usage_active metric in vm_cpu measurement
 $ climc --debug monitor-unifiedmonitor-query vm_cpu usage_active
 
-# Set the indicator interval to `1m` and filter using `--tags`
+# Set metric interval to 1m, and use --tags for filtering
 $ climc --debug monitor-unifiedmonitor-query --interval 1m --tags vm_id=e0d3c5ce-ec65-42ad-89d9-0b75953f841e --tags zone=YunionHQ vm_cpu usage_active
 
-# Query data within a time period
+# Query data within time range
 $ climc --debug monitor-unifiedmonitor-query --from 2023-12-07T23:54:42.123Z --to 2023-12-08T13:54:42.123Z vm_cpu usage_active
 ```
 
-## Directly Querying Monitoring Data
+## Direct Query Monitoring Data
 
-The platform now supports storing monitoring data in either VictoriaMetrics or InfluxDB. The following method can be used to query the monitoring data of the corresponding time series databases.
+The platform now supports storing monitoring data in VictoriaMetrics or InfluxDB. You can use the following methods to query related time-series database monitoring data.
 
-Regarding the switch from InfluxDB to VictoriaMetrics, refer to the document: [Switching from InfluxDB to VictoriaMetrics](../../operations/monitoring/migrating-to-vm.md).
+For switching from InfluxDB to VictoriaMetrics, refer to the document: [Switch from InfluxDB to VictoriaMetrics](../../../onpremise/operations/monitoring/migrating-to-vm).
 
-### Querying VictoriaMetrics Data {#query-victoric-metrics-data}
+### Query VictoriaMetrics Data {#query-victoric-metrics-data}
 
-If you use VictoriaMetrics as the monitoring backend, you can access the VictoriaMetrics frontend web interface through `https://control-node-IP:30428/vmui/`. VictoriaMetrics uses MetricsQL query syntax, please refer to the following documents for specific usage:
-
+If using VictoriaMetrics as the monitoring backend, you can access the VictoriaMetrics frontend web interface through `https://Control Node IP:30428/vmui/`. VictoriaMetrics uses MetricsQL query syntax. Here are some query examples:
 
 ```bash
-# Query CPU usage_active metrics
+# Query cpu usage_active metric
 cpu_usage_active
 
-# Query the disk free metric and filter it to host_id="32d41926-6038-42a3-8a31-40c08274823b"
+# Query disk free metric, filter condition is host_id="32d41926-6038-42a3-8a31-40c08274823b"
 disk_free{host_id="32d41926-6038-42a3-8a31-40c08274823b"}
 
-# Query the disk free indicator, filter by device="sda2", path="/opt/cloud"
+# Query disk free metric, filter conditions are device="sda2",path="/opt/cloud"
 disk_free{device="sda2",path="/opt/cloud"}
 
 # Query metrics starting with mem_
 {__name__=~"mem_.*"}
 
-# Query the mem used metric, and use the regular expression host=~"ha-test0[1,2].*"
+# Query mem used metric, filter condition uses regular expression host=~"ha-test0[1,2].*"
 mem_used{host=~"ha-test0[1,2].*"}
 ```
 
-For more information, please refer to the following documentation:
+For specific usage, refer to the documentation:
 
 - [MetricsQL](https://docs.victoriametrics.com/MetricsQL.html)
 
-- The following is a description of the telegraf for reporting monitoring metrics:
+- Description of telegraf reporting monitoring metric format is as follows:
 
 :::tip
-Currently, the format for reporting monitoring data is InfluxDB line format. When monitoring metrics are sent to VictoriaMetrics, they will be automatically converted to the corresponding format.
+The current monitoring data reporting format is InfluxDB line format. When monitoring metrics are sent to VictoriaMetrics, they will be automatically converted to the related format.
 
-For example, the InfluxDB line format: `cpu,tag1=value1 usage_active=30`
+For example, InfluxDB line format: `cpu,tag1=value1 usage_active=30` 
 
 Will be converted to VictoriaMetrics format: `cpu_usage_active{tag1="value1"} 30`
 
-Please reference the following document for specific format conversions:
+For specific format conversion, refer to the following documentation:
 
 - [How to send data from InfluxDB-compatible agents such as Telegraf](https://docs.victoriametrics.com/Single-server-VictoriaMetrics.html#how-to-send-data-from-influxdb-compatible-agents-such-as-telegraf)
 :::
 
 
-### Query InfluxDB data
+### Query InfluxDB Data
 
-If you use InfluxDB as the monitoring backend, you can directly enter the InfluxDB container to use the command line for querying metrics using the following method:
+If using InfluxDB as the monitoring backend, you can use the following method to directly enter the InfluxDB container and use the command line to query metrics:
 
 ```bash
 $ kubectl exec -ti -n onecloud $(kubectl get pods -n onecloud | grep default-influxdb | awk '{print $1}') -- influx -host 127.0.0.1 -port 30086 -type influxql -ssl  -precision rfc3339 -unsafeSsl

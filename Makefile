@@ -71,3 +71,7 @@ copy-translation-file:
 # 批量复制缺失的文件到英文目录
 batch-copy-translations:
 	python3 scripts/translate-helper.py --batch missing-translations.txt
+
+# 同步 i18n 翻译目录中的软连接（用于共享文档）
+sync-i18n-symlinks:
+	python3 scripts/sync-i18n-symlinks.py

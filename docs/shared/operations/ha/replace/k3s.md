@@ -238,7 +238,7 @@ lzx-ha-env-3   Ready    control-plane,etcd,master   7d6h   v1.28.5+k3s1   192.16
 
 下载 ocboot 部署工具代码。
 
-import OcbootReleaseDownload from '../../../../getting-started/_parts/_quickstart-ocboot-release-download.mdx';
+import OcbootReleaseDownload from '../../../getting-started/_parts/_quickstart-ocboot-release-download.mdx';
 
 <OcbootReleaseDownload />
 

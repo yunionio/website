@@ -1,0 +1,94 @@
+{
+  "version.label": {
+    "message": "3.11",
+    "description": "The label for version current"
+  },
+  "sidebar.baremetalSidebar.category.产品介绍": {
+    "message": "产品介绍",
+    "description": "The label for category '产品介绍' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.安装部署": {
+    "message": "安装部署",
+    "description": "The label for category '安装部署' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.用户手册": {
+    "message": "用户手册",
+    "description": "The label for category '用户手册' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.命令行工具": {
+    "message": "命令行工具",
+    "description": "The label for category '命令行工具' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.物理机": {
+    "message": "物理机",
+    "description": "The label for category '物理机' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.认证与权限": {
+    "message": "认证与权限",
+    "description": "The label for category '认证与权限' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.认证体系": {
+    "message": "认证体系",
+    "description": "The label for category '认证体系' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.认证源": {
+    "message": "认证源",
+    "description": "The label for category '认证源' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.开发手册": {
+    "message": "开发手册",
+    "description": "The label for category '开发手册' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.API 与 SDK": {
+    "message": "API 与 SDK",
+    "description": "The label for category 'API 与 SDK' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.多云资源对接": {
+    "message": "多云资源对接",
+    "description": "The label for category '多云资源对接' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.监控": {
+    "message": "监控",
+    "description": "The label for category '监控' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.CHANGELOG": {
+    "message": "CHANGELOG",
+    "description": "The label for category 'CHANGELOG' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.release/3.11": {
+    "message": "release/3.11",
+    "description": "The label for category 'release/3.11' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.release/3.10": {
+    "message": "release/3.10",
+    "description": "The label for category 'release/3.10' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.release/3.9": {
+    "message": "release/3.9",
+    "description": "The label for category 'release/3.9' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.release/3.8": {
+    "message": "release/3.8",
+    "description": "The label for category 'release/3.8' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.release/3.7": {
+    "message": "release/3.7",
+    "description": "The label for category 'release/3.7' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.release/3.6": {
+    "message": "release/3.6",
+    "description": "The label for category 'release/3.6' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.release/3.4": {
+    "message": "release/3.4",
+    "description": "The label for category 'release/3.4' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.release/3.3": {
+    "message": "release/3.3",
+    "description": "The label for category 'release/3.3' in sidebar 'baremetalSidebar'"
+  },
+  "sidebar.baremetalSidebar.category.发布日志": {
+    "message": "发布日志",
+    "description": "The label for category '发布日志' in sidebar 'baremetalSidebar'"
+  }
+}

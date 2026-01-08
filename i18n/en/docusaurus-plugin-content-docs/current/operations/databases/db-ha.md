@@ -2,30 +2,30 @@
 sidebar_position: 2
 ---
 
-# Deploy Mariadb HA
+# Deploy MariaDB HA Environment
 
-Use keepalived and Mariadb's master-master replication feature to achieve high availability of DB.
+This article introduces using keepalived and MariaDB's master-master replication to achieve DB high availability.
 
 ## Deployment
 
-The main function of keepalived is to provide vip for Mariadb, switching between 2 Mariadb instances to provide uninterrupted service.
+The main role of keepalived is to provide VIP for MariaDB, switching between 2 MariaDB instances to provide uninterrupted service.
 
 In the following example:
 
 - DB VIP: 192.168.199.97
 - Primary node IP: 192.168.199.98
-- Backup node IP: 192.168.199.99
+- Standby node IP: 192.168.199.99
 
-### Configure Mariadb master-master replication
+### Deploy and Configure MariaDB Master-Master Replication
 
-Install and start Mariadb
+Install and start MariaDB
 
 ```bash
 $ yum install -y mariadb-server
 $ systemctl enable --now mariadb
 ```
 
-Run the Mariadb Security Configuration Wizard to set passwords, etc.
+Run MariaDB security configuration wizard to set password, etc.
 
 ```bash
 $ mysql_secure_installation
@@ -53,9 +53,9 @@ Reload privilege tables now? [Y/n] y
  ... ...
 ```
 
-Modify the Mariadb configuration file to prepare for configuring the master-master replication.
+Modify MariaDB configuration file to prepare for master-master replication.
 
-Note: The difference between primary and secondary is the `confserver-id` and `auto_increment_offset` fields.
+Note: The difference between primary and standby is the two fields `server-id` and `auto_increment_offset`.
 
 ```bash
 # Primary node
@@ -109,7 +109,7 @@ pid-file=/var/run/mariadb/mariadb.pid
 !includedir /etc/my.cnf.d
 EOF
 
-# Backup Node
+# Standby node
 $ cat <<EOF > /etc/my.cnf
 [mysqld]
 datadir=/var/lib/mysql
@@ -160,26 +160,25 @@ pid-file=/var/run/mariadb/mariadb.pid
 !includedir /etc/my.cnf.d
 EOF
 
-# Restart the service
+# Restart service
 $ systemctl restart mariadb
 ```
 
-On the primary node, create a read-only account, export all data, and import it into the backup node. Record the name and position of the binlog log file.
+Create read-only account on primary node, export all data, import to standby node. Record binlog log file name and position.
 
 ```bash
 # The following commands are executed on the primary node
 
-# This password is for the Mariadb root set above. For convenience, the read-only account also uses this password
+# This password is the MariaDB root password set above. For convenience, the read-only account also uses this password
 $ MYSQL_PASSWD='your-sql-passwd'
 
-# Enable remote access to Mariadb
+# Enable MariaDB remote access
 $ mysql -uroot -p$MYSQL_PASSWD -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_PASSWD' WITH GRANT OPTION;FLUSH PRIVILEGES"
 
-# Create a read-only account
+# Create read-only account
 $ mysql -u root -p$MYSQL_PASSWD -e "GRANT REPLICATION SLAVE ON *.* TO repl@'%' IDENTIFIED BY '$MYSQL_PASSWD';FLUSH PRIVILEGES"
 
-# This example is for a fresh installation of Mariadb that hasn't been used yet. If you're doing master-master replication of a database that's already in use, you need to lock the table before exporting data. 
-``````bash
+# This example is a fresh MariaDB installation that hasn't been used yet. If it's a database in use for master-master replication, you need to lock tables before exporting data
 $ mysql -uroot -p$MYSQL_PASSWD -e "SHOW PROCESSLIST"
 +----+------+-----------+------+---------+------+-------+------------------+----------+
 | Id | User | Host      | db   | Command | Time | State | Info             | Progress |
@@ -187,7 +186,7 @@ $ mysql -uroot -p$MYSQL_PASSWD -e "SHOW PROCESSLIST"
 |  4 | root | localhost | NULL | Query   |    0 | NULL  | SHOW PROCESSLIST |    0.000 |
 +----+------+-----------+------+---------+------+-------+------------------+----------+
 
-# Record the binlog file name and position
+# Record binlog log file name and position
 $ mysql -u root -p$MYSQL_PASSWD -e "SHOW MASTER STATUS\G"
 *************************** 1. row ***************************
             File: mysql-bin.000001
@@ -198,22 +197,22 @@ Binlog_Ignore_DB:
 # Export all data
 $ mysqldump --all-databases -p$MYSQL_PASSWD > alldb.db
 
-# Copy alldb.db to the backup node
+# Copy alldb.db to standby node
 $ scp alldb.db db2:/root/
 
 
-# Execute the following commands on the backup node
+# The following commands are executed on the standby node
 
 # This password is the MariaDB root password set above
 $ MYSQL_PASSWD='your-sql-passwd'
 
-# Import the data exported from the primary node
+# Import data exported from primary node
 mysql -u root -p$MYSQL_PASSWD < alldb.db
 
 # Reload privileges
 mysql -u root -p$MYSQL_PASSWD -e "FLUSH PRIVILEGES"
 
-# Record the binlog file name and position
+# Record binlog log file name and position
 mysql -u root -p$MYSQL_PASSWD -e "SHOW MASTER STATUS\G"
 *************************** 1. row ***************************
             File: mysql-bin.000001
@@ -222,41 +221,42 @@ mysql -u root -p$MYSQL_PASSWD -e "SHOW MASTER STATUS\G"
 Binlog_Ignore_DB:
 ```
 
-Set up master-slave replication
+Set up master-master replication
 
 ```bash
-# Execute the following commands on the primary node
+# The following commands are executed on the primary node
 
-# Modify MASTER_HOST to the IP address of the backup node, and modify MASTER_LOG_FILE and MASTER_LOG_POS based on the information recorded on the backup node
+# Modify MASTER_HOST to standby node IP, modify MASTER_LOG_FILE and MASTER_LOG_POS to the information recorded from the standby node above
 mysql -u root -p$MYSQL_PASSWD -e "CHANGE MASTER TO MASTER_HOST='192.168.199.99',MASTER_USER='repl',MASTER_PASSWORD='$MYSQL_PASSWD',MASTER_PORT=3306,MASTER_LOG_FILE='mysql-bin.000001',MASTER_LOG_POS=509778,MASTER_CONNECT_RETRY=2;START SLAVE"
 
 
-# Execute the following commands on the backup node
+# The following commands are executed on the standby node
 
-# Modify MASTER_HOST to the IP address of the primary node, and modify MASTER_LOG_FILE and MASTER_LOG_POS based on the information recorded on the primary node
+# Modify MASTER_HOST to primary node IP, modify MASTER_LOG_FILE and MASTER_LOG_POS to the information recorded from the primary node above
 mysql -u root -p$MYSQL_PASSWD -e "CHANGE MASTER TO MASTER_HOST='192.168.199.98',MASTER_USER='repl',MASTER_PASSWORD='$MYSQL_PASSWD',MASTER_PORT=3306,MASTER_LOG_FILE='mysql-bin.000001',MASTER_LOG_POS=2023,MASTER_CONNECT_RETRY=2;START SLAVE"
 
 
-# Execute this command on both primary and backup nodes, verify synchronization status, and output 2 Yes to indicate normal status
+# Execute on both primary and standby to verify sync status. Both outputting 2 Yes means normal
 mysql -u root -p$MYSQL_PASSWD -e "SHOW SLAVE STATUS\G" | grep Running
-Slave_IO_Running: Yes
-Slave_SQL_Running: Yes
+             Slave_IO_Running: Yes
+            Slave_SQL_Running: Yes
 
-# If this step fails, for example, if Slave_SQL_Running is connecting, it's highly likely that the firewall has not been turned off. Please execute the following command to turn off the firewall, and then redo the previous step of checking the two Yes.
+# If this step is not successful, for example Slave_SQL_Running is connecting, it's very likely the firewall is not closed. Please execute the following command to close the firewall, then re-execute the 2 Yes check from the previous step.
 systemctl is-active firewalld >/dev/null && systemctl disable --now firewalld
+
 ```
 
-The DB master-master replication deployment is now complete. You can test database operations on any node and verify them on the other node. However, it is still necessary to provide services externally through the VIP, otherwise if a switch occurs, the business side will need to switch IPs. Next, configure keepalived to provide external services.
+At this point, DB master-master replication deployment is complete. You can test database operations on either node and verify on the other node. However, external service still needs to go through VIP, otherwise switching would require business-side IP switching. Below configure keepalived to provide external service.
 
-### Deploy and configure keepalived
+### Deploy and Configure keepalived
 
-Set the relevant environment variables and configure them according to different environments.
+Set related environment variables according to different environments.
 
 ```bash
 # keepalived vip address
 export DB_VIP=192.168.199.97
 
-# keepalived auth toke
+# keepalived auth token
 export DBHA_KA_AUTH=onecloud
 
 # keepalived network interface
@@ -267,8 +267,8 @@ Set sysctl options
 
 ```bash
 $ cat <<EOF >>/etc/sysctl.conf
-net.ipv4.ip_forward=1
-net.ipv4.ip_nonlocal_bind=1
+net.ipv4.ip_forward = 1
+net.ipv4.ip_nonlocal_bind = 1
 EOF
 
 $ sysctl -p
@@ -282,10 +282,10 @@ $ yum install -y keepalived nc
 
 Add configuration
 
-The following is the configuration for the primary node:
+The following is the primary node configuration:
 
 ```bash
-# Make sure virtual_router_id doesn't conflict with other keepalived clusters on the local network
+# Please ensure virtual_router_id does not conflict with other keepalived clusters in the LAN
 $ cat <<EOF >/etc/keepalived/keepalived.conf
 global_defs {
     router_id onecloud
@@ -326,10 +326,10 @@ EOF
 $ chmod +x /etc/keepalived/chk_mysql
 ```
 
-The following is the configuration for the backup node:
+The following is the standby node configuration:
 
 ```bash
-# Make sure the virtual_router_id of the backup node is the same as that of the primary node
+# Please ensure the standby node virtual_router_id matches the primary node
 $ cat <<EOF >/etc/keepalived/keepalived.conf
 global_defs {
     router_id onecloud
@@ -357,7 +357,7 @@ vrrp_instance VI_1 {
     }
 
     virtual_ipaddress {
-        $DB_VIP 
+        $DB_VIP
     }
 }
 EOF
@@ -370,7 +370,7 @@ EOF
 $ chmod +x /etc/keepalived/chk_mysql
 ```
 
-After the configuration is complete, start `keepalived` on the master and standby nodes respectively using the following command:
+After configuration, start keepalived on primary and standby nodes respectively
 
 ```bash
 $ systemctl enable --now keepalived
@@ -385,14 +385,14 @@ $ ip addr show $DB_NETIF
        valid_lft forever preferred_lft forever
 ```
 
-### Configure `keepalived` to switch network adapter automatically
+### Configure keepalived Automatic Network Interface Switching
 
-In this solution, `k8s` and `mysql` share the same network adapter. If `k8s` uses the `host` feature, it will automatically enable the `br0` network adapter. When `host` starts or switches network adapters, it may affect the high availability of `mysql`. The following auxiliary script can enhance the stability of `k8s+mysql`. 
+In this solution, `k8s` and `mysql` share the network interface. If `k8s` enables the `host` function, it will automatically enable the `br0` network interface. When `host` starts or network interface switches, there is a certain probability of affecting `mysql` high availability stability. The following is an auxiliary script to improve `k8s+mysql` stability.
 
-Run the following scripts respectively on the primary and standby nodes of `db`. Be sure to replace the `node_ip` variable in the first line with the machine's own IP address.
+Execute the following script on the db primary node and standby node respectively. Note to replace the `node_ip` variable in the first line with the local machine `ip`.
 
 ```bash
-# Replace the variable DB_NODE_IP in this script with the local IP address
+# Note to replace DB_NODE_IP here with local machine IP
 node_ip=$DB_NODE_IP
 [[ -z "$node_ip" ]] && echo "please export variable 'node_ip' first! "
 
@@ -401,12 +401,12 @@ cat <<EOF_CK1 >/etc/keepalived/check_interface.sh
 
 datestr="\$(date +"%F %T")"
 env_interface=\$(cat /etc/keepalived/keepalived.conf| grep -w interface |awk '{print \$2}')
-echo "[\$datestr] The interface keepalived is currently listening on: \$env_interface"
+echo "[\$datestr] Current keepalived monitoring network interface: \$env_interface"
 router_interface=\$(/usr/sbin/ip a show | grep $node_ip | awk '{ print \$NF}')
-echo "[\$datestr] The name of the interface where the ip is located: [\$router_interface]"
+echo "[\$datestr] Network interface name where IP is located: [\$router_interface]"
 
 if [[ -n "\$router_interface" ]] && [[ "\$router_interface" != "\$env_interface" ]]; then
-    echo "[\$datestr] updating keepalived.conf interface"
+    echo "[\$datestr] update keepalived.conf interface"
     sed -i -e "s#\$env_interface#\$router_interface#g" /etc/keepalived/keepalived.conf
     systemctl restart keepalived
 else
@@ -426,6 +426,7 @@ cat <<EOF_CRON >/etc/cron.d/update_keepalived_interface
 * * * * * root /etc/keepalived/check_interface2.sh >/dev/null 2>&1
 EOF_CRON
 systemctl restart crond
+
 chmod +x /etc/keepalived/chk_mysql
 chmod +x /etc/keepalived/check_interface.sh
 chmod +x /etc/keepalived/check_interface2.sh
@@ -436,6 +437,8 @@ chmod +x /etc/rc.d/rc.local
 if ! grep -q /etc/keepalived/check_interface.sh /etc/rc.d/rc.local; then
     sed -i '$a bash /etc/keepalived/check_interface.sh >> /var/log/keepalived.log' /etc/rc.d/rc.local
 fi
+
 ```
 
-Thus, the high availability deployment of DB is completed. The Mariadb or keepalived service of any node can be down without affecting external services in case of a node failure.
+At this point, DB high availability deployment is complete. Any node's MariaDB or keepalived service exception, or any node downtime, will not affect external service.
+

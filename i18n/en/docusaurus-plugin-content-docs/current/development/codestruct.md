@@ -1,0 +1,232 @@
+---
+sidebar_position: 10
+---
+
+# Code Structure
+
+## Backend Code Structure
+
+- [build](https://github.com/yunionio/cloudpods/tree/release/3.8/build): Compilation and build related directories, each component has a corresponding directory under this directory
+- [cmd](https://github.com/yunionio/cloudpods/tree/release/3.8/cmd): Directory where entry functions (main functions) of each component are located
+    - [climc](https://github.com/yunionio/cloudpods/tree/release/3.8/cmd/climc): Command-line tool climc code
+        - shell: Command-line tool code corresponding to each service
+- [docs](https://github.com/yunionio/cloudpods/tree/release/3.8/docs): API swagger documentation, currently unused
+- [locales](https://github.com/yunionio/cloudpods/tree/release/3.8/locales): Localization code directory, mainly responsible for localizing information in responses
+- [pkg](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg): Main code
+    - [ansibleserver](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/ansibleserver): ansibleserver code, service that executes ansible
+    - [apigateway](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/apigateway): API gateway code
+        - app: web service toolkit
+        - clientman: Code related to clients accessing other services
+        - constants: Constants
+        - handler: web service handler
+        - options: Service parameters
+        - policy: keystone permission client code
+        - service: Main service code
+    - [apihelper](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/apihelper): web service toolkit
+    - [apis](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/apis): API data structures, generally each directory corresponds to a component
+        - compute: region's API data structures
+            - zz_generated.model.go: Automatically generated corresponding data structures based on region's models
+    - [appctx](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/appctx): context toolkit
+    - [appsrv](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/appsrv): web framework
+        - dispatcher: web routing related code
+    - [baremetal](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/baremetal): baremetal-agent service code
+    - [cloudcommon](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/cloudcommon): Common toolkit
+        - agent: Common package for agent services, currently used by baremetal-agent and esxi-agent
+        - app: web service toolkit
+        - cmdline: Command-line toolkit
+        - cronman: cronjob toolkit
+        - db: Common code for service models
+            - lockman: Lock toolkit
+            - proxy: Proxy settings, mainly used by pkg/compute/models/cloudaccounts.go
+            - quotas: Quota related code
+            - taskman: Asynchronous task code
+        - elect: etcd related code
+        - etcd: etcd related code
+        - informer: Subscription notification related code, if you want to monitor changes in certain models, you can subscribe
+        - notifyclient: Client code corresponding to notify service
+        - options: Common options
+        - pending_delete: pending_delete related option
+        - policy: Common code for model default permissions, mainly used to set default keystone permissions for models of each service
+        - service: Common service code
+        - syncman: Code related to informer usage
+            - watcher: Monitor service models
+        - validators: Common code for validating web request parameters
+        - workmanager: worker code
+    - [cloudevent](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/cloudevent): cloudevent service, public cloud logs
+    - [cloudid](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/cloudid): cloudid service, public cloud passwordless login
+    - [cloudmon](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/cloudmon): cloudmon service, public cloud monitoring
+        - collectors: Monitoring data collection for various public clouds
+    - [cloudprovider](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/cloudprovider): Common data structures for multi-cloud
+    - [cloudproxy](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/cloudproxy): Proxy service, can access virtual machines inside vpc through proxy
+    - [compute](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/compute): region service code
+        - baremetal: baremetal related code
+        - capabilities: capabilities interface code
+        - guestdrivers: Virtual machine related operation code in multi-cloud scenarios, different clouds implement drivers
+        - hostdrivers: Host related operation code in multi-cloud scenarios, different clouds implement drivers 
+        - misc: Physical machines with existing operating systems, interface code
+        - models: Service resource model code, generally one model corresponds to one table in the database
+        - options: Service options
+        - policy: Resource model default permissions
+        - regiondrivers: Region-level cloud resource operation code in multi-cloud scenarios, different clouds implement drivers
+        - service: Service startup code
+        - specs: Code for obtaining physical machine and GPU specifications, used to create bare metal and GPU virtual machines
+        - sshkeys: Code for obtaining sshkey, including global sshkey and project sshkey, can be used to access virtual machines
+        - storagedrivers: Storage related operation code in multi-cloud scenarios, different clouds implement drivers
+        - tasks: Service related asynchronous task code, for example creating virtual machines will eventually be executed as asynchronous tasks
+        - usages: Interface for obtaining cloud resource usage statistics
+    - [controller](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/controller): Controller code
+        - autoscaling: Auto-scaling controller, mainly used to implement virtual machine auto-scaling functionality
+    - [devtool](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/devtool): Operations tool service, for example installing monitoring agents
+    - [esxi](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/esxi): esxi-agent service, mainly used to operate vmware clusters or esxi hosts
+    - [hostimage](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/hostimage): Service deployed on each host, related to images
+    - [hostman](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/hostman): host service related code
+        - diskutils: Disk operation toolkit
+            - fsutils: File system operation toolkit
+            - libguestfs: Toolkit for calling libguestfs
+            - nbd: Toolkit for calling nbd module
+        - downloader: Download code, including image, snapshot downloads, etc.
+        - guestfs: Mainly used to mount virtual machine disks, detect disk fs, and perform some initialization operations
+        - guestman: Virtual machine related interfaces in host service
+        - host_health: Host health check related interfaces
+        - hostdeployer: host-deployer service code, host-deployer is mainly used to initialize virtual machines
+        - hosthandler: Host related interfaces in host service
+        - storageman: Storage related interfaces in host service
+    - [httperrors](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/httperrors): web service errors toolkit
+    - [i18n](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/i18n): Localization toolkit
+    - [image](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/image): glance service code
+        - drivers: Storage driver
+    - [keystone](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/keystone): keystone service code, mainly authentication and user management
+    - [lbagent](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/lbagent): Load balancer agent code
+    - [logger](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/logger): Log service
+    - [mcclient](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/mcclient): Common client code for backend services
+        - auth: Authentication related
+        - informer: model subscription notifications
+        - modules: Each resource corresponds to one module
+        - options: Request structs, currently mainly called by climc
+    - [monitor](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/monitor): Monitoring service
+    - [multicloud](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/multicloud): Multi-cloud management, code for managing various clouds, implementing resource interfaces defined by cloudpods
+        - aliyun: Aliyun management
+            - shell: Each cloud will implement a command-line tool for easy debugging, corresponding to cmd/aliyuncli
+    - [notify](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/notify): Notification service
+        - rpc: rpc module of notification service, used to call notify-plugins component
+    - [proxy](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/proxy): Proxy code called by web framework
+    - [s3gateway](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/s3gateway): s3 gateway service
+    - [scheduler](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/scheduler): Scheduler service
+        - algorithm: Two major steps of scheduling
+            - predicates: Filter hosts
+            - priorities: Score hosts
+        - algorithmprovider: Enable those predicates and priorities
+        - api: API data structures
+        - cache: Host cache, host information will be cached to improve scheduling efficiency
+        - core: Core code, mainly scheduling implementation
+        - test: Scheduler test code
+            - mock: mock tests
+    - [util](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/util): Toolkit
+        - alipayclient: Alipay client
+        - ansible: ansible toolkit
+        - ansiblev2: ansible toolkit v2
+        - atexit: web framework code
+        - billing: Billing tools
+        - bitmap: Bitmap
+        - cephutils: cepu storage
+        - cgrouputils: Ccroup
+        - choices: Option parameters in command-line tools
+        - fileutils2: File operation toolkit
+        - fuseutils: fuse toolkit
+        - gin: web framework gin
+        - httputils: http toolkit, mainly used to construct clients
+        - imagetools: Image tools
+        - influxdb: influxdb
+        - logclient: Log client, service resource operations can record logs through this
+        - qemuimg: Toolkit for calling qemu-img
+        - qemutils: qemu toolkit
+        - rbacutils: rbac authentication toolkit
+        - regutils2: Regular expression toolkit
+        - s3auth: s3 authentication
+        - vmdkutils: vmware vmdk toolkit
+    - [vpcagent](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/vpcagent): vpc agent service, implements vpc functionality for private clouds
+    - [webconsole](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/webconsole): webconsole service, for example vnc interface
+    - [yunionconf](https://github.com/yunionio/cloudpods/tree/release/3.8/pkg/yunionconf): Configuration service
+- [scripts](https://github.com/yunionio/cloudpods/tree/release/3.8/scripts): Various scripts used in development
+    - gencopyright.sh: Generate copyright
+    - cherry_pick_pull.sh: Most commonly used, cherry pick PR to other branches
+
+## Frontend Code Structure
+
+- [containers](https://github.com/yunionio/dashboard/tree/master/containers): Functional modules (corresponding to first-level menus)
+  - [Dashboard](https://github.com/yunionio/dashboard/tree/master/containers/Dashboard): Control panel
+    - components: Components within the module
+    - extends: Directory of different types of tiles for the control panel
+    - locales: Internationalization (control panel part)
+    - router: Routing
+    - sections: Business components used when configuring tiles
+    - styles: Style files
+    - utils: Utility methods
+    - views: Page display files
+  - [Cloudenv](https://github.com/yunionio/dashboard/tree/master/containers/Cloudenv): Multi-cloud management
+    - contants: Constants within the module
+    - locales: Internationalization (current module part)
+    - router: Routing (current module part)
+    - sections: Business components
+    - utils: Utility methods
+    - views: Module pages (corresponding to second-level menus)
+      - cloudaccount: Module name
+        - components: Component directory, where List.vue is the list page of the current second-level menu module
+        - create: Create related pages
+        - dialogs: Dialog components
+        - mixins: Provide mixins used by current module list, details, create, dialogs, etc. Common ones are singleAction.js (list single-row action buttons) and columns.js (define list table headers)
+        - sidepage: Sidebar components including but not limited to detail pages
+        - utils: Utility methods
+        - index.vue: Entry file of the current module
+  - [Compute](https://github.com/yunionio/dashboard/tree/master/containers/Compute): Host
+    - Code structure of the following modules is the same as multi-cloud management
+  - [DB](https://github.com/yunionio/dashboard/tree/master/containers/DB): Database
+  - [Helm](https://github.com/yunionio/dashboard/tree/master/containers/Helm): Operations tools
+  - [IAM](https://github.com/yunionio/dashboard/tree/master/containers/IAM): Authentication and security
+  - [K8S](https://github.com/yunionio/dashboard/tree/master/containers/K8S): Container
+  - [Middleware](https://github.com/yunionio/dashboard/tree/master/containers/Middleware): Middleware
+  - [Monitor](https://github.com/yunionio/dashboard/tree/master/containers/Monitor): Monitoring
+  - [Network](https://github.com/yunionio/dashboard/tree/master/containers/Network): Network
+  - [Storage](https://github.com/yunionio/dashboard/tree/master/containers/Storage): Storage
+- [mock](https://github.com/yunionio/dashboard/tree/master/mock): API management (for testing)
+- [public](https://github.com/yunionio/dashboard/tree/master/public): 
+  - [index.html](https://github.com/yunionio/dashboard/tree/master/public/index.html): Entry page
+- [scope](https://github.com/yunionio/dashboard/tree/master/scope): Authorization related
+  - [assets](https://github.com/yunionio/dashboard/tree/master/scope/assets): Store global custom icons
+  - [router](https://github.com/yunionio/dashboard/tree/master/scope/router): Routing (login authorization part)
+  - [store](https://github.com/yunionio/dashboard/tree/master/scope/store): State management (login authorization part)
+- [scripts](https://github.com/yunionio/dashboard/tree/master/scripts): Executable scripts
+- [src](https://github.com/yunionio/dashboard/tree/master/src): Source code directory
+  - [assets](https://github.com/yunionio/dashboard/tree/master/src/assets): Static resources
+  - [components](https://github.com/yunionio/dashboard/tree/master/src/components): Global common components (can be used directly without importing)
+  - [config](https://github.com/yunionio/dashboard/tree/master/src/config): Configuration, including plugins, themes, languages, channels, etc.
+  - [constants](https://github.com/yunionio/dashboard/tree/master/src/constants): Global constants, including multi-cloud types, global search, color configuration, monitoring, etc.
+  - [layouts](https://github.com/yunionio/dashboard/tree/master/src/layouts): Page layout related components
+  - [locales](https://github.com/yunionio/dashboard/tree/master/src/locales): Internationalization (global)
+  - [mixins](https://github.com/yunionio/dashboard/tree/master/src/mixins): Global mixin
+  - [plugins](https://github.com/yunionio/dashboard/tree/master/src/plugins): Plugin directory
+  - [router](https://github.com/yunionio/dashboard/tree/master/src/router): Global routing (including routes in scope and containers)
+  - [sections](https://github.com/yunionio/dashboard/tree/master/src/sections): Global business components
+  - [store](https://github.com/yunionio/dashboard/tree/master/src/store): Global state management
+  - [styles](https://github.com/yunionio/dashboard/tree/master/src/styles): Styles
+  - [tools](https://github.com/yunionio/dashboard/tree/master/src/tools): Includes internationalization plugins
+  - [utils](https://github.com/yunionio/dashboard/tree/master/src/utils): Global utility methods (http, form validation, lists, echart, storage, authorization, error, etc.)
+  - [views](https://github.com/yunionio/dashboard/tree/master/src/views): Pages (user information, ticket information, global search, email verification, etc.)
+- [tests](https://github.com/yunionio/dashboard/tree/master/tests): Test file directory
+- [upload](https://github.com/yunionio/dashboard/tree/master/upload): Build and release process configuration
+- [.env.development](https://github.com/yunionio/dashboard/tree/master/.env.development): Development environment variables
+- [.env.production](https://github.com/yunionio/dashboard/tree/master/.env.production): Production environment variables
+- [.gitignore](https://github.com/yunionio/dashboard/tree/master/.gitignore): Git ignore file
+- [package.json](https://github.com/yunionio/dashboard/tree/master/package.json): npm package configuration file
+- [package-lock.json](https://github.com/yunionio/dashboard/tree/master/package-lock.json): npm package version lock file
+- [yarn.lock](https://github.com/yunionio/dashboard/tree/master/yarn.lock): npm package version lock file
+- [vue.config.js](https://github.com/yunionio/dashboard/tree/master/vue.config.js): Vue configuration file
+- [README.md](https://github.com/yunionio/dashboard/tree/master/README.md): Project introduction
+- [.eslintrc.js](https://github.com/yunionio/dashboard/tree/master/.eslintrc.js): ESlint configuration file
+- [.travirs.yml](https://github.com/yunionio/dashboard/tree/master/.travirs.yml): Travis CI configuration file
+- [babel.config.js](https://github.com/yunionio/dashboard/tree/master/babel.config.js): Babel configuration file
+- [Dockerfile](https://github.com/yunionio/dashboard/tree/master/Dockerfile): Build image file
+- [jest.config.js](https://github.com/yunionio/dashboard/tree/master/jest.config.js): Unit test configuration file
+
+
+

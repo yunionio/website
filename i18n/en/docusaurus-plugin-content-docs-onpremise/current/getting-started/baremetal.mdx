@@ -1,0 +1,109 @@
+---
+edition: ce
+sidebar_position: 4
+---
+
+# Enable Bare Metal Management Service
+
+To use the private cloud bare metal management feature, you need to enable the bare metal management service (baremetal-agent). This section describes how to deploy the corresponding components.
+
+## Introduction
+
+baremetal-agent manages bare metal servers through PXE. If the bare metal server's BMC supports remote ISO mounting through the redfish API, it can also be booted and managed via ISO.
+
+After the platform is successfully deployed, you need to select a node from the deployment environment to deploy the baremetal-agent service.
+
+:::tip
+Currently, only one node can be specified to deploy and run the baremetal-agent service, because the baremetal-agent service is stateful and cannot run with multiple replicas across nodes.
+:::
+
+## Deploy baremetal-agent
+
+
+During the PXE boot process, baremetal-agent only processes requests from DHCP relay servers, so you need to configure DHCP relay on the switch in advance or use the DHCP relay function of the host service.
+
+### Enable baremetal-agent
+
+Log in to the control node and select a node to enable baremetal-agent (you can choose the first master node here).
+
+- $node_name: The node name displayed by `kubectl get nodes`, select a node to run the baremetal-agent service.
+
+```bash
+# Assuming you want to deploy baremetal-agent to a node with IP 10.168.222.150
+# Log in to the control node and find the corresponding node name through the compute node's IP
+$ kubectl get nodes -o wide | grep 10.168.222.150 | awk '{print $1}'
+k8s-dev2
+
+# Find the network interface corresponding to IP 10.168.222.150
+$ ip a show |grep 10.168.222.150
+    inet 10.168.222.150/24 brd 10.168.222.255 scope global br0
+
+# Enable baremetal-agent
+# kubectl label nodes $node_name onecloud.yunion.io/baremetal=enable
+$ kubectl label nodes k8s-dev2 onecloud.yunion.io/baremetal=enable
+
+# Observe the baremetal agent pod status to see if it started successfully
+$ watch "kubectl get pods -n onecloud | grep baremetal"
+default-baremetal-agent-7c84996c9b-hhllw   1/1     Running   0          3m10s
+
+# Confirm baremetal-agent is registered to the control node
+$ climc agent-list
++--------------------------------------+--------------------------+----------------+-----------------------------+---------+------------+------------------------------------------+--------------------------------------+
+||                  ID                  |           Name           |   Access_ip    |         Manager_URI         | Status  | agent_type |                 version                  |               zone_id                |
++--------------------------------------+--------------------------+----------------+-----------------------------+---------+------------+------------------------------------------+--------------------------------------+
+|| f3c2c671-c41d-4f30-8d04-e022b49bb9b5 | baremetal-10.168.222.150 | 10.168.222.150 | https://10.168.222.150:8879 | disable | baremetal  | remotes/origin/master(5e415506120011509) | 6230b485-2e54-480e-8284-33360b8202a8 |
++--------------------------------------+--------------------------+----------------+-----------------------------+---------+------------+------------------------------------------+--------------------------------------+
+```
+
+### Configure DHCP Relay on Physical Switch
+
+You need to configure DHCP Relay for the bare metal server's IPMI network segment and management network segment respectively.
+
+Different manufacturers' physical switches have different commands for configuring DHCP Relay. The following configuration is for reference only. Please configure according to your actual situation.
+
+```bash
+# Configure DHCP Relay and relay to the IP of the node where baremetal-agent is located.
+interface Vlanif10
+description new_test_host_net
+ip address 10.168.222.1 255.255.255.0
+dhcp select relay
+dhcp relay binding server group baremetal-group
+dhcp relay server group baremetal-group
+server 10.168.222.150 0 
+```
+
+### How to Configure Host Service to Enable DHCP Relay
+
+:::warning
+If DHCP relay is configured on the switch, you do not need to configure the compute node's dhcp_relay here, you can skip this step.
+:::
+
+Log in to the server where the compute node has been deployed and modify /etc/yunion/host.conf, add the dhcp_relay configuration item:
+
+```bash
+dhcp_relay:
+- 10.168.222.150 # baremetal agent dhcp service listening address
+- 67             # baremetal agent dhcp service listening port
+```
+
+Then log in to the control node, find the corresponding pod based on the compute node's IP above, and restart the host service.
+
+```bash
+$ kubectl get pods -n onecloud -o wide | grep 10.168.222.150  | grep -vE 'image|deployer'
+default-host-xdc7x                       2/2     Running   0          78m    10.168.222.150   k8s-dev2   <none>           <none>
+# Find the corresponding pod and delete it, wait for the host service to automatically restart
+$ kubectl delete pods -n onecloud default-host-xdc7x
+```
+
+## Register and Manage Bare Metal Servers
+
+After deployment is complete, you can refer to ["User Manual/Bare Metal"](../guides/baremetal/) to register and manage bare metal servers.
+
+## Disable baremetal-agent
+
+You can select a node among the nodes where baremetal-agent is enabled to prevent baremetal-agent from being scheduled to that node.
+
+```bash
+# Remove the onecloud.yunion.io/baremetal label on the corresponding node
+$ kubectl label nodes $node_name onecloud.yunion.io/baremetal-
+```

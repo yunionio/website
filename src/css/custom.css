@@ -195,3 +195,20 @@ p > img {
   background-color: var(--ifm-color-primary-dark);
   color: var(--ifm-color-white) !important;
 }
+
+/* Sidebar 标签语言切换 */
+html[lang='zh-Hans'] .sidebar-label-en {
+  display: none;
+}
+
+html[lang='zh-Hans'] .sidebar-label-zh {
+  display: inline;
+}
+
+html[lang='en'] .sidebar-label-zh {
+  display: none;
+}
+
+html[lang='en'] .sidebar-label-en {
+  display: inline;
+}

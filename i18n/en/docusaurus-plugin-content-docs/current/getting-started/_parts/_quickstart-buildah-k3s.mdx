@@ -1,0 +1,58 @@
+
+## Introduction
+
+Many users have reported that ocboot's current k8s suite version is too low (`v1.15`) and hope to launch a higher version. For this reason, we have launched a deployment method based on `buildah`+`k3s` (`v1.28`).
+
+::::warning
+Please note that this solution is currently in the testing phase. Please fully test it before using it in your production environment.
+::::
+
+This installation solution no longer depends on `ansible` on the target machine, but integrates ansible and its dependencies into the `buildah` image.
+
+## Deployment Method
+
+Please use the following command to deploy. Please refer to the comment section.
+
+import BuildahK3S from '@site/src/components/BuildahK3S';
+
+<BuildahK3S productVersion={props.productVersion} />
+
+## Add Nodes
+
+import K3sAddNode from '@site/src/components/K3sAddNode';
+
+<K3sAddNode />
+
+## Supported Operating Systems
+
+Note: 3.11, 3.10, etc. represent Release/3.11, Release/3.10. The same applies to others.
+
+| Operationg system and Arch             | 3.11 | 3.10 |
+| -------------------------------------- | ---- | ---- |
+| CentOS 7 2009 x86_64+aarch64           | ✅    | ✅    |
+| OpenEuler 22.03 LTS Sp3 x86_64+aarch64 | ✅    | ✅    |
+| Debian 11 x86_64+aarch64               | ✅    | ✅    |
+| Ubuntu 22.04 x86_64+aarch64            | ✅    | ✅    |
+| CentOS Stream8 x86_64                  | ✅    | ✅    |
+| Rocky Linux 8.9 x86_64                 | ✅    | ✅    |
+| OpencloudOS 8.8 x86_64                 | ✅    | ✅    |
+| AlmaLinux 8.9 x86_64                   | ✅    | ✅    |
+| AnolisOS 8.8 x86_64                    | ✅    | ✅    |
+
+## How to Uninstall k3s
+
+```bash
+./scripts/uninstall-k3s.sh
+```
+
+If needed, please clean up the database yourself after uninstalling k3s. This document will not go into details.
+
+## FAQ
+
+### 1. Is it supported to migrate/upgrade k8s systems to k3s systems?
+
+Not currently supported.
+
+### 2. Other questions?
+
+For other questions, please submit them on the Cloudpods github issues page: [https://github.com/yunionio/cloudpods/issues](https://github.com/yunionio/cloudpods/issues) , and we will reply as soon as possible.

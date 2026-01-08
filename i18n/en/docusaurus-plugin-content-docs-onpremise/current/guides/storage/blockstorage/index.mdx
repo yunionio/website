@@ -1,0 +1,77 @@
+---
+sidebar_position: 1
+---
+
+# Block Storage
+
+Block storage provides storage for virtual machine virtual disks.
+
+Among them, supported storage access interfaces are divided into the following categories:
+
+* File Interface: Virtual machine disks exist as files. QEMU virtual machines access virtual machine disk content through POSIX file interfaces. Disk file formats generally have raw and qcow2 two formats. We generally use qcow2 format disk files. qcow2 format disk files have many advantages compared to raw format files: 1) Support thin provision mode, disk file space is allocated on demand, occupying less; 2) Support snapshot and other functional features, 3) Performance is not bad compared to raw format.
+
+* Block Interface: Virtual machine disks are disk devices on the host. Virtual machines directly mount block devices on the host. Whether these block devices are local or network shared, they will be added to the host's LVM VG storage pool and provided to QEMU virtual machines in the form of LVM logical volumes. Snapshots based on LVM implement virtual machine disk snapshots. Compared to file interface method, this method has less file system overhead and has higher read-write performance.
+
+* Custom Interface: File interface and block interface are both standard interfaces of Linux operating system. In addition, the interface supported by the platform for accessing virtual disks is Ceph RBD, which is Ceph's custom interface for accessing its distributed block devices.
+
+According to storage deployment architecture, they are divided into the following categories:
+
+* Local Access: Virtual machine disks are stored on storage locally mounted on the host, such as local SATA, SAS or NVME block devices
+* Network Access: Virtual machine disks are stored on centralized storage network mounted on the host, such as NFS, GPFS, OCFS2, etc.
+* Distributed Access: Virtual machine disks are not stored on specific storage nodes locally or on the network, but are distributed on multiple nodes, such as Ceph.
+
+Therefore, block storage is divided into the following categories from two dimensions of access interface and deployment architecture.
+
+| Access Interface\Deployment Architecture |  Local Access      | Centralized Network Access | Decentralized Distributed Access |
+|----------------|-------------------|--------------|----------------|
+| File Interface       | Local Storage          | NAS          |                |
+| Block Interface         | Local LVM           | LVMLockd     |                |
+| Custom Interface     |                   |              | Ceph RBD       |
+
+## Supported Storage Types
+
+### Local Storage
+
+Local storage uses the host's local file system to store virtual machine disk files. It is the default supported block storage. Local storage needs to be declared in the host's local configuration file. After the host service starts, it will automatically register and report status. For specific configuration and usage methods, please refer to [Local Storage](./add-storage).
+
+### NAS
+
+NAS storage uses network mounted file systems to store virtual machine disk files. Currently divided into two cases: NFS and GPFS.
+
+#### NFS
+
+NFS type block storage specifically refers to network shared file systems mounted through NFS protocol. This type of storage needs to specify the shared server IP and shared directory. After associating the host with the storage, the host service will automatically mount this storage to the host's specified directory using NFS protocol, without needing to manually mount in advance. For specific configuration and usage methods, refer to [NFS](./nfs).
+
+#### GPFS(NAS)
+
+GPFS is used to specify network shared file systems that users have manually mounted to the host in advance, and is not limited to GPFS, but also includes OCFS2, GlusterFS and other network file systems. Creating a GPFS type block storage is more about providing storage configuration information to the platform for subsequent use. Different from NFS storage, the operation of mounting this storage to the host only serves to inform the platform of the storage's access path on the host. The platform will not automatically execute mounting. Any network file system that users mount themselves can be registered as a GPFS type block storage.
+
+### Local LVM
+
+Local LVM is block storage that uses the host's local LVM VG to allocate logical volumes to virtual machines as virtual disks. For specific configuration and usage methods, refer to [Local LVM Storage](./lvm-storage).
+
+### Shared LVM
+
+Shared LVM mounts shared network block devices to multiple hosts, adds this shared block device to shared LVM VG, and allocates LVs from the shared VG for virtual machines to use. For specific configuration and usage methods, refer to [LvmLockd](./lvmlockd).
+
+### Ceph
+
+Ceph uses Ceph RBD block devices as virtual machine virtual disks. For specific configuration and usage methods, refer to [Ceph](./ceph)
+
+## Storage Usage
+
+### Local Access Storage
+
+The platform will add a local storage for each host by default, with default location at /opt/cloud/workspace/disks.
+
+Other local access storage, including file storage and LVM, need to be added by modifying configuration on the corresponding host. After adding, restart the host service to take effect.
+
+### Network Access Storage
+
+For network access storage, you need to add storage configuration on the platform. *After adding storage, you also need to associate this network storage with the corresponding host*.
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />
+
+

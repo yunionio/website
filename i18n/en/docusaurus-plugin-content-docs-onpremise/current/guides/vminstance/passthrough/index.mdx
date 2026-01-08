@@ -1,0 +1,172 @@
+---
+sidebar_position: 8
+---
+
+# Device Passthrough
+
+This chapter introduces principles and operations related to virtual machine device passthrough, including commonly used GPU, USB and other device passthrough.
+
+We can passthrough devices on hosts to virtual machines, allowing virtual machines to directly access host hardware devices. Main usage scenarios are as follows:
+
+## PCI/PCIe Device Passthrough
+
+To passthrough host's PCI/PCIe devices to virtual machines, you need to pre-configure the host as follows:
+
+1. Intel VT-d or AMD IOMMU is enabled in the system's BIOS. Please refer to the machine's BIOS configuration menu or other related information.
+
+2. Modify grub's kernel boot parameters so that Intel VT-d or AMD IOMMU is enabled in the operating system:
+
+If it's an Intel CPU, you need to add the following grub parameters to /etc/default/grub's GRUB_CMDLINE_LINUX:
+```bash
+GRUB_CMDLINE_LINUX="intel_iommu=on iommu=pt vfio_iommu_type1.allow_unsafe_interrupts=1"
+```
+
+If it's an AMD CPU, amd_iommu=on is already set by default, so the corresponding grub command line parameters are:
+
+```bash
+GRUB_CMDLINE_LINUX="iommu=pt vfio_iommu_type1.allow_unsafe_interrupts=1"
+```
+
+3. Update and generate grub boot configuration file
+
+After setting GRUB_CMDLINE_LINUX in /etc/default/grub, you need to run grub2-mkconfig to update grub's configuration file.
+
+If the system is BIOS boot, use the following command:
+
+```bash
+$ grub2-mkconfig -o /boot/grub2/grub.cfg
+```
+
+If it's UEFI boot, use the following command (assuming CentOS):
+
+```bash
+grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
+```
+
+4. Set vfio kernel modules to load automatically
+
+Host PCI/PCIe device passthrough principle is: This device is taken over by vfio-pci driver, thus allowing the device to be directly accessed and used by user-space applications (i.e., QEMU).
+
+Therefore, to enable PCI/PCIe device passthrough, you need to enable kernel's vfio-related kernel modules, and devices that need passthrough need to be taken over by vfio-pci kernel module.
+
+Method to enable vfio kernel modules: Modify /etc/modules-load.d/vfio.conf, add the following kernel modules, set vfio-related kernel modules to load automatically on boot.
+
+```bash
+$ cat /etc/modules-load.d/vfio.conf
+vfio
+vfio_iommu_type1
+vfio_pci
+vfio_virqfd
+```
+
+Note: For kernel 6.2 and later versions, vfio_virqfd is merged into vfio module, no longer has vfio_virqfd.
+
+host service will be responsible for setting vfio-pci takeover of devices to be passthrough.
+
+5. Enable huge page memory (optional)
+
+It is recommended to enable host huge page memory (hugepage). For details, see [Huge Page Memory (Hugepage)](../hugepage).
+
+Note: Starting from 3.10, newly deployed x86 compute nodes will automatically enable huge pages.
+
+6. Restart host to take effect
+
+If you made modifications in steps 2-4, you need to restart the host for configuration to take effect.
+
+After restart, view /proc/cmdline to confirm kernel command line parameter configuration takes effect.
+
+Execute lsmod to confirm related kernel modules are correctly loaded.
+
+The above are common settings for any PCI/PCIe device. For different types of PCI/PCIe devices and different device passthrough scenarios, there are their own different settings and usage methods. Specific introductions are as follows:
+
+### GPU Passthrough
+
+Refer to: [GPU Passthrough](./gpu)
+
+### SR-IOV Network Card Passthrough
+
+Refer to: [Network Card SR-IOV Offload](./sriov)
+
+### NVME Passthrough
+
+TODO (NVME passthrough and setting NVME-based storage prevention)
+
+### Other General PCI/PCIe Device Passthrough
+
+Refer to: [Custom PCI Device Passthrough](./custom-pci-devices)
+
+## Other Low-Speed Device Passthrough
+
+In addition to passthroughing host's PCI/PCIe devices, you can also passthrough host's USB, serial ports and other low-speed devices to virtual machines for use. Specific introductions are as follows.
+
+### USB Device Passthrough
+
+Refer to: [USB Passthrough](./usb-passthrough)
+
+### Serial Port Device Passthrough
+
+Refer to: [Serial Port COM Passthrough](./com-passthrough)
+
+## Common Questions (FAQ)
+
+### How to Verify Intel VT-d or AMD IOMMU is Enabled in System BIOS?
+
+How to verify if vt-d is enabled in Linux refers to: https://stackoverflow.com/questions/51261999/check-if-vt-d-iommu-has-been-enabled-in-the-bios-uefi
+
+View DMAR logs contained in dmesg, execute:
+
+```bash
+$ dmesg | grep DMAR
+```
+
+If execution results do not meet expectations, it means it is not enabled in BIOS. You need to find vt-d or X2APIC in BIOS, then enable it.
+
+### How to Verify grub Set Kernel Parameters Have Taken Effect?
+
+View /proc/cmdline to see if it contains parameters set in /etc/default/grub GRUB_CMDLINE_LINUX.
+
+```bash
+$ cat /proc/cmdline
+BOOT_IMAGE=/vmlinuz-5.4.130-1.yn20221208.el7.x86_64 root=UUID=6f96c2be-434d-405e-9b46-ba8877f2a0a9 ro rhgb crashkernel=auto rdblacklist=nouveau hugepagesz=1G vfio_iommu_type1.allow_unsafe_interrupts=1 intel_iommu=on quiet iommu=pt nouveau.modeset=0 net.ifnames=0 default_hugepagesz=1G biosdevnames=0
+```
+
+### How to Verify vfio Kernel Modules Are Correctly Loaded?
+
+View vfio logs contained in demsg, execute
+
+```bash
+$ dmesg | grep -i vfio
+[    0.329224] VFIO - User Level meta-driver version: 0.3
+[    0.341372] vfio_pci: add [10de:13c2[ffff:ffff]] class 0x000000/00000000
+[    0.354704] vfio_pci: add [10de:0fbb[ffff:ffff]] class 0x000000/00000000
+[    2.061326] vfio-pci 0000:06:00.0: enabling device (0100 -> 0103)
+```
+
+### How to Verify PCI/PCIe Devices to be Passthrough on Host Are Taken Over by vfio-pci?
+
+Execute the following command to confirm the device's Kernel driver in use is vfio-pci
+
+```bash
+$ lspci -nnk | grep AMD -A 3
+03:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Tonga XT GL [FirePro S7150] [1002:6929]
+	Subsystem: Advanced Micro Devices, Inc. [AMD/ATI] Device [1002:030c]
+	Kernel driver in use: vfio-pci
+	Kernel modules: amdgpu
+```
+
+```bash
+$ lspci -nnk | grep NVIDIA -A 3
+42:00.0 VGA compatible controller [0300]: NVIDIA Corporation GP102 [GeForce GTX 1080 Ti] [10de:1b06] (rev a1)
+	Subsystem: NVIDIA Corporation Device [10de:120f]
+	Kernel driver in use: vfio-pci
+	Kernel modules: nouveau
+42:00.1 Audio device [0403]: NVIDIA Corporation GP102 HDMI Audio Controller [10de:10ef] (rev a1)
+	Subsystem: NVIDIA Corporation Device [10de:120f]
+	Kernel driver in use: vfio-pci
+	Kernel modules: snd_hda_intel
+```
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />
+
