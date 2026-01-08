@@ -11,7 +11,7 @@ const onpremiseSidebar = {
     // 侧边栏顶部固定标题
     {
       type: 'html',
-      value: '<div class="sidebar-doc-type-title"><span class="sidebar-doc-type-icon" style="background: linear-gradient(135deg, #076f38 0%, #33925d 100%); width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center;"><img src="/img/feature_private_cloud.svg" alt="私有云" style="width: 20px; height: 20px; filter: brightness(0) invert(1);" /></span><span class="sidebar-doc-type-label">私有云管理</span></div>',
+      value: '<div class="sidebar-doc-type-title"><span class="sidebar-doc-type-icon" style="background: linear-gradient(135deg, #076f38 0%, #33925d 100%); width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center;"><img src="/img/feature_private_cloud.svg" alt="私有云" style="width: 20px; height: 20px; filter: brightness(0) invert(1);" /></span><span class="sidebar-doc-type-label"><span class="sidebar-label-zh">私有云</span><span class="sidebar-label-en">Private Cloud</span></span></div>',
       defaultStyle: true,
     },
     // 自动生成当前文档实例的所有文档（包括通过符号链接引用的升级文档）

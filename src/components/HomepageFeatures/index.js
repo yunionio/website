@@ -92,7 +92,7 @@ export default function HomepageFeatures() {
     <section className={styles.featureSection}>
       <div className="container">
         <div className={styles.sectionTitle}>
-          <Translate id="">The One Cloud Contains All Your Clouds</Translate>
+          <Translate id="homepage.featureTitle">The One Cloud Contains All Your Clouds</Translate>
         </div>
         <div className={styles.sectionSubTitle}>
           <Translate id="homepage.featureDesc">Cloudpods不仅可以管理本地的虚拟机和物理机资源，还可以管理多个云平台和云账号。Cloudpods隐藏了这些异构基础设施资源的数据模型和API的差异，对外暴露了一套统一的API，允许用户就像用一个云一样地访问多云。从而大大降低了访问多云的复杂度，提升了管理多云的效率。</Translate>

@@ -1,0 +1,134 @@
+{
+  "version.label": {
+    "message": "3.11",
+    "description": "The label for version current"
+  },
+  "sidebar.cmpSidebar.category.产品介绍": {
+    "message": "产品介绍",
+    "description": "The label for category '产品介绍' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.安装部署": {
+    "message": "安装部署",
+    "description": "The label for category '安装部署' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.用户手册": {
+    "message": "用户手册",
+    "description": "The label for category '用户手册' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.命令行工具": {
+    "message": "命令行工具",
+    "description": "The label for category '命令行工具' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.云账号": {
+    "message": "云账号",
+    "description": "The label for category '云账号' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.VMware 纳管": {
+    "message": "VMware 纳管",
+    "description": "The label for category 'VMware 纳管' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.免密登录": {
+    "message": "免密登录",
+    "description": "The label for category '免密登录' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.虚拟机": {
+    "message": "虚拟机",
+    "description": "The label for category '虚拟机' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.安全组": {
+    "message": "安全组",
+    "description": "The label for category '安全组' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.Kubernetes 管理": {
+    "message": "Kubernetes 管理",
+    "description": "The label for category 'Kubernetes 管理' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.网络": {
+    "message": "网络",
+    "description": "The label for category '网络' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.认证与权限": {
+    "message": "认证与权限",
+    "description": "The label for category '认证与权限' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.认证体系": {
+    "message": "认证体系",
+    "description": "The label for category '认证体系' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.认证源": {
+    "message": "认证源",
+    "description": "The label for category '认证源' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.监控与运维": {
+    "message": "监控与运维",
+    "description": "The label for category '监控与运维' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.其他功能": {
+    "message": "其他功能",
+    "description": "The label for category '其他功能' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.消息中心": {
+    "message": "消息中心",
+    "description": "The label for category '消息中心' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.运维手册": {
+    "message": "运维手册",
+    "description": "The label for category '运维手册' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.开发手册": {
+    "message": "开发手册",
+    "description": "The label for category '开发手册' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.API 与 SDK": {
+    "message": "API 与 SDK",
+    "description": "The label for category 'API 与 SDK' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.多云资源对接": {
+    "message": "多云资源对接",
+    "description": "The label for category '多云资源对接' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.监控": {
+    "message": "监控",
+    "description": "The label for category '监控' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.CHANGELOG": {
+    "message": "CHANGELOG",
+    "description": "The label for category 'CHANGELOG' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.release/3.11": {
+    "message": "release/3.11",
+    "description": "The label for category 'release/3.11' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.release/3.10": {
+    "message": "release/3.10",
+    "description": "The label for category 'release/3.10' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.release/3.9": {
+    "message": "release/3.9",
+    "description": "The label for category 'release/3.9' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.release/3.8": {
+    "message": "release/3.8",
+    "description": "The label for category 'release/3.8' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.release/3.7": {
+    "message": "release/3.7",
+    "description": "The label for category 'release/3.7' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.release/3.6": {
+    "message": "release/3.6",
+    "description": "The label for category 'release/3.6' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.release/3.4": {
+    "message": "release/3.4",
+    "description": "The label for category 'release/3.4' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.release/3.3": {
+    "message": "release/3.3",
+    "description": "The label for category 'release/3.3' in sidebar 'cmpSidebar'"
+  },
+  "sidebar.cmpSidebar.category.发布日志": {
+    "message": "发布日志",
+    "description": "The label for category '发布日志' in sidebar 'cmpSidebar'"
+  }
+}

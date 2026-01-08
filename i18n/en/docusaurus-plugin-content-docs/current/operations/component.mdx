@@ -4,40 +4,39 @@ sidebar_position: 1
 
 # Component Introduction
 
-Most of the services deployed on the Cloudpods platform run in containers. Services deployed using `ocboot` and `helm` run directly on Kubernetes, while environments deployed using Docker Compose run directly on `docker`.
+Most services deployed on the Cloudpods platform run in containers. Services deployed using ocboot and helm run directly on Kubernetes, while environments deployed using docker compose run directly using docker.
 
-Next, we will introduce the component services of the platform.
+The following introduces the platform's component services.
 
 ## onecloud-operator
 
-The Onecloud-operator component is a cluster controller that enables automatic configuration, deployment, and operational monitoring of cluster services.
+The Onecloud-operator component is the cluster controller, implementing automatic configuration, deployment, and runtime monitoring of cluster services.
 
 - **Deployment**: onecloud-operator
 - **Pod**: onecloud-operator-xxx
 - **Configuration**:
 
 ```bash
-# Configure the operator
+# Configure operator
 $ kubectl edit oc -n onecloud
-# View the configuration of the operator
+# View operator configuration
 $ kubectl get oc -n onecloud -o yaml
 ```
-
-- **Features**:
-  - Automatic deployment of platform services, including initialization configuration and creation of corresponding k8s resources.
-  - Upgrade and rollback: update or rollback the version of any service.
-  - Resource cleanup: release corresponding resources when the platform service cluster is deleted.
+- **Functions**:
+    - Automatically deploy platform services, including initialization configuration and creating/managing corresponding k8s resources.
+    - Upgrade and rollback: Update/rollback versions of any service.
+    - Resource cleanup: Release corresponding resources after platform service cluster deletion.
 
 ### web
 
-Front-end service component
+Frontend service component
 
 - **Deployment**: default-web
 - **Pod**: default-web-xxx
 - **configmap**: default-web
-- **Features**:
-  - Hosting front-end code
-  - Nignx-related configuration
+- **Functions**:
+    - Host frontend code
+    - Nginx-related configuration
 
 ### apigateway
 
@@ -45,27 +44,27 @@ API gateway component
 
 - **Deployment**: default-apigateway
 - **Pod**: default-apigateway-xxx
-- **Features**:
-  - Provide web front-end API
-  - Entry point for authentication and authorization.
+- **Functions**:
+    - Provide web frontend API
+    - Authentication and authorization entry point
 
 ### keystone
 
 - **Deployment**: default-keystone
 - **Pod**: default-keystone-xxx
-- **Features**:
-  - Authentication
-  - Resource ownership: domain, project
-  - Permission: role, policy
-  - Service directory
+- **Functions**:
+    - Authentication
+    - Resource ownership: Domain, Project
+    - Permissions: Role, Policy
+    - Service catalog
 
 ### region
 
 - **Deployment**: default-region
 - **Pod**: default-region-xxx
-- **Features**:
-  - Cloud controller
-  - Management of cloud resources such as computing, networking, storage, and databases
+- **Functions**:
+    - Cloud controller
+    - Management of cloud resources such as compute, network, storage, database, etc.
 
 ### scheduler
 
@@ -73,7 +72,7 @@ Resource scheduling component
 
 - **Deployment**: default-scheduler
 - **Pod**: default-scheduler-xxx
-- **Features**: resource scheduling
+- **Function**: Resource scheduling
 
 ### glance
 
@@ -81,18 +80,18 @@ Image service component
 
 - **Deployment**: default-glance
 - **Pod**: default-glance-xxx
-- **Features**: Image management
+- **Function**: Image management
 
 ### baremetal
 
-Physical machine management service component
+Bare metal management service component
 
 - **Deployment**: default-baremetal
 - **Pod**: default-baremetal-xxx
-- **Features**:
-  - Provide bare metal management agent
-  - Provide PXEboot
-  - Provide DHCP
+- **Functions**:
+    - Provide bare metal management Agent
+    - Provide PXE boot
+    - Provide DHCP
 
 ### host
 
@@ -100,68 +99,71 @@ Host service component
 
 - **Pod**: default-host-xxx
 - **Daemonset**: default-host
-- **Features**: Agent on private cloud host
-- **Container**: Under the host service, there are three containers: `host`, `ovn-controller`, and`sdnagent`
-  - host:
-    - Virtual machine lifecycle management
-      - Enable and disable virtual machines through qemu
-      - Perform other operations on virtual machines through qemu monitor
-    - Storage management and disk lifecycle management
-      - CURD operations for local disk and shared storage (Ceph, NFS, etc.) disk
-      - Storage information detection
-    - DHCP Server
-      - As a DHCP Server to assign IP addresses to virtual machines
-      - As a DHCP relay server forwarding DHCP requests when physical machines PXE boot
-    - GPU device detection and initialization
-      - Bind GPU devices with VFIO driver and register them to the cloud platform
-    - Host initialization and information detection
-    - Monitoring data collection- ovn-controller: Manages virtual machine VPC networks, connects to the southbound, and converts flows in the southbound to OVS flow table rules.
-  - sdnagent: Manages virtual machine classic networks.
-    - Flow table management
-    - Virtual machine NIC QoS
-    - Firewall
+- **Function**: Agent on private cloud hosts
+- **Containers**: The host service has three containers: host, ovn-controller, sdnagent
+    - host:
+        - Virtual machine lifecycle management
+            - Start/stop virtual machines via qemu
+            - Other operations on virtual machines via qemu monitor
+        - Storage management and disk lifecycle management
+            - CRUD operations on local disks and shared storage (ceph, nfs, etc.) disks
+            - Storage information detection
+        - DHCP Server
+            - Act as DHCP Server to assign IPs to virtual machines
+            - Act as DHCP relay server to forward DHCP requests during bare metal PXE boot
+        - GPU device detection and initialization
+            - Bind vfio driver to GPU devices and register with cloud platform
+        - Host initialization and information detection
+        - Monitoring data collection
+    - ovn-controller: Virtual machine VPC network management, connect to southbound, convert flows in southbound to ovs flow table rules.
+    - sdnagent: Virtual machine classic network management.
+        - Flow table management
+        - Virtual machine NIC QoS
+        - Firewall
 
 ### host-image
 
 - **Pod**: default-host-image-xxx
-- **Function**: Provides API for reading image content, which can be remotely mounted with `fuse`.
+- **Function**: Provide API for reading image content, can remotely mount disks with fuse
 
 ### host-deployer
 
 - **Pod**: default-host-deployer-xxx
-- **Function**: Performs relevant operations for virtual machine deployment:
-  - Identification and initialization of virtual machine image operating system.
-  - Partition extension, file system formatting, etc.
+- **Function**: Deployment-related operations when creating virtual machines
+    - Virtual machine image OS identification, system initialization.
+    - Partition expansion, file system formatting, etc.
 
 ### vpcagent
 
 - **Deployment**: default-vpcagent
 - **Pod**: default-vpcagent-xxx
-- **Function**: Manages VPC configurations for `ovn`
+- **Function**: OVN VPC configuration management
 
 ### esxiagent
 
-VMware Management Agent
+VMware management Agent
 
 - **Deployment**: default-esxiagent
 - **Pod**: default-esxiagent-xxx
-- **Function**: Agent for VMware management.
+- **Function**: VMware management Agent proxy
 
 ### cloudmon
 
-Monitoring and collection service
+Monitoring collection service
 
 - **Deployment**: default-cloudmon
 - **Pod**: default-cloudmon-xxx
-- **Function**:
-  - Ping detection: probes IP addresses that are occupied every 5 minutes.
-  - Usage data collection
-  - Monitoring data collection for VMware, OpenStack, public cloud platforms, etc.
+- **Functions**:
+    - Ping detection: Probe occupied IP addresses every 5 minutes.
+    - Usage data collection
+    - Monitoring data collection from VMware, OpenStack, public cloud and other platforms
+
 
 ### monitor
 
-Monitoring and query service
+Monitoring query service
 
 - **Deployment**: default-monitor
 - **Pod**: default-monitor-xxx
-- **Function**: Responsible for monitoring query and alarm functions.
+- **Function**: Responsible for monitoring queries and alerting functions
+

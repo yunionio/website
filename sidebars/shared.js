@@ -12,7 +12,7 @@ const sharedSidebar = {
     // 侧边栏顶部固定标题
     {
       type: 'html',
-      value: '<div class="sidebar-doc-type-title"><span class="sidebar-doc-type-icon">📚</span><span class="sidebar-doc-type-label">通用文档</span></div>',
+      value: '<div class="sidebar-doc-type-title"><span class="sidebar-doc-type-icon">📚</span><span class="sidebar-doc-type-label"><span class="sidebar-label-zh">通用文档</span><span class="sidebar-label-en">Shared Documentation</span></span></div>',
       defaultStyle: true,
     },
     // 自动生成所有文档，根据文件结构组织

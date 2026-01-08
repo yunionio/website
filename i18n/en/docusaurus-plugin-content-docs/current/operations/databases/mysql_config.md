@@ -2,38 +2,38 @@
 sidebar_position: 1
 ---
 
-# MariaDB Recommended Configurations
+# MariaDB Recommended Configuration
 
-The configurations are recommended as follows:
+Configuration recommendations are as follows:
 
-1. Skip the domain name resolvation of the client
+1. Disable reverse DNS lookup for clients
 
 ```
 skip-name-resolve
 ```
 
-2. Set the time of automatic cleaning binlog (in terms of number of days)
+2. Automatic binlog cleanup time (days)
 
 ```
 expire_logs_days=30
 ```
 
 
-3. Turn on independent INNODB file for each table
+3. Set one independent innodb file per table
 
 ```
 innodb_file_per_table=ON
 ```
 
-4. Maximal allowd connections
+4. Maximum connections
 
 ```
 max_connections=300
 ```
 
-The default is 151，we may set it higher, e.g. 300 
+Default is 151, can be increased, for example to 300
 
-Note: Besides to increase the maximum number of connections of MySQL, you may also need to increase the maximum number of open files of the operating system:
+Note: Increasing MySQL maximum connections also requires increasing the operating system's maximum open files. Need to modify /usr/lib/systemd/system/mariadb.service as follows:
 
 ```
 # /usr/lib/systemd/system/mariadb.service
@@ -43,22 +43,22 @@ LimitMEMLOCK=10000
 ```
 
 
-5. Set the maximal allowed package size of each query
+5. Maximum bytes returned by query
 
 ```
 max_allowed_packet=20M
 ```
 
-The default is 1M，set it to 20M.
+Default is 1M, increase to 20M
 
 
-6. Set the default timezone of datetime field to be UTC
+6. Set default timezone for date fields to UTC
 
 ```
 default_time_zone='+00:00'
 ```
 
-7. Turn on slow log and the automatic logrotate
+7. Enable slow log and logrotate for this log
 
 ```
 slow_query_log = ON
@@ -66,18 +66,18 @@ long_query_time = 30
 slow_query_log_file = /var/log/mariadb/slow.log
 ```
 
-8. Turn on error log
+8. Enable error log
 ```
 log_error=/var/log/mariadb/mariadb.err.log
 ```
 
-9. Turn off general log
+9. Disable general log
 ```
 general_log=OFF
 general_log_file=/var/log/mariadb/mariadb.log
 ```
 
-An example of the configuration file as follows:
+Modify configuration file
 ```
 # /etc/my.cnf
 [mysqld]
@@ -94,3 +94,4 @@ log_error = /var/log/mariadb/mariadb.err.log
 general_log=OFF
 general_log_file=/var/log/mariadb/mariadb.log
 ```
+

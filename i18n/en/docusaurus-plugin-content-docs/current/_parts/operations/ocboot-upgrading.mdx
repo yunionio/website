@@ -1,0 +1,117 @@
+
+This document describes how to upgrade service versions to a specified version using ocboot.
+
+:::tip
+ocboot can only upgrade environments deployed via ocboot. If your environment was deployed using docker compose or helm, please refer to the upgrade operations in the corresponding deployment documentation.
+:::
+
+## Prerequisites
+
+Version upgrades are recommended to be done incrementally between adjacent versions. For example, upgrading from v3.8.x to v3.10.x requires the following steps:
+
+1. v3.8.x => v3.9.x
+2. v3.9.x => v3.10.x
+
+In general, the upgrade steps are as follows:
+
+Use our [ocboot](https://github.com/yunionio/ocboot) tool for upgrades. This tool primarily calls ansible to upgrade all nodes in the cluster.
+
+import ReleaseVersion from '@site/src/components/ReleaseVersion'
+
+1. Download the [ocboot](https://github.com/yunionio/ocboot/releases) code for the corresponding version
+2. Use the `./ocboot.sh upgrade` command in [ocboot](https://github.com/yunionio/ocboot) to perform the version upgrade
+
+## Check Current Version
+
+You can use kubectl to check the current cluster version
+
+import GetClusterVersion from '@site/src/components/GetClusterVersion'
+
+<GetClusterVersion />
+
+## Download ocboot Tool
+
+:::tip
+If you already have the corresponding version code locally, you can skip the following steps. However, generally speaking, with each new version release, there will be a corresponding ocboot deployment tool release, and you need to use the corresponding version to update.
+:::
+
+import OcbootReleaseDownload from '../../getting-started/_parts/_quickstart-ocboot-release-download.mdx';
+
+<OcbootReleaseDownload />
+
+## Upgrade Service Components
+
+### Prerequisites
+
+The principle of updating services is to remotely log in to the first control node of the cluster via SSH passwordless authentication from the local machine, obtain information about all nodes, and then execute playbook updates through ansible. Therefore, the following requirements must be met:
+
+1. The local machine can SSH remotely log in to PRIMARY_MASTER_HOST
+2. PRIMARY_MASTER_HOST can SSH passwordless log in to other nodes in the cluster
+
+If passwordless login is not set up, please use the `ssh-copy-id -i ~/.ssh/id_rsa.pub root@PRIMARY_MASTER_HOST` command to distribute the public key to the corresponding nodes in your environment.
+
+Upgradeable version numbers can be queried on the [Release Notes 3.11 page](../../release-notes/v3_11_x).
+
+### Execute Upgrade Command
+
+The following command uses ocboot to upgrade related services to a higher version. This step will take a long time waiting for docker images to be pulled, please be patient.
+
+import OcbootUpgrade from '@site/src/components/OcbootK3sUpgrade';
+
+<OcbootUpgrade />
+
+You can also use `./ocboot.sh upgrade --help` to view other optional parameters.
+
+- --user can specify other SSH users
+- --port specifies the SSH port
+- --key-file specifies another SSH private key
+- --as-bastion can make PRIMARY_MASTER_HOST act as a bastion host to deploy hosts in the internal network
+
+### View Upgrade Process
+
+During the upgrade process, you can log in to PRIMARY_MASTER_HOST and use kubectl to view the upgrade status of corresponding pods.
+
+```bash
+$ kubectl get pods -n onecloud --watch
+```
+
+## Downgrade
+
+If you encounter issues such as features not meeting expectations or bugs after upgrading, you can downgrade and rollback using the following commands.
+
+:::warning
+- Generally, minor version downgrades are fine, such as downgrading from v3.10.7 to v3.10.6
+- Cross-version downgrades may have issues, such as downgrading from v3.10.7 to v3.9.15
+
+If you encounter problems, please [submit an issue on GitHub](https://github.com/yunionio/cloudpods/issues) or [contact us](../../contact/) for help.
+:::
+
+## Rollback Operation
+
+Starting from ocboot v3.9.7, each time cluster services are upgraded, the operator's deployment and onecloudcluster's yaml files are backed up to `/opt/yunion/ocboot/_upgrade/` for easy manual component rollback in the future.
+
+When an upgrade fails, or you want to roll back to the version before the upgrade, you can use the following operations:
+
+```bash
+# View the upgrade backup directories in the /opt/yunion/ocboot/_upgrade/ directory
+# Subdirectories are named with the pre-upgrade time
+$ ls  /opt/yunion/ocboot/_upgrade/
+2023.02.20-10:10:07
+
+# For example, if you want to roll back to the version before 2023.02.20-10:10:07, perform the following operations
+$ cd /opt/yunion/ocboot/_upgrade/2023.02.20-10\:10\:07/
+# View related yaml files
+$ ls -lh
+-rw-r--r-- 1 root root  61K Feb 20 10:10 oc.yml # oc.yaml is the onecloudcluster description file
+-rw-r--r-- 1 root root 3.9K Feb 20 10:10 operator.yml # operator.yaml is the operator deployment description file
+
+# First roll back the operator
+$ kubectl apply -f operator.yml
+deployment.extensions/onecloud-operator configured
+# Wait until the newly created operator becomes Running. If it's in ContainerCreating state, wait for a while
+$ kubectl get pods -n onecloud | grep operator
+onecloud-operator-5557d86d74-7s5sl                   1/1     Running   0          2s
+
+# Then roll back the onecloudcluster
+$ kubectl apply -f oc.yml
+```
