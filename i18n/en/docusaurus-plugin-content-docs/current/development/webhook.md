@@ -19,9 +19,10 @@ In Authentication & Security -> Message Center -> Robot Management, click the Ne
 About the header, body, and msg_key fields:
 
 ```
-  header: Refers to additional webhook request headers, can be empty.
+  header: Refers to additional webhook request headers, can be empty. X-Auth-Token cannot be specified.
   body: Refers to additional webhook message body, can be empty.
   msg_key: Refers to the key for the required message text, can be empty. When empty, the default key is Msg.
+  secret_key: Used for signature verification. When specified, the receiver will receive the X-Auth-Token signature.
 
   Note: When body and msg_key have the same name, body takes priority, which will cause the main message information to be lost. Therefore, msg_key and body must not have the same name.
 ```
@@ -67,6 +68,7 @@ X-Yunion-Span-Id: 0.0
 X-Yunion-Span-Name:
 X-Yunion-Strace-Debug: true
 X-Yunion-Strace-Id: e7b586c9
+X-Auth-Token: 63ecc25f3f398e6d6a8b30388ddd7b788e81337989980ae768d8709b1fbd895f
 
 response body:
 {
@@ -175,4 +177,46 @@ Check operation logs: climc action-show --type notification --fail
 If the template keyword appears, you can delete the notify.topic_tbl and notify.subscriber_tbl tables, then restart the notify service to re-cover template text (Note: This will cause loss of all message subscription associations).
 Or modify the title_cn, title_en, content_cn, content_en fields in notify.topic_tbl. For related syntax, refer to go-template.
 ```
+
+## Signature Verification
+
+### Signature Principle
+
+1. The sender uses the shared secret + raw message body to generate a hash (signature) via HMAC-SHA256.
+2. The sender puts the signature in the HTTP request header (X-Auth-Token).
+3. The receiver uses the same shared secret and the received message body to recompute the signature, then compares it with the signature in the request header:
+   - Match: message is valid and unaltered.
+   - Mismatch: message is invalid or has been tampered with.
+
+### Preconditions for Verification
+
+1. Sender and receiver must share the same secret key (Secret Key). A random string (length ≥ 32) is recommended.
+2. The receiver must obtain the raw, unmodified message body (no JSON formatting, whitespace changes, etc.).
+3. Ensure the X-Auth-Token request header is present and correctly formatted.
+
+### Verification Steps (General Process)
+
+**Step 1: Read request data**
+
+Read the raw message body of the HTTP POST request (as bytes; avoid string conversion that may cause encoding issues). Read the X-Auth-Token value from the request header (e.g., `7f9a8a9f8e7d6b5c4a3b2a1f0e9d8c7b6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0`).
+
+**Step 2: Recompute the signature**
+
+1. Use the HMAC-SHA256 algorithm with the shared secret as the key and the raw message body as the data to produce the hash:
+
+```golang
+h := hmac.New(sha256.New, []byte(secretKey))
+h.Write(payloadBytes)
+expectedSig := h.Sum(nil)
+```
+
+2. Convert the hash to a hexadecimal string (same format as the sender).
+
+**Step 3: Compare signatures securely**
+
+Do not use plain string comparison (e.g., `==`). Use a constant-time comparison (e.g., Go's `hmac.Equal`) to prevent timing attacks.
+
+Result:
+- `true`: signature verification passed; process the message.
+- `false`: signature verification failed; reject and return 401.
 

@@ -19,9 +19,10 @@ sidebar_position: 17
 关于header,body,msg_key字段的说明：
 ```
 
-  header: 特指额外附加的webhook请求头，可为空。
+  header: 特指额外附加的webhook请求头，可为空, 且不能指定X-Auth-Token。
   body: 特指额外附加的webhook报文，可为空。
   msg_key: 特指对于所需文案的key，可为空，为空时默认key为Msg
+  secret_key: 用于签名验证，指定后接收端会接收到X-Auth-Token签名
 
   注: 当body与msg_key同名时，body优先，会导致文案主体信息丢失，故msg_key与body不得同名。
 
@@ -67,6 +68,7 @@ X-Yunion-Span-Id: 0.0
 X-Yunion-Span-Name:
 X-Yunion-Strace-Debug: true
 X-Yunion-Strace-Id: e7b586c9
+X-Auth-Token: 63ecc25f3f398e6d6a8b30388ddd7b788e81337989980ae768d8709b1fbd895f
 
 response body:
 {
@@ -175,3 +177,45 @@ Body:
 若出现template关键字，可通过删除notify.topic_tbl,notify.subscriber_tbl表后重启notify服务，重新覆盖模板文案（注：会导致丢失所有消息订阅关联关系）。
 或修改notify.topic_tbl中的title_cn,title_en,content_cn,content_en字段，相关语法可参考go-template。
 ```
+
+## 签名验证
+
+### 签名原理
+
+1. 发送端使用共享密钥 + 消息体原文，通过 HMAC-SHA256 生成哈希值（签名）。
+2. 发送端将签名放在 HTTP 请求头（X-Auth-Token）中。
+3. 接收端使用相同的共享密钥和接收到的消息体，重新计算签名，与请求头中的签名对比：
+   - 一致：消息合法且未被篡改。
+   - 不一致：消息非法或已被篡改。
+
+### 验签前置条件
+
+1. 发送端和接收端必须持有相同的共享密钥（Secret Key），建议使用随机字符串（长度 ≥ 32）。
+2. 接收端必须获取原始未修改的消息体（不能对 JSON 格式化、空格调整等）。
+3. 确保请求头 X-Auth-Token 存在且格式正确。
+
+### 验签步骤（通用流程）
+
+**步骤 1：读取请求数据**
+
+读取 HTTP POST 请求的原始消息体（bytes 格式，避免字符串转换导致编码问题）。从请求头中获取 X-Auth-Token 的值（如：`7f9a8a9f8e7d6b5c4a3b2a1f0e9d8c7b6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0`）。
+
+**步骤 2：重新计算签名**
+
+1. 使用 HMAC-SHA256 算法，以共享密钥为密钥，原始消息体为数据，生成哈希值：
+
+```golang
+h := hmac.New(sha256.New, []byte(secretKey))
+h.Write(payloadBytes)
+expectedSig := h.Sum(nil)
+```
+
+2. 将生成的哈希值转为 16 进制字符串（与发送端格式一致）。
+
+**步骤 3：安全对比签名**
+
+禁止使用普通字符串对比（如 `==`），需使用安全的对比方法（如 Go 中的 `hmac.Equal`），防止时序攻击。
+
+对比结果：
+- `true`：签名验证通过，处理消息。
+- `false`：签名验证失败，拒绝处理并返回 401 错误。
