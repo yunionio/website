@@ -288,6 +288,24 @@
 - distribution: openEuler
   os_name: Linux
   os_arch: x86_64
+  os_version: 24.03 LTS SP3
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS-SP3/virtual_machine_img/x86_64/openEuler-24.03-LTS-SP3-x86_64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 24.03 LTS SP3
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS-SP3/virtual_machine_img/aarch64/openEuler-24.03-LTS-SP3-aarch64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: loongarch64
+  os_version: 24.03 LTS SP3
+  source: tuna
+  url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS-SP3/virtual_machine_img/loongarch64/openEuler-24.03-LTS-SP3-loongarch64.qcow2.xz
+- distribution: openEuler
+  os_name: Linux
+  os_arch: x86_64
   os_version: 24.03 LTS SP2
   source: tuna
   url: https://mirrors.tuna.tsinghua.edu.cn/openeuler/openEuler-24.03-LTS-SP2/virtual_machine_img/x86_64/openEuler-24.03-LTS-SP2-x86_64.qcow2.xz
