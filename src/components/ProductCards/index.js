@@ -105,6 +105,39 @@ const ProductCards = () => {
       buttonText: '开始使用裸金属 >',
       buttonTextId: 'productCards.baremetal.button',
     },
+    {
+      id: 'aicloud',
+      name: 'AI云',
+      nameId: 'productCards.aicloud.name',
+      description: '面向大语言模型及 AI 容器应用的统一管理与运维',
+      descriptionId: 'productCards.aicloud.description',
+      icon: require('@site/static/img/feature_cloud_native.svg').default,
+      link: '/docs/aicloud/getting-started',
+      iconColor: '#33925d', // 与多云管理一致
+      buttonColor: '#33925d',
+      steps: [
+        {
+          title: '安装 AI云 平台',
+          titleId: 'productCards.aicloud.step1.title',
+          description: '部署 Cloudpods AI云 环境',
+          descriptionId: 'productCards.aicloud.step1.description',
+        },
+        {
+          title: '纳管与调度',
+          titleId: 'productCards.aicloud.step2.title',
+          description: '大模型等服务调度与监控',
+          descriptionId: 'productCards.aicloud.step2.description',
+        },
+        {
+          title: '与 Cloudpods 集成',
+          titleId: 'productCards.aicloud.step3.title',
+          description: '与现有资源与权限体系集成',
+          descriptionId: 'productCards.aicloud.step3.description',
+        },
+      ],
+      buttonText: '开始使用 AI云 >',
+      buttonTextId: 'productCards.aicloud.button',
+    },
   ];
 
   return (
