@@ -316,6 +316,12 @@
   "productCards.baremetal.description": {
     "message": "Full lifecycle management and automation of physical machines"
   },
+  "productCards.aicloud.name": {
+    "message": "AI Cloud"
+  },
+  "productCards.aicloud.description": {
+    "message": "Unified management and operations for LLM and AI container applications"
+  },
   "productCards.title": {
     "message": "Quick Start"
   },
@@ -387,6 +393,27 @@
   },
   "productCards.baremetal.button": {
     "message": "Start using Baremetal >"
+  },
+  "productCards.aicloud.step1.title": {
+    "message": "Install AI Cloud Platform"
+  },
+  "productCards.aicloud.step1.description": {
+    "message": "Deploy Cloudpods AI Cloud environment"
+  },
+  "productCards.aicloud.step2.title": {
+    "message": "Orchestration and Scheduling"
+  },
+  "productCards.aicloud.step2.description": {
+    "message": "LLM and other services scheduling and monitoring"
+  },
+  "productCards.aicloud.step3.title": {
+    "message": "Integrate with Cloudpods"
+  },
+  "productCards.aicloud.step3.description": {
+    "message": "Integrate with existing resources and permission system"
+  },
+  "productCards.aicloud.button": {
+    "message": "Start using AI Cloud >"
   },
   "productSelector.viewDocs": {
     "message": "View Documentation"
