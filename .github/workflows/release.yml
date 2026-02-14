@@ -4,7 +4,8 @@ on:
   push:
     branches:
       # - release/*  # Set a branch to deploy
-      - release/3.11  # Set a branch to deploy
+      # - release/3.11  # Set a branch to deploy
+      - release/4.0   # Set a branch to deploy
       # - main  # Set a branch to deploy
     tags:
       - v*.*.*
