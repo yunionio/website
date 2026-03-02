@@ -20,7 +20,7 @@
     "description": "The label of footer link with label=GitHub linking to https://github.com/yunionio/cloudpods"
   },
   "copyright": {
-    "message": "Copyright © 2023 The Cloudpods Authors.",
+    "message": "Copyright © 2017-2026 The Cloudpods Authors.",
     "description": "The footer copyright"
   },
   "link.title.文档": {
