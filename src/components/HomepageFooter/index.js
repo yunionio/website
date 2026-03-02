@@ -58,7 +58,7 @@ export default function HomepageFooter() {
           </div>
         </div>
         <div className={styles.copyRight} style={{'margin-top': '2rem'}}>
-          Copyright © 2017-2023 The Cloudpods Authors.
+          Copyright © 2017-2026 The Cloudpods Authors.
         </div>
         <div className={styles.copyRight}>
           <Link style={{'color': '#fff'}} to="https://beian.miit.gov.cn">京ICP备2021005745号-3</Link>
