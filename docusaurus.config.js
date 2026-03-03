@@ -9,11 +9,11 @@ const config = {
   title: 'Cloudpods',
   favicon: 'img/favicon.ico',
   customFields: {
-    release_branch: 'release/3.11',
-    pre_release_branch: 'release/3.10',
-    release_version: 'v3.11.13',
-    pre_release_version: 'v3.10.15',
-    ocboot_release_version: 'master-v3.11.13-0',
+    release_branch: 'release/4.0',
+    pre_release_branch: 'release/3.11',
+    release_version: 'v4.0.x',
+    pre_release_version: 'v3.11.13',
+    ocboot_release_version: 'master-v4.0-0',
   },
 
   url: process.env.DOCUSAURUS_URL || 'https://www.cloudpods.org',
@@ -75,7 +75,7 @@ const config = {
         lastVersion: 'current',
         versions: {
           current: {
-            label: '3.11',
+            label: '4.0',
             path: '',
           },
         },
@@ -93,7 +93,7 @@ const config = {
         lastVersion: 'current',
         versions: {
           current: {
-            label: '3.11',
+            label: '4.0',
             path: '',
           },
         },
@@ -111,7 +111,7 @@ const config = {
         lastVersion: 'current',
         versions: {
           current: {
-            label: '3.11',
+            label: '4.0',
             path: '',
           },
         },
@@ -129,7 +129,25 @@ const config = {
         lastVersion: 'current',
         versions: {
           current: {
-            label: '3.11',
+            label: '4.0',
+            path: '',
+          },
+        },
+      },
+    ],
+    // AI云文档实例
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'aicloud',
+        path: 'docs/aicloud',
+        routeBasePath: 'docs/aicloud',
+        sidebarPath: './sidebars/aicloud.js',
+        editUrl: 'https://github.com/yunionio/website/tree/master',
+        lastVersion: 'current',
+        versions: {
+          current: {
+            label: '4.0',
             path: '',
           },
         },
@@ -235,6 +253,13 @@ const config = {
                 label: '物理机管理',
                 to: '/docs/baremetal/getting-started',
               },
+              {
+                type: 'docSidebar',
+                docsPluginId: 'aicloud',
+                sidebarId: 'aicloudSidebar',
+                label: 'AI云',
+                to: '/docs/aicloud/getting-started',
+              },
               // {
               //   type: 'docSidebar',
               //   docsPluginId: 'default',
@@ -253,6 +278,7 @@ const config = {
             position: 'right',
             dropdownActiveClassDisabled: true,
             dropdownItemsAfter: [
+              { label: '3.11', href: 'https://www.cloudpods.org/v3.11/' },
               { label: '3.10', href: 'https://www.cloudpods.org/v3.10/' },
               { label: '3.9', href: 'https://v1.cloudpods.org/v3.9/' },
             ],
