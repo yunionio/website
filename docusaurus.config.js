@@ -173,6 +173,55 @@ const config = {
             from: '/docs/development/changelog',
             to: '/docs/onpremise/development/changelog',
           },
+          // 兼容旧的 guides / function_principle 路径
+          {
+            from: '/docs/guides/cmp/cloudaccounts/cloudaccount',
+            to: '/docs/cmp/guides/cloudaccounts/cloudaccount/',
+          },
+          {
+            from: '/docs/guides/cmp/cloudaccounts/vmware_net',
+            to: '/docs/cmp/guides/cloudaccounts/vmware_net',
+          },
+          {
+            from: '/docs/guides/onpremise/vminstance/passthrough/custom-pci-devices',
+            to: '/docs/onpremise/guides/vminstance/passthrough/custom-pci-devices',
+          },
+          {
+            from: '/docs/guides/onpremise/network/ssh/sshproxy',
+            to: '/docs/onpremise/guides/network/ssh/sshproxy',
+          },
+          {
+            from: '/docs/guides/monitor_ops/metric',
+            to: '/docs/onpremise/guides/monitor_ops/metric',
+          },
+          {
+            from: '/docs/guides/auth_security/identity/providers/',
+            to: '/docs/onpremise/guides/auth_security/identity/providers/',
+          },
+          {
+            from: '/docs/guides/misc/notify/mailconfig',
+            to: '/docs/onpremise/guides/misc/notify/mailconfig',
+          },
+          {
+            from: '/docs/guides/misc/notify/bot',
+            to: '/docs/onpremise/guides/misc/notify/bot',
+          },
+          {
+            from: '/docs/guides/onpremise/storage/blockstorage/add-storage/',
+            to: '/docs/onpremise/guides/storage/blockstorage/add-storage',
+          },
+          {
+            from: '/docs/guides/onpremise/scheduler/schedtags/',
+            to: '/docs/onpremise/guides/scheduler/schedtags',
+          },
+          {
+            from: '/docs/function_principle/k8s/pre_env',
+            to: '/docs/onpremise/guides/k8s/onprimise-pre-env',
+          },
+          {
+            from: '/docs/function_principle/onpremise/vminstance/qga/',
+            to: '/docs/onpremise/guides/vminstance/qga',
+          },
         ],
       },
     ],
