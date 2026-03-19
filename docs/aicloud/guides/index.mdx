@@ -1,0 +1,40 @@
+---
+sidebar_position: 2
+hide_table_of_contents: true
+edition: ce
+---
+
+# 用户手册
+
+围绕 AI 应用、规格、模型库、镜像的概念与使用说明。
+
+## 阅读指南
+
+- 部署见 [快速开始](../getting-started/quickstart)；GPU 见 [NVIDIA/CUDA](../getting-started/setup-nvidia-cuda)。
+- 按 [AI应用](./llm/) → [AI模板](./llm-sku) / [模型库](./llm-instantmodel) / [镜像](./llm-image) 阅读。
+
+## 控制台菜单与功能对照
+
+进入 **人工智能** 后分为 **应用**、**推理**、**镜像**：
+
+- **应用**：应用实例（Dify/OpenClaw/ComfyUI 等）、应用模板（新建在「应用」→「应用模板」）。
+- **推理**：推理实例（Ollama/vLLM）、推理模板（新建在「推理」→「推理模板」）、推理模型库（安装/导入模型）。
+- **镜像**：在「人工智能」→「镜像」管理；创建模板时选择。
+
+文档对应：实例 → [AI应用](./llm/)；模板 → [AI模板](./llm-sku) + [AI镜像](./llm-image)；推理模型库 → [AI模型库](./llm-instantmodel)；镜像管理 → [AI镜像](./llm-image)。
+
+## 名词约定
+
+- **纳管**：登记、部署与生命周期管理。
+- **调度**：按资源约束将工作负载分配到节点，支持扩缩与迁移。
+- **规格**：运行负载所需的 CPU/内存/GPU 等资源配置。
+- **模型库**：可复用模型资源（来源、版本、权限、缓存），供推理应用引用。
+- **镜像**：应用运行环境的容器镜像，决定功能与版本。
+
+## 典型关系
+
+实例 = 镜像 + 规格 +（可选）模型。
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />

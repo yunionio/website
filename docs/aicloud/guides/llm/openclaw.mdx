@@ -1,0 +1,150 @@
+---
+sidebar_position: 1
+edition: ce
+title: OpenClaw
+---
+
+# OpenClaw
+
+OpenClaw 是开源自托管的个人智能体助手，不依赖 GPU，部署完成后即可在控制台快速创建并使用。
+
+## 快速开始 {#quickstart}
+
+### 1. 创建应用实例
+
+- 控制台 **人工智能 → 应用 → 应用实例**，点击新建，类型选择 **OpenClaw**。
+- 应用模板: 平台通常会预置 OpenClaw 的应用模板，创建实例时直接选择对应的默认模板即可。
+:::tip
+如需自定义镜像/资源配置/参数，再到 **人工智能 → 应用 → 应用模板** 中新建或编辑。
+:::
+
+![](./images/openclaw-app-instance-create.png)
+
+![](./images/openclaw-app-instance-create-form.png)
+
+- 带宽：对容器网络进行限速，根据实际需要填写
+- 宿主机(可选)：可选择指定的宿主机运行 OpenClaw 容器实例，不选则会自动调度
+- 网络：可选择自动调度，或者指定IP子网
+
+### 2. 配置模型供应商
+
+在创建/编辑实例时，为至少一个供应商配置 API Key，如何配置并获取模型供应商的 API Key 请参考：[模型供应商配置](#config-providers)。
+
+选择对应的供应商，并填入相关的 API Key，下图以 Moonshot(月之暗面) 为例：
+
+![](./images/provider-moonshot-provider-form.png)
+
+### 3. 配置聊天沟通渠道
+
+按需配置聊天沟通渠道（QQ、飞书、Telegram、Discord 等），填入对应的认证信息，用于通过聊天与 OpenClaw 交互。每个渠道配置获取认证信息的方式不一样，如何配置请参考：[聊天沟通渠道配置](#config-channel)。
+
+选择对应的通知渠道，填入相关的认证信息，下图以 QQ 机器人为例：
+
+![](./images/channel-qq-openclaw-config-fields.png)
+
+### 4. 访问与登录
+
+进入实例详情页，查看登录信息，获取访问地址和用户密码，用浏览器打开。
+
+![](./images/openclaw-login-info.png)
+
+其中的用户名和密码，是 http auth 的认证信息，用浏览器打开时，会提示输入：
+
+![](./images/openclaw-http-login.png)
+
+输入完成后，就能看到运行了 OpenClaw 的容器桌面，可以在这个桌面里面进行一些调试和额外的操作：
+
+![](./images/openclaw-linux-gui.png)
+
+### 5. 聊天沟通
+
+如果正确配置了 QQ 机器人聊天渠道，就可以在 QQ 里面和这个机器人发消息调用 OpenClaw 作为 AI 助手了，比如让他总结 pdf 文档：
+
+![](./images/openclaw-qq-pdf-sum.png)
+
+## 配置
+
+### 模型供应商 {#config-providers}
+
+#### 月之暗面(MOONSHOT) {#config-moonshot}
+
+##### 登录控制台
+
+访问 [https://platform.moonshot.cn/](https://platform.moonshot.cn/)，注册用户，登录控制台，然后点击用户中心：
+
+![](./images/provider-moonshot-index.png)
+
+##### 新建 API key
+
+新建 API key：
+
+![](./images/provider-moonshot-create-key.png)
+
+复制创建的密钥：
+
+![](./images/provider-moonshot-copy-key.png)
+
+
+
+### 聊天沟通渠道 {#config-channel}
+
+#### QQ机器人 {#config-qqbot}
+
+##### 注册QQ开放平台
+
+前往腾讯[QQ开放平台](https://q.qq.com/qqbot/openclaw/login.html)官网，用手机QQ扫描图中二维码进行注册/登录。
+
+![](./images/channel-qq-open-platform.png)
+
+> 说明：若您当前尚未注册QQ开放平台，执行扫码操作后，系统将自动完成QQ开放平台注册流程，并将您扫码所用的QQ账号与该平台账号进行绑定。
+
+![](./images/channel-qq-open-platform-bind.png)
+
+在手机QQ扫码后选择同意，即完成注册，进入QQ机器人配置页。
+
+![](./images/channel-qq-open-platform-bot-config.png)
+
+##### 创建一个QQBot机器人
+
+在QQ开放平台的QQ机器人页面，可以单击创建机器人，即可直接新建一个QQ机器人。
+
+![](./images/channel-qq-open-platform-create-bot.png)
+
+机器人创建完成后，在页面中找到 “AppID” 和 “AppSecret” 两个参数，分别点击右侧 “复制” 按钮，将其保存到个人记事本或备忘录中（请妥善保存勿泄露，注意数据安全），后续步骤中需要使用。
+
+![](./images/channel-qq-open-platform-appid-secret.png)
+
+##### 使用 AppID 和 AppSecret
+
+创建 OpenClaw 应用的时候，通知渠道选择QQ机器人时，填入以下信息：
+
+- AppID: 对应 QQBOT_APP_ID
+- AppSecret: 对应 QQBOT_CLIENT_SECRET
+
+![](./images/channel-qq-openclaw-config-fields.png)
+
+#### 飞书 {#config-feishu}
+
+TODO
+
+#### Telegram {#config-telegram}
+
+TODO
+
+#### Discord {#config-discord}
+
+TODO
+
+## 常见问题
+
+### 怎么查看 OpenClaw 日志？
+
+TODO
+
+### 如何登录到 llm 容器里面？
+
+TODO
+
+### 怎么更新镜像？
+
+TODO
