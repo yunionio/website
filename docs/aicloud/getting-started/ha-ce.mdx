@@ -1,0 +1,39 @@
+---
+sidebar_position: 3
+edition: ce
+---
+
+# 高可用安装
+
+使用 [ocboot](https://github.com/yunionio/ocboot) 部署工具高可用安装 Cloudpods 服务，更符合生产环境的部署需求。
+
+## 环境准备
+
+import HAEnv from '../../shared/getting-started/_parts/_ha-env.mdx';
+
+<HAEnv />
+
+## 开始安装
+
+import OcbootReleaseDownload from '../../shared/getting-started/_parts/_quickstart-ocboot-release-download.mdx';
+
+<OcbootReleaseDownload />
+
+### 编写部署配置
+
+import OcbootConfigHA from '@site/src/components/OcbootConfigHA';
+
+<OcbootConfigHA productVersion='AI' />
+
+### 开始部署
+
+```bash
+$ ./ocboot.sh install ./config-ha.yml
+```
+
+等待部署完成后，就可以使用浏览器访问 https://10.127.190.10 (VIP)，输入用户名 `admin` 和密码 `admin@123`，进入前端。
+
+另外部署完成后，可以给已有集群添加更多节点，参考文档：[添加计算节点](./host)。
+
+注意：这里添加节点时的控制节点 IP 请尽量使用第一个控制节点的实际 IP（不要使用 VIP），因为 VIP 可能发生漂移；通常只有第一个控制节点配置了到其他节点的 SSH 免密权限，否则可能导致 SSH 登陆失败。
+

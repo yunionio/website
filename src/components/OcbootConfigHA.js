@@ -17,14 +17,19 @@ function getConfig(productVersion) {
   const asHostComment = translate({ id: "ocbootConfigHA.asHost", message: "该节点作为 Cloudpods 私有云计算节点，如果不想让控制节点作为计算节点，可以设置为 false" })
   const asHostOnVMComment = translate({ id: "ocbootConfigHA.asHostOnVM", message: "虚拟机可作为 Cloudpods 内置私有云计算节点（默认为 false）。开启此项时，请确保 as_host: true" })
   const productVersionComment = translate({
-    id: "ocbootConfigHA.productVersion", message: "产品版本，从 [Edge, CMP, FullStack] 选择一个，FullStack 会安装融合云，CMP 安装多云管理版本，Edge 安装私有云"
+    id: "ocbootConfigHA.productVersion", message: "产品版本，从 [Edge, CMP, FullStack, AI] 选择一个，FullStack 会安装融合云，CMP 安装多云管理版本，Edge 安装私有云，AI 安装 AI 云"
   })
   const imageRepositoryComment = translate({
     id: "ocbootConfigHA.imageRepository",
     message: "服务对应的镜像仓库，如果待部署的机器不在中国大陆，可以用 dockerhub 的镜像仓库：docker.io/yunion",
   })
   const haComment = translate({ id: "ocbootConfigHA.enableHA", message: "启用高可用模式" })
-  const hostNetworkComment = translate({ id: "ocbootConfigHA.hostNetwork", message: "计算节点默认网桥 br0 对应的网卡" })
+const hostNetworkComment = translate({ id: "ocbootConfigHA.hostNetwork", message: "计算节点默认网桥 br0 对应的网卡" })
+
+  const aiProductYaml =
+    productVersion === 'AI'
+      ? `\n  enable_containerd: true\n  enable_ai_env: true`
+      : '';
 
   const content = `# ${primaryMasterNodeComment}
 primary_master_node:
@@ -57,7 +62,7 @@ primary_master_node:
   # ${asHostOnVMComment}
   as_host_on_vm: ${shouldAsHost()}
   # ${productVersionComment}
-  product_version: '${productVersion}'
+  product_version: '${productVersion}'${aiProductYaml}
   # ${imageRepositoryComment}
   image_repository: registry.cn-beijing.aliyuncs.com/yunion
   # ${haComment}
@@ -82,7 +87,7 @@ master_nodes:
   # ${translate({ id: "ocbootConfigHA.syncNtpFromPrimaryNode", message: "从 primary 节点同步 ntp 时间" })}
   ntpd_server: "$PRIMARY_IP"
   # ${haComment}
-  high_availability: true
+  high_availability: true${aiProductYaml}
   hosts:
   - user: root
     hostname: "$MASTER_1_IP"
