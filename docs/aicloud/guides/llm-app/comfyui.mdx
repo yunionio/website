@@ -6,47 +6,93 @@ title: ComfyUI
 
 # ComfyUI
 
-ComfyUI 是图像生成与可视化工作流应用，支持基于节点的工作流编排，适用于图像生成、工作流复用与可视化调试。平台可将 ComfyUI 作为 AI 应用纳入统一纳管与调度体系。
+[ComfyUI](https://www.comfy.org/) 是图像生成与可视化工作流应用，支持基于节点的工作流编排，适用于图像生成、工作流复用与可视化调试。
 
 ## 快速开始 {#quickstart}
 
-0. **前提**：通常需要 GPU。请先完成 [配置 NVIDIA 与 CUDA 环境](../../getting-started/setup-nvidia-cuda)，并按 [应用模板](./template) 选择合适的 GPU 显存与内存。
-1. **创建应用模板**：控制台 **人工智能 → 应用 → 应用模板**，新建，类型选择 **ComfyUI**。\n   - 按需选择 [AI镜像](../llm-image) 与规格；建议同时规划持久化存储，用于保存工作流与输出结果。\n2. **创建应用实例**：控制台 **人工智能 → 应用 → 应用实例**，新建，选择刚创建的 ComfyUI 模板。\n3. **访问与验证**：进入实例详情页，在「连接信息」中获取访问地址，用浏览器打开进入 ComfyUI；导入一个示例工作流并执行一次生成，结合实例日志确认无模型加载/显存不足等错误。
+### 0. 前提环境配置
 
-## 适用场景
+图像生成依赖 GPU 环境，请先完成 [配置 NVIDIA 与 CUDA 环境](../../getting-started/setup-nvidia-cuda)。
 
-- 需要以可视化方式搭建与复用图像生成工作流。
-- 需要对生成流程进行调试、参数化与团队协作共享。
+### 1. 配置模板
 
-## 依赖与资源建议
+配置完 GPU 环境后，直接更新平台默认创建的 ComfyUI 模板 `comfyui-8c16g` 的 GPU 型号即可，流程如下：
 
-- **GPU**：通常需要 GPU 以获得可用性能。部署前建议先完成 [配置 NVIDIA 与 CUDA 环境](../../getting-started/setup-nvidia-cuda)。
-- **规格选择**：参考 [应用模板](./template)，重点关注 GPU 显存与内存，避免在加载模型与生成过程中出现 OOM。
-- **存储**：建议使用持久化存储保存工作流、模型（如需要）、素材与生成结果，避免实例重启后丢失数据。
-- **网络**：如需拉取镜像或模型，请确保节点具备访问对应仓库的网络连通性。
+1. 进入控制台 **人工智能 → 应用 → 应用模板**，找到默认模板 `comfyui-8c16g`，点击修改。
+![](./images/comfyui-sku-edit.png)
+2. 在模板配置中，将 GPU 型号改成你当前要使用的型号；
+![](./images/comfyui-sku-gpu.png)
+
+### 2. 创建实例
+
+更新默认模板 GPU 型号后，进入 **人工智能 → 应用 → 应用实例** 新建实例，选择更新后的 `comfyui-8c16g` 模板。
+![](./images/openclaw-app-instance-create.png)
+![](./images/comfyui-create-form.png)
+
+- 带宽：对容器网络进行限速，根据实际需要填写
+- 宿主机(可选)：可选择指定的宿主机运行 OpenClaw 容器实例，不选则会自动调度
+- 网络：可选择自动调度，或者指定IP子网
+
+### 3. 访问 ComfyUI web 界面
+
+创建完成后，进入实例详情页面，即可获取登录信息，通过浏览器打开对应地址，就能打开 ComfyUI Web 界面。
+
+![](./images/comfyui-login-url.png)
+![](./images/comfyui-webui.png)
 
 ## 模型与数据
 
-- 图像生成通常需要较大的模型文件与缓存空间；建议结合 [AI模型库](../llm-inference/model-library) 统一管理模型来源与版本（如平台提供对应能力）。
-- 对生成结果与工作流建议建立目录规划与清理策略，避免长期积累导致磁盘占满。
+### 持久化路径
 
-## 运维要点
+ComfyUI 容器里面的这些目录是持久化的，容器重启后数据也不会丢失，用于存放模型以及其它数据状态文件，路径如下：
 
-- **扩缩与容量**：关注 GPU 显存、生成队列与并发；容量不足时优先扩容 GPU 或横向扩展实例。
-- **升级与回滚**：通过 [AI镜像](../llm-image) 的版本管理进行升级与回滚，建议在变更前保存工作流与关键配置。
-- **观测**：关注 GPU/CPU 利用率、显存占用、任务耗时与错误率；结合日志定位模型加载失败、显存不足等问题。
+- `/root/ComfyUI/models`: 存放模型文件
+- `/root/ComfyUI/input`: 存放输入数据
+- `/root/ComfyUI/output`: 存放输出数据
+- `/root/ComfyUI/user/default/workflows`: 存放工作流状态文件
+- `/root`: root 用户家目录
+- `/root/.cache/huggingface/hub`: huggingface 相关持久化数据
+- `/root/.cache/torch/hub`: torch 相关持久化数据
+
+### 下载模型
+
+推荐[进入容器终端](#tty)后，直接使用 Hugging Face Hub 的命令行工具。
+
+#### 使用 hf 下载模型
+
+Hugging Face Hub 汇集了大量预训练模型，`hf` 是官方命令行工具，可直接下载指定模型文件。
+
+下载命令：
+
+```bash
+hf download <model_id> <filename> --local-dir <local_directory>
+```
+
+参数说明：
+
+- `<model_id>`：模型在 Hugging Face 的完整标识，例如 `black-forest-labs/FLUX.1-dev`。
+- `<filename>`：要下载的具体文件名，例如 `ae.safetensors`。
+- `--local-dir`：模型文件保存路径，请确保目录存在且有写权限。
+
+参考链接：[`hf download` 官方文档](https://huggingface.co/docs/huggingface_hub/guides/cli#download-to-a-local-folder)。
+
+示例：
+
+以模型链接 `https://huggingface.co/black-forest-labs/FLUX.1-dev/blob/main/ae.safetensors` 为例，下载 `ae.safetensors` 到 `~/Comfyui/models/vae/`：
+
+```bash
+hf download black-forest-labs/FLUX.1-dev ae.safetensors --local-dir ~/ComfyUI/models/vae/
+```
 
 ## 常见问题
 
-### 1. 生成过程报错或性能很差
+### 怎么进入容器？{#tty}
 
-- 检查是否已配置 GPU 与驱动/CUDA 环境：参考 [配置 NVIDIA 与 CUDA 环境](../../getting-started/setup-nvidia-cuda)。
-- 检查规格是否满足模型加载与生成所需的显存与内存峰值。
+通过在详情页面里面的“终端”可以直接进入容器：
+![](./images/comfyui-tty.png)
+![](./images/comfyui-tty-bash.png)
 
-### 2. 工作流/生成结果丢失
+### 怎么查看服务日志？
 
-- 检查是否已将工作流、素材与输出目录配置到持久化存储；避免仅存储在临时目录中。
-
-### 3. 镜像/模型拉取失败
-
-- 检查网络连通与仓库访问权限；在内网环境可考虑提前准备镜像与模型缓存（概念详见 [AI镜像](../llm-image) 与 [AI模型库](../llm-inference/model-library)）。
+通过前端界面：点击对应的应用实例，进入详情页面，再点击日志，就能查看到服务输出的日志了，方便用于错误排查。
+![](./images/comfyui-log.png)
