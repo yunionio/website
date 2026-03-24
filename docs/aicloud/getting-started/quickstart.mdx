@@ -90,7 +90,7 @@ Password: admin@123
 
 ### 1. 如何添加更多 AI 节点？
 
-在已有集群上对新增的 GPU 节点使用 `./run.py setup-ai-env <新节点IP> ...` 配置 AI 环境，或通过 Cloudpods 控制台将新主机纳管后分配 AI 工作负载。
+在已有集群上对新增节点（尤其是 GPU 节点），如需运行依赖 GPU 的 AI 应用，建议先配置 NVIDIA/CUDA，参考：[配置 NVIDIA 与 CUDA 环境](./setup-nvidia-cuda)。随后再完成宿主机加入与启用，参考：[添加计算节点](./host)。
 
 ### 2. 如何升级？
 
