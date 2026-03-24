@@ -56,9 +56,16 @@ ComfyUI 容器里面的这些目录是持久化的，容器重启后数据也不
 
 ### 下载模型
 
-推荐[进入容器终端](#tty)后，直接使用 Hugging Face Hub 的命令行工具。
+#### 在 UI 前端直接下载
+
+ComfyUI 容器镜像默认安装了 [ComfyUI-Downloader](https://github.com/romandev-codex/ComfyUI-Downloader) 插件，可以很方便的直接在 UI 下载组件。
+选择一个模板后，点击 **Downloader** ，就会自动识别这个模板依赖的模型，然后点击下载即可。
+![](./images/comfyui-downloader.png)
+
 
 #### 使用 hf 下载模型
+
+[进入容器终端](#tty)后，可以直接使用 Hugging Face Hub 的命令行工具。
 
 Hugging Face Hub 汇集了大量预训练模型，`hf` 是官方命令行工具，可直接下载指定模型文件。
 

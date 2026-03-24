@@ -10,13 +10,17 @@ edition: ce
 本文介绍如何在已有集群或单机上使用 ocboot 的 `setup-ai-env` 配置 NVIDIA 驱动、CUDA、containerd 等 AI 运行环境，不部署或修改 Cloudpods 云管服务。适用于需要运行 Ollama、vLLM 等依赖 GPU 的 AI 容器应用的场景。
 
 :::tip 注意事项
-
 - 如果待部署环境没有 Nvidia GPU，或不需要运行 Ollama 和 vLLM 这类需要 GPU 的容器 AI 应用，可以跳过本文。
 - 没有配置 Nvidia 运行环境的情况下，仍然可以运行 OpenClaw 和 Dify 等不依赖 GPU 的 AI 容器应用。
-
 :::
 
 ## 命令形式
+
+请先下载并准备好 NVIDIA 驱动与 CUDA 安装包（如 CUDA 12.8），注意是下载 **.run** 的安装包：
+- NVIDIA 驱动：可从 [NVIDIA Driver Downloads](https://www.nvidia.com/en-us/drivers/unix/) 获取。
+- CUDA 安装包：可从 [NVIDIA CUDA Toolkit Downloads](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64) 获取。
+
+下载后将安装包传输到目标机或执行 ocboot 的机器上可访问的路径。
 
 ```bash
 ./ocboot.sh setup-ai-env <target_host1> [target_host2 ...] \
@@ -24,8 +28,6 @@ edition: ce
   --cuda-installer-path <full_path_to_cuda> \
   [--gpu-device-virtual-number 2] [--user USER] [--key-file KEY] [--port PORT]
 ```
-
-请先下载并准备好 NVIDIA 驱动与 CUDA 安装包（如 CUDA 12.8），并将安装包传输到目标机或执行 ocboot 的机器上可访问的路径。
 
 ## 示例
 
@@ -67,9 +69,8 @@ ocboot 会在目标主机上执行包括但不限于以下步骤：
 6. 配置 GRUB（添加 nvidia-drm.modeset=1）
 7. 安装 NVIDIA Container Toolkit
 8. 配置 containerd runtime
-9. 安装与配置 lxcfs
-10. 配置主机设备映射（自动发现 NVIDIA 对应 `/dev/dri/renderD*` 并生成配置）
-11. 验证安装结果
+9. 配置主机设备映射（自动发现 NVIDIA 对应 `/dev/dri/renderD*` 并生成配置）
+10. 验证安装结果
 
 ## 注意事项
 
@@ -80,15 +81,15 @@ ocboot 会在目标主机上执行包括但不限于以下步骤：
 
 ## FAQ
 
-### 1. 部署完成后宿主机列表没有 GPU 或未识别到 GPU？
+### 部署完成后宿主机列表没有 GPU 或未识别到 GPU？
 
 确认目标机已安装 NVIDIA 驱动与 CUDA，且驱动版本与 CUDA 版本匹配。若使用 `run.py ai` 且未传 `--nvidia-driver-installer-path` / `--cuda-installer-path`，需事先在目标机上手动安装驱动与 CUDA。安装完成后可执行 `nvidia-smi` 验证。
 
-### 2. 安装过程中目标主机自动重启是否正常？
+### 安装过程中目标主机自动重启是否正常？
 
 是。安装内核相关包或更新 GRUB 后，ocboot 可能会触发重启以加载新驱动或配置，请勿中断。重启后若部署未完成，可重新执行原部署命令继续。
 
-### 3. 如何将安装包传输到目标机？
+### 如何将安装包传输到目标机？
 
 在运行 `setup-ai-env` 或带安装包参数的 `ai` 前，可先将安装包传到目标机，例如：
 
@@ -101,3 +102,8 @@ rsync -avP /path/to/cuda/cuda_12.8.1_570.124.06_linux.run target_host:/root/nvid
 scp /path/to/nvidia/NVIDIA-Linux-x86_64-570.133.07.run target_host:/root/nvidia/
 scp /path/to/cuda/cuda_12.8.1_570.124.06_linux.run target_host:/root/nvidia/
 ```
+
+### 怎么查看平台是否有 GPU 可用？
+
+如果配置成功，通过访问**计算->基础资源->透传设备**，可以看到探测上报的 GPU 。
+![](./images/gpu-list.png)
