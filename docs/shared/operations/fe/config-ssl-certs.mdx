@@ -20,6 +20,55 @@ sidebar_position: 1
 
 假设已经准备好的证书文件为：`cert.pem` 和 `cert.key`，域名为 `foo.bar.com` 。
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+  <TabItem value="K3s" label="K3s" default>
+
+### 1. 将证书导入 kubernetes 集群
+
+将证书以 secret 的形式保存到 `kube-system` namespace 中。
+
+```bash
+# 创建证书 secret
+$ kubectl create secret tls default-ssl-cert --key cert.key --cert cert.pem -n kube-system
+```
+
+### 2. 创建 TLSStore 设置默认证书
+
+K3s 使用 Traefik 作为 Ingress Controller，通过 Traefik 的 TLSStore CRD 可以设置全局默认证书。
+
+创建文件 `default-tls-store.yaml`：
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: TLSStore
+metadata:
+  name: default
+  namespace: kube-system
+spec:
+  defaultCertificate:
+    secretName: default-ssl-cert
+```
+
+:::warning
+TLSStore 的 `name` 必须为 `default`，Traefik 只识别这个名字作为全局默认证书配置。
+:::
+
+```bash
+$ kubectl apply -f default-tls-store.yaml
+```
+
+应用后 Traefik 会自动加载新证书，正常情况下无需重启。如果等待一段时间后证书仍未生效，可以尝试重启 Traefik：
+
+```bash
+$ kubectl get pods -n kube-system | grep traefik | awk '{print $1}' | xargs kubectl delete pods -n kube-system
+```
+
+  </TabItem>
+  <TabItem value="K8s" label="K8s">
+
 ### 1. 将证书导入 kubernetes 集群
 
 kubernetes 使用 secret 这种资源保存证书内容，然后前端服务使用 ingress 引用对应的证书，提供 HTTPS 连接。为了使用自定证书，需要先把证书保存到集群。
@@ -50,9 +99,12 @@ $ kubectl edit ingress -n onecloud default-web
 $ kubectl get pods -n kube-system | grep traefik | awk '{print $1}' | xargs kubectl delete pods -n kube-system
 ```
 
-### 4. 修改服务 api_server 入口配置 {#change-api-server-via-climc}
+  </TabItem>
+</Tabs>
 
-因为使用域名 `foo.bar.com` 访问，需要修改云平台的默认 api_server 配置，这个配置会影响前端 VNC 连接的地址。将旧的 https://ip 访问地址改为 `https://foo.bar.com`，操作如下：
+### 修改服务 api_server 入口配置 {#change-api-server-via-climc}
+
+完成以上证书替换步骤后，如果使用域名 `foo.bar.com` 访问，还需要修改云平台的默认 api_server 配置，这个配置会影响前端 VNC 连接的地址。将旧的 https://ip 访问地址改为 `https://foo.bar.com`，操作如下：
 
 ```bash
 $ climc service-config-edit common
@@ -72,9 +124,6 @@ $ kubectl delete pods -n onecloud $(kubectl get pods -n onecloud | egrep 'webcon
 ## 更改前端HTTPS 443端口为其它端口的方法步骤
 
 假设平台登陆地址为 `https://10.127.90.221`，更改443端口为8443，步骤如下：
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 <Tabs>
   <TabItem value="K3s" label="K3s" default>
