@@ -19,7 +19,7 @@ edition: ce
 
 - 关于 GPU
   - 如果目标机器上有 Nvidia GPU，可以选择使用 ocboot 工具来自动部署驱动和cuda，详细操作见后文
-  - 如果没有 Nvidia GPU，部署后的环境就无法运行 ollama 和 vllm 这种推理 AI 容器应用，但可以运行 OpenClaw 和 dify 这种不依赖 GPU 的 AI 容器应用。
+  - 如果没有 Nvidia GPU，部署后的环境就无法运行 ollama 这种推理容器实例，但可以运行 OpenClaw 和 dify 这种不依赖 GPU 的应用容器实例。<!-- 如果没有 Nvidia GPU，部署后的环境就无法运行 ollama 和 vllm 这种推理容器实例，但可以运行 OpenClaw 和 dify 这种不依赖 GPU 的应用容器实例。 -->
 - 操作系统需要是干净的版本，因为部署工具会重头搭建指定版本的 k3s 集群，所以确保系统没有安装 kubernetes, docker 等容器管理工具，否则会出现冲突导致安装异常。
 - 最低配置要求: CPU 8核, 内存 8GiB, 存储 200GiB。
 - 虚拟机和服务使用的存储路径都在 **/opt** 目录下，所以理想环境下建议单独给 **/opt** 目录设置挂载点。
@@ -53,7 +53,7 @@ import OcbootRun from '@site/src/components/OcbootK3sRun';
 
 ### 配置 NVIDIA 驱动和 CUDA（可选）
 
-若需在节点上安装或配置 NVIDIA 驱动与 CUDA 以运行 Ollama、vLLM 等依赖 GPU 的 AI 容器应用，请参考：[配置 NVIDIA 与 CUDA 环境](./setup-nvidia-cuda)。
+若需在节点上安装或配置 NVIDIA 驱动与 CUDA 以运行 Ollama 等依赖 GPU 的 AI 容器应用，请参考：[配置 NVIDIA 与 CUDA 环境](./setup-nvidia-cuda)。<!-- 若需在节点上安装或配置 NVIDIA 驱动与 CUDA 以运行 Ollama、vLLM 等依赖 GPU 的 AI 容器应用，请参考：[配置 NVIDIA 与 CUDA 环境](./setup-nvidia-cuda)。 -->
 
 ## 开始使用 Cloudpods AI 云
 
@@ -89,7 +89,7 @@ Password: admin@123
 | Dify | AI应用 | LLM 应用开发与工作流编排平台（可对接推理服务） | 不需要 | [Dify 快速开始](../guides/llm-app/dify#quickstart) |
 | ComfyUI | AI应用 | 图像生成与节点式工作流应用 | 需要 | [ComfyUI 快速开始](../guides/llm-app/comfyui#quickstart) |
 | Ollama | AI推理 | 轻量本地推理服务 | 需要 | [Ollama 快速开始](../guides/llm-inference/ollama#quickstart) |
-| vLLM | AI推理 | 高吞吐、低延迟推理服务 | 需要 | [vLLM 快速开始](../guides/llm-inference/vllm#quickstart) |
+<!-- | vLLM | AI推理 | 高吞吐、低延迟推理服务 | 需要 | [vLLM 快速开始](../guides/llm-inference/vllm#quickstart) | -->
 
 ## FAQ
 
