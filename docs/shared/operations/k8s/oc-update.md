@@ -147,6 +147,7 @@ tag: <string>
 | scheduler               | 调度器                             | (x)  | (x) |
 | suggestion              | 费用优化服务                        |      | (x) |
 | telegraf                | 监控Agent，开源telegraf             | (x) | (x)  |
+| llm                     | AI大模型推理与应用管理服务            | (x) | (x)  |
 | vpcAgent                | VPC代理                            | (x) | (x)  |
 | web                     | 前端nginx                          | (x) | (x)  |
 | webconsole              | H5控制台服务                        | (x) | (x)  |
