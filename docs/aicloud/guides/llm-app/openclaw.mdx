@@ -27,7 +27,12 @@ title: OpenClaw
 
 ### 2. 配置模型供应商
 
-在创建/编辑实例时，为至少一个供应商配置 API Key，如何配置并获取模型供应商的 API Key 请参考：[模型供应商配置](#config-providers)。
+在创建/编辑实例时，为至少一个供应商配置模型访问参数。常见的接入方式有两类：
+
+- 直接配置公有云或 SaaS 模型供应商的 API Key，例如 Moonshot。
+- 接入平台内部已经运行好的 [Ollama 推理实例](../llm-inference/ollama)，把 OpenClaw 的模型请求转发到该实例。
+
+如果你准备让 OpenClaw 使用平台里的 Ollama 实例，建议先阅读下文的 [Ollama 推理实例](#config-ollama) 小节，再回到实例页面完成配置。
 
 选择对应的供应商，并填入相关的 API Key，下图以 Moonshot(月之暗面) 为例：
 
@@ -64,6 +69,87 @@ title: OpenClaw
 ## 配置
 
 ### 模型供应商 {#config-providers}
+
+#### Ollama 推理实例 {#config-ollama}
+
+如果你希望 OpenClaw 使用平台里已经运行好的 Ollama 推理实例，可以按下面的流程配置。
+
+##### 1. 准备 Ollama 推理实例
+
+先在平台中准备一个可用的 Ollama 推理实例，具体创建方式参考 [Ollama](../llm-inference/ollama)。
+
+至少确认以下几点：
+
+- Ollama 推理实例状态为“运行中”。
+- 已经有可用模型，执行 `ollama list` 时能看到目标模型。
+- 从 OpenClaw 实例所在网络到 Ollama 服务地址可达。
+
+:::tip
+OpenClaw 本身不依赖 GPU，但它接入的 Ollama 推理实例通常需要 GPU。建议先把 Ollama 侧验证通过，再回来配置 OpenClaw。
+:::
+
+##### 2. 获取 Ollama 服务地址
+
+进入 Ollama 推理实例详情页，打开 **连接信息**，获取服务地址。按当前平台实现，Ollama 通常监听 `11434` 端口，常见形式类似：
+
+```text
+http://<实例IP>:11434
+```
+
+如果你的环境通过网关、端口映射或其他代理暴露 Ollama，请以详情页中的实际连接信息为准。
+
+![](../llm-inference/images/ollama-url.png)
+
+##### 3. 确认要使用的模型名
+
+OpenClaw 中填写的模型名应与 Ollama 实例中真实存在的模型名保持一致。可在 Ollama 实例终端执行：
+
+```bash
+ollama list
+```
+
+常见示例：
+
+- `qwen3:0.6b`
+- `qwen3:8b`
+- `qwen2.5:7b`
+
+如果目标模型还不存在，可以先在 Ollama 实例中拉取：
+
+```bash
+ollama pull qwen3:0.6b
+```
+
+##### 4. 在 OpenClaw 中配置 Ollama Provider
+
+回到 OpenClaw 应用实例的创建或编辑页面，在 **模型供应商** 中选择 **Ollama**。
+  - Base URL 填入 Ollama 服务地址，例如 `http://192.168.6.60:21560`
+  - Model 填入模型名，例如 `qwen3:0.6b`
+
+![](./images/openclaw-ollama-fill.png)
+
+##### 5. 验证 OpenClaw 是否已使用该 Ollama 实例
+
+配置完成后，可以通过以下方式验证：
+
+1. 进入 OpenClaw 容器桌面或终端。
+2. 执行：
+
+```bash
+openclaw models
+```
+
+正常情况下，应能看到类似下面的输出：
+
+```text
+Default       : ollama/qwen3:0.6b
+```
+
+如果这里仍然显示为其他默认模型，说明当前实例的 Ollama provider 配置还未生效，建议回到实例详情页检查：
+
+- OpenClaw provider 是否选择了正确的 Ollama 地址
+- 模型名是否与 `ollama list` 一致
+- 实例是否已重启并加载最新配置
 
 #### 月之暗面(MOONSHOT) {#config-moonshot}
 
@@ -173,6 +259,22 @@ Discord 机器人配置可参考 OpenClaw 官方文档：[https://docs.openclaw.
 
 - 通过[进入容器桌面](#openclaw-gui)，打开终端后，输入 `openclaw logs --follow` 命令查看日志。
 ![](./images/openclaw-gui-log.png)
+
+### 如何确认 OpenClaw 当前使用的是哪个 Ollama 模型？
+
+进入 OpenClaw 容器桌面或终端，执行：
+
+```bash
+openclaw models
+```
+
+重点查看输出中的 `Default` 字段。若配置正确，通常会显示为：
+
+```text
+Default       : ollama/<model>
+```
+
+如果默认模型不是你预期的值，请回到实例配置页重新检查 Ollama provider 对应的地址与模型名，并在保存后重启实例。
 
 ### 如何登录到 OpenClaw 容器里面？
 
