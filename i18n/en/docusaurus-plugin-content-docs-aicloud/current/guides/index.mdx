@@ -1,0 +1,37 @@
+---
+sidebar_position: 2
+hide_table_of_contents: true
+edition: ce
+---
+
+# User Guide
+
+Concepts and usage instructions for AI applications, inference, templates, model libraries, and images.
+
+## Reading Guide
+
+- For deployment, see [Quick Start](../getting-started/quickstart).
+- For GPU deployment, see [NVIDIA/CUDA](../getting-started/setup-nvidia-cuda).
+- Read in this order: [AI Applications](./llm-app/) (including [Application Templates](./llm-app/template)) → [AI Inference](./llm-inference/) (including [Inference Templates](./llm-inference/template) / [AI Model Library](./llm-inference/model-library)) → [AI Images](./llm-image).
+
+## Console Menu and Feature Overview
+
+After entering **Artificial Intelligence**, the menu is divided into **Applications**, **Inference**, and **Images**:
+
+- **Applications**: Application instances (Dify/OpenClaw/ComfyUI), application templates.
+- **Inference**: Inference instances (Ollama), inference templates, inference model library.<!-- Inference instances (Ollama/vLLM), inference templates, inference model library. -->
+- **Images**: Managed under "Artificial Intelligence" → "Images"; selected when creating templates.
+
+## Terminology
+
+- **Template**: Resource configuration such as CPU/memory/GPU required to run an instance.
+- **Model Library**: Reusable model resources for use by inference applications.
+- **Image**: Container image for the instance runtime environment, determining functionality and version.
+
+## Typical Relationship
+
+Instance = Image + Spec + (optional) Model.
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />

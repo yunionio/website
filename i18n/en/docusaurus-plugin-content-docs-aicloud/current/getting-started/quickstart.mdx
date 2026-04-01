@@ -1,18 +1,106 @@
 ---
 sidebar_position: 1
 title: Quick Start
-description: AI Cloud quick start guide
+description: AI Cloud Quick Start Guide
+edition: ce
 ---
 
-# Quick Start
+# Ocboot Quick Installation of AI Cloud
 
-This page describes how to get started with Cloudpods AI Cloud.
+Use the [ocboot](https://github.com/yunionio/ocboot) deployment tool to quickly deploy a Cloudpods AI Cloud environment.
+
+:::tip Note
+This chapter walks you through quickly setting up an AI Cloud environment using the deployment tool. For deploying a high-availability cluster in production, please refer to: [High Availability Installation](./ha-ce).
+:::
 
 ## Prerequisites
 
-- Cloudpods platform is deployed (private cloud or K8s)
-- Sufficient compute and storage for AI workloads
+:::tip Notes:
 
-## Next steps
+- About GPU
+  - If the target machine has an Nvidia GPU, you can choose to use the ocboot tool to automatically deploy the driver and CUDA. See details later in this document.
+  - If there is no Nvidia GPU, the deployed environment will not be able to run inference container instances like Ollama, but it can run application container instances like OpenClaw and Dify that do not depend on GPU.<!-- 如果没有 Nvidia GPU，部署后的环境就无法运行 ollama 和 vllm 这种推理容器实例，但可以运行 OpenClaw 和 dify 这种不依赖 GPU 的应用容器实例。 -->
+- The operating system must be a clean installation, because the deployment tool will build a k3s cluster of a specified version from scratch. Make sure the system does not have Kubernetes, Docker, or other container management tools installed, otherwise conflicts will cause installation failures.
+- Minimum requirements: 8 CPU cores, 8 GiB memory, 200 GiB storage.
+- Virtual machines and services store data under the **/opt** directory, so ideally it is recommended to set up a separate mount point for **/opt**.
+    - For example, create an ext4 partition on /dev/sdb1 and mount it to /opt via /etc/fstab.
+- On Debian-family operating systems (e.g., Debian and Ubuntu), during the first ocboot deployment, GRUB boot options will be detected and updated so that k3s can run properly. As a result, the operating system will reboot during deployment. After the reboot, simply re-run the ocboot deployment.
+:::
 
-Detailed installation and configuration will be updated with product releases. Stay tuned.
+Supported distributions vary by CPU architecture. Currently supported distributions are as follows:
+
+Note: 4.0 refers to Release/4.0.
+
+| OS and Architecture                      | 4.0  |
+| -------------------------------------- | ---- |
+| OpenEuler 22.03 LTS Sp3 x86_64+aarch64 | ✅   |
+
+## Install Cloudpods AI Cloud
+
+import OcbootReleaseDownload from '../../shared/getting-started/_parts/_quickstart-ocboot-release-download.mdx';
+
+<OcbootReleaseDownload />
+
+### Run the Deployment Tool
+
+Next, execute `ocboot.sh run.py` to deploy the services. The **host_ip** parameter is the IP address of the deployment node and is optional. If not specified, the NIC used by the default route will be selected for service deployment. If your node has multiple NICs, you can specify **host_ip** to choose the corresponding NIC for listening.
+
+import OcbootRun from '@site/src/components/OcbootK3sRun';
+
+<OcbootRun productVersion='ai' />
+
+The `./ocboot.sh run.py` script calls Ansible to deploy services. If the script exits due to issues during deployment, you can re-run the script to retry.
+
+### Configure NVIDIA Driver and CUDA (Optional)
+
+To install or configure NVIDIA drivers and CUDA on a node to run GPU-dependent AI container applications such as Ollama, please refer to: [Setting up NVIDIA and CUDA Environment](./setup-nvidia-cuda).<!-- 若需在节点上安装或配置 NVIDIA 驱动与 CUDA 以运行 Ollama、vLLM 等依赖 GPU 的 AI 容器应用，请参考：[配置 NVIDIA 与 CUDA 环境](./setup-nvidia-cuda)。 -->
+
+## Start Using Cloudpods AI Cloud
+
+```bash
+....
+# After deployment completes, the following output indicates success
+# Open https://10.168.26.216 in a browser, where the IP is the <host_ip> set earlier
+# Log in with admin/admin@123 to access the web interface
+Initialized successfully!
+Web page: https://10.168.26.216
+User: admin
+Password: admin@123
+```
+
+After deployment, open the Web address output by ocboot (e.g., `https://<host_ip>`) in a browser, and log in with the provided credentials to access the Cloudpods console.
+
+### Enable Hosts
+
+The newly created environment will be added to the platform as a host node, which is not enabled by default. Go to **Compute -> Infrastructure -> Hosts** to view the host list and enable the corresponding host.
+![](../../shared/getting-started/images/host.png)
+
+### Quickly Create AI Instances
+
+Go to the **"Artificial Intelligence"** menu to quickly create AI applications. Please refer to the corresponding documentation based on your needs.
+
+:::tip
+- Before creating applications that **depend on GPU**, please first complete: [Setting up NVIDIA and CUDA Environment](./setup-nvidia-cuda).
+:::
+
+| Application | Type | Description | GPU Required | Quick Start |
+|---|---|---|---|---|
+| OpenClaw | AI App | Open-source self-hosted personal agent assistant | No | [OpenClaw Quick Start](../guides/llm-app/openclaw#quickstart) |
+| Dify | AI App | LLM application development and workflow orchestration platform (can connect to inference services) | No | [Dify Quick Start](../guides/llm-app/dify#quickstart) |
+| ComfyUI | AI App | Image generation and node-based workflow application | Yes | [ComfyUI Quick Start](../guides/llm-app/comfyui#quickstart) |
+| Ollama | AI Inference | Lightweight local inference service | Yes | [Ollama Quick Start](../guides/llm-inference/ollama#quickstart) |
+<!-- | vLLM | AI推理 | 高吞吐、低延迟推理服务 | 需要 | [vLLM 快速开始](../guides/llm-inference/vllm#quickstart) | -->
+
+## FAQ
+
+### 1. How to add more AI nodes?
+
+To add new nodes (especially GPU nodes) to an existing cluster, if you need to run GPU-dependent AI applications, it is recommended to first configure NVIDIA/CUDA. Refer to: [Setting up NVIDIA and CUDA Environment](./setup-nvidia-cuda). Then complete the host addition and enablement. Refer to: [Adding Compute Nodes](./host).
+
+### 2. How to upgrade?
+
+Please refer to [Upgrading via ocboot](/docs/onpremise/operations/upgrading/ocboot-upgrade) (if AI Cloud shares the ocboot upgrade process with private cloud).
+
+### 3. Other questions?
+
+Feel free to submit issues on Cloudpods GitHub Issues: [https://github.com/yunionio/cloudpods/issues](https://github.com/yunionio/cloudpods/issues). We will respond as soon as possible.

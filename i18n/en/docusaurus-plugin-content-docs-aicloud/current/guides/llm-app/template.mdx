@@ -1,0 +1,23 @@
+---
+sidebar_position: 6
+edition: ce
+title: Application Templates
+---
+
+# Application Templates
+
+Application templates are used to define the CPU/memory/GPU/storage configuration for AI application instances (such as OpenClaw, Dify, ComfyUI). When creating an instance, templates allow quick reuse of resource specs.
+
+## Core Concepts
+
+The console entry point is **Artificial Intelligence → Applications → Application Templates**. When creating an application instance, select a template to get the preset resource configuration. If resources are insufficient or constraints are not met, the instance will fail to schedule.
+
+Common configuration dimensions include:
+
+- **Type**: Corresponds to the type of AI application instance.
+- **Image**: Associates with the corresponding service's container image.
+- **CPU**: Affects request processing and concurrency capacity.
+- **Memory**: Affects application process and cache stability; insufficient memory can easily cause OOM or restarts.
+- **Data Disk**: Used for persistent data storage.
+- **GPU Model**: Image-related applications (such as ComfyUI) depend on GPU resources.
+- **Port Mapping**: Maps the container service ports from the host.

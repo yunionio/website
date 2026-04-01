@@ -1,0 +1,221 @@
+---
+sidebar_position: 5
+edition: ce
+title: Inference Model Library
+---
+
+# Inference Model Library
+
+The inference model library is used to consolidate model data needed by inference instances into reusable, mountable, and cacheable model entries within the platform. This document currently focuses on the `Ollama` scenario as the main thread. It is responsible for centrally managing model sources, versions, model data images, and mount relationships, but does not directly provide inference interfaces.
+
+If you want multiple inference templates or inference instances to reuse the same model, or need to prepare models in advance in intranet, offline, or controlled environments, using the inference model library is the more reliable approach. The console provides a default entry for the inference model library; whether you can directly select a model on the template or instance page depends on whether the model library already has an available model entry matching the current type.
+
+## Quick Start {#quickstart}
+
+Using the inference model library generally involves the following steps:
+
+1. Go to **AI > Inference > Inference Model Library** in the console.
+2. Create the target model entry via **Import Community Model** or **Save from Model Instance**.
+3. Wait for model data preparation to complete, and enable auto-caching as needed.
+4. Select the model to mount in the [Inference Template](./template) or [Ollama](./ollama) instance.
+5. After creating the instance, verify whether the model has been successfully loaded via `ollama list` or `/api/tags`.
+
+## When to Use the Model Library
+
+The following scenarios are well-suited for preparing models through the model library:
+
+- **Template Pre-mounting**: Prepare models before creating an [Inference Template](./template), so subsequent new instances can directly reuse them.
+- **Multi-instance Reuse**: The same model is repeatedly used by multiple `Ollama` instances, avoiding each instance downloading it separately.
+- **Version Governance**: Unify model sources, versions, and default usage scope to reduce troubleshooting costs from "same model name but different versions".
+- **Offline or Intranet Scenarios**: Package models into the platform first, then distribute them to nodes that need them.
+- **Reduce First Startup Wait**: Combined with auto-caching, sync commonly used models to nodes in advance.
+
+## Problems Solved by the Model Library
+
+The inference model library primarily addresses the following types of problems:
+
+- **Unified Source**: Consolidates community models, existing model data, or platform images into a single management entry point.
+- **Unified Versioning**: Model names, tags, images, and mount relationships are trackable, facilitating upgrades, rollbacks, and difference comparisons.
+- **Reuse and Caching**: After a model is imported once, it can be reused by multiple templates and instances, and combined with node caching to reduce startup wait times.
+- **Permissions and Compliance**: Model entries and their associated model data images are subject to platform project, sharing, and public scope constraints.
+
+## Two Import Methods
+
+The console currently supports two primary methods for preparing models.
+
+### Import from Community Models
+
+"Import Community Model" is suitable for the following situations:
+
+- The node can access community model sources, and you want the platform to automatically download and package them.
+- You want the platform to convert community models into reusable model library entries, rather than repeatedly pulling them online in each instance.
+- You later want to apply auto-caching, template pre-mounting, and version governance to these models.
+
+After import, the platform first downloads the community model to a temporary directory, then automatically packages it into a model data image and fills it back into the model library entry. Subsequent template or instance mounting no longer depends on real-time online downloading.
+
+![](./images/intance-model-library-create.png)
+![](./images/instance-model-import.png)
+
+:::tip
+For production environments, intranet environments, or frequently reused models, it is recommended to import through the model library rather than having each instance download online during its first startup.
+:::
+
+### Save from Model Instance
+
+"Save from Model Instance" is suitable for the following situations:
+
+- You have already pulled and verified a model in an `Ollama` instance via `ollama pull`.
+- You want to consolidate the currently available model in the instance as a reusable model entry within the platform.
+- You want to debug a model in a single instance first, then reuse it across other templates and instances.
+
+The recommended workflow is:
+
+1. Go to **AI > Inference > Inference Instances** and open the target `test-ollama` instance.
+2. On the instance details page, switch to **test-ollama > Models** and confirm the target model appears in the list.
+3. Click **Save to Model Library** on the right side of the target model, fill in the name, version, and other information as prompted, and save.
+
+![](./images/ollama-to-save-model.png)
+![](./images/ollama-save-instant-model.png)
+
+After saving, this model can be directly selected in other Ollama inference templates or inference instances, without needing to manually run `ollama pull` again.
+
+## Relationship with Ollama and Inference Templates
+
+The relationship between the inference model library and runtime can be understood as the relationship between the "model asset layer" and the "inference runtime layer":
+
+- **Inference Model Library**: Responsible for preparing, managing, and distributing model data.
+- **Inference Templates**: Responsible for combining images, specifications, and models into a standard runtime configuration.
+- **Inference Instances**: Responsible for actually starting the Ollama service and loading models into the runtime.
+
+Therefore:
+
+- The model library addresses "where models come from, how to reuse them, and how to cache them".
+- Ollama addresses "how models are loaded and served for inference".
+
+If you are more interested in runtime configuration itself, continue reading:
+
+- [Ollama](./ollama)
+- [Inference Templates](./template)
+
+## Operations Notes
+
+### Network and Offline Preparation
+
+- `Ollama` community model import depends on access to the corresponding model sources.
+- If outbound network access is restricted in your environment, it is recommended to first pull models in an `Ollama` instance that can access model sources, then consolidate them via "Save to Model Library" as reusable entries.
+
+### Cache and Disk Planning
+
+- Models in the model library ultimately correspond to a model data image.
+- After enabling auto-caching, node-side cache replicas will consume additional space.
+- If a template mounts multiple models, or a model is repeatedly scheduled across multiple nodes, disk planning should be more conservative than single-instance online downloading.
+
+### Type Consistency
+
+- The types of model, template, and image must all be consistent.
+- If you encounter issues like "the model has been imported but cannot be selected in the template", first check whether the types match.
+
+### Version Management
+
+- It is recommended to clearly manage model names and tags to avoid duplicate imports of the same model under similar names.
+- For Ollama, the model name used in requests should still be consistent with the version in the model library.
+
+### Deletion and Changes
+
+- Models already referenced by templates or instances should not be directly deleted.
+- If you need to replace a model version, it is usually better to add a new version entry and gradually switch the template or instance references.
+- For long-term reused models, it is recommended to manage them together with template and image versions, rather than frequently modifying the same entry.
+
+## FAQ
+
+### Community model import is slow or fails
+
+First check the following:
+
+- Whether the node has network connectivity to the model source.
+- Whether bandwidth is sufficient, and whether there are proxy or firewall restrictions.
+- Whether the target model itself is too large, causing long download and packaging times.
+- Whether data disk space is sufficient to accommodate temporary downloads, model images, and subsequent caches.
+
+If the environment does not support direct online import from the model library, it is recommended to first complete `ollama pull` in a network-connected `Ollama` instance, then consolidate it via "Save to Model Library" for reuse.
+
+### Why are there no selectable models on the template or instance page?
+
+Typically check the following:
+
+- There are no model entries in the current model library matching the template or instance type.
+- The model data image is not fully prepared yet, and the entry is temporarily unavailable.
+- The model type and template type are inconsistent.
+
+### Model has been imported successfully, but why can't it be used in the template?
+
+Typically check the following:
+
+- The model type and template type are inconsistent.
+- The model data image is not fully prepared yet.
+- The model has been replaced, disabled, or the reference relationship has not been refreshed.
+- You did not actually select a template containing that model when creating the instance.
+
+### After mounting from the model library, why is the model still not visible in the instance?
+
+First check whether the mount relationship has taken effect and whether the instance has completed startup and warmup.
+
+If the issue persists, enter the instance and run `ollama list`, and check the logs to confirm whether there are mount failures, insufficient VRAM, or startup anomalies.
+
+### Why is startup still slow after using the model library?
+
+Even if the model is already in the model library, the first startup may still be slow. Common reasons include:
+
+- The node does not yet have a local cache of this model data image.
+- The model is large, and the first mount and extraction take time.
+- Data disk or node storage performance is slow.
+- Instance startup also involves model probing, service initialization, and GPU warmup.
+
+If this is a frequently used model, it is recommended to use auto-caching and template pre-mounting together.
+
+### Why does disk usage keep growing?
+
+Disk growth usually comes not only from model files themselves, but also from:
+
+- Model data images
+- Node-side cache
+- The inference engine's own cache directory
+- New model versions accumulating while old versions are not cleaned up
+
+It is recommended to periodically review model versions that are no longer in use and check whether templates and instances are still referencing the corresponding entries.
+
+<!--
+以下为暂时注释保留的 vLLM 相关内容，后续需要恢复时可再整理启用。
+
+- 推理模型库用于把 `Ollama`、`vLLM` 等推理实例要用到的模型数据，沉淀为平台内可复用、可挂载、可缓存的模型条目。
+- 创建实例后，按 [Ollama](./ollama) 或 [vLLM](./vllm) 的方式验证模型是否已成功加载。
+- 同一模型会被多个 `Ollama` 或 `vLLM` 实例反复使用，避免每个实例各自下载一遍。
+
+### vLLM 模型
+
+按当前平台实现，`vLLM` 社区模型会按 Hugging Face 仓库目录下载，并落成一个完整模型目录，再挂载到实例内的 `/data/models/huggingface/<模型目录>`。
+
+这意味着：
+
+- `model_name` 通常对应 Hugging Face 仓库名，例如 `Qwen/Qwen2.5-7B-Instruct`。
+- `model_tag` 更适合理解为 revision、branch 或 tag。
+- 当同一个模板或实例挂载了多个 vLLM 模型目录时，建议在 [推理模板](./template) 或实例高级配置中显式设置 `preferred_model`，避免平台按目录扫描顺序加载到错误模型。
+
+vLLM 当前默认将 Hugging Face 访问地址指向 `https://hf-mirror.com`。如果社区模型导入失败，除了权限问题，也要优先检查节点到该模型源的网络连通性。
+
+- 选择正确的模型类型，例如 `vLLM`。
+- `vLLM` 模型只能挂到 `vLLM` 模板或实例。
+- 访问 `/v1/models`，确认接口里已经出现预期模型。
+- 推理实例负责真正启动 Ollama 或 vLLM 服务，并把模型加载进运行时。
+- Ollama / vLLM 解决的是"模型怎么被加载并对外提供推理服务"的问题。
+- [vLLM](./vllm)
+- `vLLM` 社区模型导入依赖访问 Hugging Face 或其镜像源。
+- 不要把 `Ollama` 模型挂到 `vLLM` 模板，也不要反过来使用。
+- 对 vLLM 来说，目录名、tag 和 `preferred_model` 最好一起规划，减少后续误加载。
+
+### vLLM 挂载了多个模型，为什么实例加载错了
+
+这通常和 `preferred_model` 没有显式设置有关。
+
+按当前平台实现，vLLM 在没有明确 `preferred_model` 时，通常会回退到模型目录中扫描到的第一个目录。多模型场景下，建议始终显式配置 `preferred_model`，并在实例启动后用 `/v1/models` 再核对一次结果。
+-->
