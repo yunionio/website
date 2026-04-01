@@ -65,6 +65,9 @@ $ ssh root@10.168.222.140 "hostname"
 # 使用 ocboot 添加节点
 $ ./ocboot.sh add-node 10.168.26.216 10.168.222.140
 
+# 使用 ocboot 添加容器环境节点
+$ ./ocboot.sh add-node --runtime containerd 10.168.26.216 10.168.222.141
+
 # 其他选项，使用 '--help' 参考帮助
 $ ./ocboot.sh add-node --help
 usage: ocboot.py add-node [-h] [--user SSH_USER] [--key-file SSH_PRIVATE_FILE] [--port SSH_PORT] [--node-port SSH_NODE_PORT]
@@ -74,16 +77,30 @@ positional arguments:
   FIRST_MASTER_HOST     onecloud cluster primary master host, e.g., 10.1.2.56
   TARGET_NODE_HOSTS     target nodes ip added into cluster
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --user SSH_USER, -u SSH_USER
-                        primary master host ssh user (default: root)
+                        target host ssh user (default: root)
   --key-file SSH_PRIVATE_FILE, -k SSH_PRIVATE_FILE
-                        primary master ssh private key file (default: /home/lzx/.ssh/id_rsa)
+                        target host ssh private key file (default: /root/.ssh/id_rsa)
   --port SSH_PORT, -p SSH_PORT
-                        primary master host ssh port (default: 22)
+                        target host host ssh port (default: 22)
   --node-port SSH_NODE_PORT, -n SSH_NODE_PORT
                         worker node host ssh port (default: 22)
+  --offline-data-path OFFLINE_DATA_PATH
+                        offline rpm repo path for upgrade mode
+  --ip-type {ipv4,ipv6,dual-stack}
+                        ip type of target nodes
+  --ip-dual-conf IP_DUAL_CONF
+                        Input the second IP address for dual-stack configuration (IPv6 if
+                        TARGET_NODE_HOSTS is IPv4, or IPv4 if TARGET_NODE_HOSTS is IPv6)
+  --enable-host-on-vm   enable kvm host service inside virtual machine
+  --host-network [HOST_NETWORKS ...]
+                        networks option of /etc/yunion/host.conf
+  --disk-path [DISK_PATHS ...]
+                        local_image_path of /etc/yunion/host.conf
+  --runtime {qemu,containerd}
+                        select runtime type when adding node. default: qemu
 ```
 
 该命令会使用 ansible-playbook 把对应的计算节点加入进来。
