@@ -1,0 +1,302 @@
+---
+sidebar_position: 4
+edition: ce
+title: Dify
+---
+
+# Dify
+
+Dify is an LLM application development and orchestration platform that supports building conversational, Agent, and workflow applications. Dify itself does not require a GPU and can run on nodes without an NVIDIA environment configured. Only when downstream inference services require a GPU do the corresponding inference instances need to meet GPU requirements.
+
+## Quick Start {#quickstart}
+
+Creating a Dify application instance generally involves the following steps:
+
+1. **Create an application instance**: In the console, go to **Artificial Intelligence → Applications → Application Instances**, create a new instance and select the **Dify** template.
+   - The platform usually provides preset templates. If you need to customize the image, specs, or advanced environment variables, go to **Artificial Intelligence → Applications → Application Templates** to create or edit one.
+2. **Access and complete initialization**: Go to the instance details page, open "Connection Info" to get the access URL, open the Dify initialization page in a browser, and complete the administrator account and workspace initialization.
+3. **Install model plugins and configure model providers**: To connect to OpenAI, OpenAI-compatible services, or platform-internal inference services such as Ollama, first install the corresponding plugin in the Dify web backend under **Plugins → Marketplace**, then configure the model provider and downstream inference service.<!-- To connect to OpenAI, OpenAI-compatible services, or platform-internal inference services such as Ollama or vLLM, first install the corresponding plugin in the Dify web backend under **Plugins → Marketplace**, then configure the model provider and downstream inference service. -->
+4. **Verify the application pipeline**: Create a minimal conversational application or workflow in Dify, make a test call, and confirm that the application, model, and toolchain are all working properly.
+
+### 1. Create an Application Instance
+
+The console entry point is **Artificial Intelligence → Applications → Application Instances**.
+
+1. Click **Create**.
+2. Select the application template or application type for `Dify`.
+3. Fill in the instance name and select the project, region, network, and other general configurations as required.
+4. Confirm the template, image, specs, and advanced configuration, then submit.
+
+![](./images/openclaw-app-instance-create.png)
+![](./images/dify-instantce-create-form.png)
+
+If there is no available Dify template in the console yet, first go to **Artificial Intelligence → Applications → Application Templates** to create or edit a template, then return to the instance page to create one.
+
+The common fields on the page can be configured based on your actual scenario:
+
+- **Bandwidth**: Used to limit container network bandwidth; fill in based on business traffic volume.
+- **Host (optional)**: If you need to pin the instance to a specific node, you can manually specify one; otherwise, the platform will schedule automatically.
+- **Network**: You can use automatic allocation or specify an existing IP subnet.
+
+:::tip
+Dify is a multi-container application. In addition to the frontend and API, it also starts database, Redis, vector store, plugin daemon, and code execution sandbox components simultaneously. Although it does not require a GPU, you should still reserve sufficient CPU, memory, and data disk capacity.
+:::
+
+### 2. Access and Complete Initialization
+
+After the instance is created successfully, go to the instance details page and open **Connection Info** to get the Dify access URL. Per the current platform implementation, external access goes through the `nginx` container, which exposes port `80` by default.
+
+![](./images/dify-url-get.png)
+
+After opening the access URL in a browser, you will typically see the Dify first-time initialization wizard. You can follow the on-screen prompts to complete the following actions:
+
+1. Create an administrator account.
+2. Log in with the administrator account.
+
+![](./images/dify-init.png)
+![](./images/dify-login.png)
+
+The platform automatically generates the required internal keys for Dify's internal components, so you generally do not need to fill them in manually. For example, `SECRET_KEY`, internal API keys, Plugin Server Key, and Weaviate's internal authentication key are all prepared during the deployment phase.
+
+:::tip
+Dify's web pages, API, file access, and other paths share the same external entry URL by default. In addition to accessing the homepage via browser, subsequent Dify API calls typically also access `/api`, `/v1`, `/files`, and other paths under the same address.
+:::
+
+### 3. Install Model Plugins and Configure Model Providers
+
+Dify itself does not directly mount model directories or run model weights. It functions more like an application orchestration platform, with actual model inference handled by external model providers or other inference instances within the platform.
+
+After completing initialization, it is recommended to first confirm that downstream inference services are available. Whether you are connecting to external OpenAI, other OpenAI-compatible services, or platform-internal [Ollama](../llm-inference/ollama) instances, you typically need to first install the corresponding model plugin in the Dify web backend, then go to the model provider page to complete the integration.<!-- Whether you are connecting to external OpenAI, other OpenAI-compatible services, or platform-internal [Ollama](../llm-inference/ollama) / [vLLM](../llm-inference/vllm) instances, you typically need to first install the corresponding model plugin in the Dify web backend, then go to the model provider page to complete the integration. --> Common approaches include:
+
+- Using the `OpenAI` or `OpenAI-API-compatible` plugin to connect to external model services, such as OpenAI or other services compatible with the OpenAI API.
+- Connecting to platform-internal [Ollama](../llm-inference/ollama) inference instances.<!-- Connecting to platform-internal [Ollama](../llm-inference/ollama) or [vLLM](../llm-inference/vllm) inference instances. -->
+
+Recommended workflow:
+
+1. Log in to the Dify console.
+2. Go to **Plugins → Marketplace**.
+3. Search for and install the corresponding plugin in the Marketplace, such as `OpenAI`, `OpenAI-API-compatible`, or `Ollama`.<!-- Search for and install the corresponding plugin in the Marketplace, such as `OpenAI`, `OpenAI-API-compatible`, `Ollama`, or `vLLM`. -->
+4. After the plugin is installed, go to the model configuration page of the model provider.
+5. Select the provider type you want to integrate.
+6. Fill in the `Base URL`, model name, API Key, or other authentication fields as prompted.
+7. Run a connection test first, then save.
+
+![](./images/dify-marketplace.png)
+![](./images/dify-ollama-openai-plugin.png)
+![](./images/dify-into-model-provider.png)
+![](./images/dify-model-provider.png)
+![](./images/dify-openai-model.png)
+
+Here is how to understand the different provider types:
+
+<!-- - **Connecting to vLLM**: Typically, first install the `vLLM` plugin in **Plugins → Marketplace**; then select the corresponding type on the model provider page and fill in the vLLM service address. In most cases, the `Base URL` should point to the `/v1` root path of the service; refer to the field description on the current Dify page for specifics. -->
+- **Connecting to Ollama**: Typically, first install the `Ollama` plugin in **Plugins → Marketplace**; then select the corresponding Ollama provider type in Dify and fill in the Ollama service address.
+- **Connecting to OpenAI or OpenAI-compatible services**: Typically, first install the `OpenAI` or `OpenAI-API-compatible` plugin in **Plugins → Marketplace**; then select the corresponding type on the model provider page and fill in the official address or compatible service's `Base URL`, model name, and API Key as required.
+
+:::tip
+Model provider API Keys are typically configured and stored in the Dify web backend, rather than by directly mounting model files through application templates. For Dify, the key is that it can access the target inference service and the model provider configuration is correct.
+:::
+
+:::tip
+If the downstream is a GPU inference service, the node where the inference service runs still needs to have the GPU environment prepared according to [Configure NVIDIA and CUDA Environment](../../getting-started/setup-nvidia-cuda).
+:::
+
+### 4. Verify the Application Pipeline
+
+After completing the model provider configuration, it is recommended to create a minimal application for end-to-end verification. You can check as follows:
+
+1. Create a simple chat application in Dify, or create a workflow containing only a basic LLM node.
+2. Select the model you just configured.
+3. Enter a simple prompt, such as "Please introduce yourself in one sentence."
+4. Click Debug or Preview and observe whether the response is normal.
+
+![](./images/dify-new-app.png)
+![](./images/dify-create-app.png)
+![](./images/dify-debug.png)
+
+If the model returns results normally, it means the following pipelines are basically working:
+
+- Dify Web and API are functioning normally
+- Network connectivity from Dify to the downstream model provider is normal
+- Model provider configuration is correct
+- Dify's backend task pipeline and storage dependencies are working properly
+
+## Built-in Platform Components
+
+Per the current platform implementation, Dify is not a single-container application but a set of collaborating built-in components. Common components are as follows:
+
+| Component | Purpose | Primary Port or Entry | Persistent Path |
+| --- | --- | --- | --- |
+| `nginx` | Unified external entry point, proxying Web, API, file, and plugin callback paths | `80` | `/etc/nginx/conf.d` |
+| `web` | Dify frontend interface | Internal web service | No dedicated persistent directory |
+| `api` | Dify backend API and core business logic | Internal `5001` | `/app/api/storage` |
+| `worker` | Asynchronous task execution | Internal task queue | `/app/api/storage` |
+| `worker-beat` | Scheduled task scheduling | Internal task queue | No dedicated persistent directory |
+| `plugin` | Plugin daemon and plugin installation/execution | `5002` / `5003` | `/app/storage` |
+| `sandbox` | Code execution sandbox | `8194` | `/conf`, `/dependencies` |
+| `ssrf` | Proxy and isolated network access for sandbox and some external access paths | `3128` | No dedicated persistent directory |
+| `postgres` | Metadata and configuration storage | `5432` | `/var/lib/postgresql/data` |
+| `redis` | Cache and queue | `6379` | `/data` |
+| `weaviate` | Default vector storage | Internal `8080` | `/var/lib/weaviate` |
+
+These components are launched and started automatically by the platform together; there is no need to manually run a "start Dify" command. Externally, you typically only need to access a single entry URL, and the platform uses `nginx` to route `/`, `/api`, `/v1`, `/files`, and other paths to the corresponding internal services.
+
+## Storage and Persistence
+
+Dify's critical data is mainly distributed across the following types of directories:
+
+- **Postgres data directory**: `/var/lib/postgresql/data`
+- **Redis data directory**: `/data`
+- **Dify API storage directory**: `/app/api/storage`
+- **Plugin daemon storage directory**: `/app/storage`
+- **Weaviate data directory**: `/var/lib/weaviate`
+- **Sandbox configuration and dependencies directory**: `/conf`, `/dependencies`
+- **Nginx configuration directory**: `/etc/nginx/conf.d`
+
+It is recommended to focus on the persistence and backup of the following types of data:
+
+- Database metadata and workspace configuration
+- Knowledge bases, file uploads, and application runtime data
+- Plugin installation directory and plugin cache
+- Vector store data
+
+:::tip
+Many of Dify's critical states are not stored in the browser locally but in Postgres, the API storage directory, and the vector store. For production environments, it is strongly recommended to use persistent storage and establish backup and cleanup strategies.
+:::
+
+## Configuration
+
+### Templates, Images, and Specs
+
+- **Spec selection**: Refer to [Application Templates](./template), focusing on CPU, memory, and data disk rather than GPU.
+- **Multi-component characteristics**: A single Dify deployment launches multiple components. Insufficient specs typically do not just slow down a single process but constrain the database, queue, vector store, and backend tasks together.
+- **Image selection**: If the platform allows adjusting component images in the template, it is best to make unified changes at the template level. Dify is a multi-image application, and it is not recommended to temporarily change only the external entry while ignoring other dependent component versions.
+
+### Inference Integration and Keys
+
+- **Does not directly mount models**: Dify does not support directly mounting model directories to provide model capabilities like Ollama does.<!-- Dify does not support directly mounting model directories to provide model capabilities like Ollama or vLLM do. -->
+- **Model provider configuration location**: Model API Keys, model addresses, etc. are typically configured in the model provider configuration page in the Dify web backend.
+- **OpenAI / OpenAI-compatible services**: You typically also need to first install the `OpenAI` or `OpenAI-API-compatible` plugin in Dify's **Plugins → Marketplace**, then fill in the official or compatible service address.<!-- You typically also need to first install the `OpenAI` or `OpenAI-API-compatible` plugin in Dify's **Plugins → Marketplace**, then fill in the official or compatible service address; when connecting to vLLM via the OpenAI-compatible interface, the common format is `<service-url>/v1`. -->
+- **Ollama integration**: If connecting to platform-internal inference instances, it is recommended to first verify their availability, then install the corresponding plugin in Dify's **Plugins → Marketplace**, and finally return to the model provider page to complete the integration.<!-- **Ollama / vLLM integration**: If connecting to platform-internal inference instances, it is recommended to first verify their availability separately, then install the corresponding plugins in Dify's **Plugins → Marketplace**, and finally return to the model provider page to complete the integration. -->
+
+<!--
+### Advanced Configuration and `customized_envs`
+
+The platform supports overriding some default environment variables of Dify's built-in components through `customized_envs`. It is more suitable for adjusting Dify runtime parameters rather than replacing the model provider configuration in the Dify web backend.
+
+Key behaviors of `customized_envs`:
+
+- It is mainly used to override environment variables that the platform has already preset.
+- If you fill in a key that the platform has not preset, it typically will not be automatically injected into the corresponding container.
+- When the `value` is empty, it typically will not clear the default value; only non-empty values will override the default.
+- Template-level and instance-level `customized_envs` are not automatically merged by key; once instance-level values are filled in, they typically replace the template-level list entirely.
+
+:::warning
+If the template already has `customized_envs` configured and you fill in a new set of `customized_envs` at the instance level, you need to include the old items you want to keep; otherwise, the override items from the template will not automatically continue to take effect.
+:::
+
+Example variables suitable for adjustment through `customized_envs`:
+
+| Environment Variable | Purpose | Description |
+| --- | --- | --- |
+| `INIT_PASSWORD` | Preset initialization password | Suitable for first-time initialization |
+| `ALLOW_EMBED` | Whether to allow page embedding | Affects web embedding scenarios |
+| `TEXT_GENERATION_TIMEOUT_MS` | Frontend text generation wait timeout | Suitable for long responses or slow models |
+| `MAX_TOOLS_NUM` | Maximum number of tools available for Agent / workflow | Affects complex application orchestration |
+| `MAX_PARALLEL_LIMIT` | Parallel execution limit | Affects concurrent workflows |
+| `HTTP_REQUEST_NODE_SSL_VERIFY` | Whether HTTP request nodes verify certificates | Only adjust when explicitly needed |
+
+If the platform page allows filling in `customized_envs`, you can refer to the following structure:
+
+```json
+{
+  "customized_envs": [
+    { "key": "INIT_PASSWORD", "value": "ChangeMe123!" },
+    { "key": "ALLOW_EMBED", "value": "true" },
+    { "key": "TEXT_GENERATION_TIMEOUT_MS", "value": "120000" }
+  ]
+}
+```
+
+The following types of environment variables are generally not recommended for casual modification unless you clearly know you are replacing platform built-in dependencies:
+
+- `DB_HOST`
+- `REDIS_HOST`
+- `WEAVIATE_ENDPOINT`
+- `CODE_EXECUTION_ENDPOINT`
+- `PLUGIN_DAEMON_URL`
+- `SSRF_PROXY_HTTP_URL`
+- `SSRF_PROXY_HTTPS_URL`
+-->
+
+### Network and Operations
+
+- **Network connectivity**: Ensure network connectivity from Dify to downstream model services, the plugin marketplace, and any required external APIs.
+- **Plugins and code execution**: Plugin installation depends on the `plugin` component, and code execution depends on the `sandbox` and `ssrf` components. If these features are abnormal, it is usually not just a frontend configuration issue.
+- **Sandbox network**: Per the current platform default configuration, the code execution sandbox allows network access, but the access path goes through the `ssrf` proxy. If code nodes or plugins fail to access external resources, prioritize investigating `sandbox` and `ssrf`.
+- **Scaling**: When scaling up, it is recommended to evaluate the capacity of the API, Worker, database, vector store, and downstream model services together, rather than focusing only on frontend traffic volume.
+- **Upgrades and rollbacks**: Manage runtime versions through [AI Images](../llm-image). Before upgrading, it is recommended to back up critical data directories and databases.
+- **Observability**: Monitor request volume, error rates, downstream model call latency, and database and vector store storage capacity. Use logs to diagnose issues such as unavailable dependencies, timeouts, and initialization failures.
+
+## FAQ
+
+### Cannot open the initialization page, or 502 appears after opening
+
+- First check whether the instance status is Running.
+- Check the `nginx`, `web`, and `api` related logs to confirm whether the frontend and backend have finished starting.
+- For multi-container applications, the first startup typically requires waiting for Postgres, Redis, Weaviate, API, and Web to all become ready before the page becomes stable.
+
+### Downstream model call timeout or failure
+
+- Check whether the model provider address, model name, and API Key configured in Dify are correct.
+- If the downstream is a platform-internal Ollama, first verify that the corresponding inference instance itself is available.<!-- If the downstream is a platform-internal Ollama or vLLM, first verify that the corresponding inference instances themselves are available. -->
+- If the downstream is a GPU inference service, confirm that the GPU node environment is normal and check the inference service capacity and logs.
+
+### Plugin installation failed, or code execution is unavailable
+
+- Check whether the `plugin`, `sandbox`, and `ssrf` related containers are running normally.
+- Check network connectivity from the node to the plugin marketplace, package repositories, and target external services.
+- If the environment is an intranet or restricted network, plan the access strategy for the plugin marketplace and dependency downloads in advance.
+
+<!--
+### Changes to `customized_envs` do not take effect
+
+- Confirm that the modified environment variable is one that the platform has already preset, not an arbitrary new key.
+- Confirm that the filled `value` is not an empty string; empty values typically will not override default values.
+- If you filled in new `customized_envs` at the instance level, confirm whether you also included the original override items from the template level.
+- After modification, it is recommended to perform a complete instance restart or rebuild, then re-verify whether the page and functionality take effect.
+-->
+
+### How to view logs?
+
+Via the frontend interface: Click the corresponding application instance, go to the details page, then click **Logs** to view Dify's service output logs, which is useful for troubleshooting.
+
+![](./images/dify-log.png)
+
+Since Dify is a multi-container application, when troubleshooting issues, typically prioritize the logs of these components:
+
+- `api`
+- `worker`
+- `plugin`
+- `nginx`
+- `postgres`
+- `weaviate`
+
+### How to enter the container?
+
+You can enter the container directly through the **Terminal** on the instance details page, which is useful for viewing storage directories, environment variables, and runtime logs.
+
+![](./images/dify-enter-shell.png)
+![](./images/dify-shell.png)
+
+Per the current platform implementation, Dify's main container is typically the `api` container, so entering the terminal from the details page usually puts you in the backend service runtime environment.
+
+If you need to perform basic checks inside the container, you can first check:
+
+```bash
+env | grep -E 'DB_|REDIS_|WEAVIATE_|PLUGIN_|SANDBOX_'
+```
+
+```bash
+ls -lah /app/api/storage
+```

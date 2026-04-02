@@ -38,5 +38,9 @@
   "item.label.物理机管理": {
     "message": "Baremetal Management",
     "description": "Navbar item with label 物理机管理"
+  },
+  "item.label.AI云": {
+    "message": "AI Cloud",
+    "description": "Navbar item with label AI云"
   }
 }

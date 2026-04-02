@@ -1,0 +1,26 @@
+---
+sidebar_position: 11
+edition: ce
+title: AI Images
+---
+
+# AI Images
+
+Container images for running AI applications. Managed in the console under **Artificial Intelligence → Images**; selected when creating templates. The LLM type must match the template.
+
+## Image Sources
+
+- **Platform Preset**: Default images for quick deployment.
+- **Public Registry**: Pulled when internet access is available.
+- **Private Registry**: For production and compliance scenarios.
+
+## Compatibility
+
+- **GPU**: Images must be compatible with the node's NVIDIA driver/CUDA. See [NVIDIA/CUDA](../getting-started/setup-nvidia-cuda).
+- **Upgrades**: Evaluate runtime dependency compatibility (inference engine, Python/system libraries, etc.).
+
+## FAQ
+
+### Image pull failed
+
+Check network and DNS. For private registries, check authentication and permissions.

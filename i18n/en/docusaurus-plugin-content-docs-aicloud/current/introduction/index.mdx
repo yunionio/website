@@ -6,16 +6,42 @@ title: Product Introduction
 
 # Product Introduction
 
-Cloudpods AI Cloud provides unified management and operations for large language models (LLMs) and other AI container applications, helping enterprises deploy, scale, and monitor AI workloads on a single platform.
+Cloudpods AI Cloud is a unified management platform for large language model (LLM) inference and AI container applications, helping enterprises deploy, schedule, and operate AI workloads on a single platform, seamlessly integrated with the Cloudpods private cloud / multi-cloud resource ecosystem.
 
-## Overview
+## Core Capabilities
 
-**Manage LLM and other AI container applications**: Manage and operate LLMs, vector databases, inference services, and other containerized AI applications—including deployment, scheduling, and lifecycle management. AI Cloud works with Cloudpods private cloud and multi-cloud management to deliver integrated operations from infrastructure to AI applications.
+- **AI Inference Services**: Deploy and manage LLM inference instances with GPU scheduling, model mounting, and inference service address allocation.
+- **AI Application Management**: One-stop deployment of LLM application orchestration, agent assistants, image generation, and other AI container applications.
+- **Model Library**: Unified management of model sources, versions, and caches, supporting multi-instance reuse, offline distribution, and avoiding redundant downloads.
+- **Templates and Images**: Define resource specifications such as CPU/memory/GPU through templates, and manage container runtime environments through images for standardized delivery.
+- **GPU Operations**: Automatic GPU device detection and registration, with unified configuration and management of NVIDIA/CUDA environments.
 
-## Features
+## Console Features
 
-- Deploy and orchestrate AI container applications
-- Resource scheduling and monitoring for LLM and related services
-- Integration with existing Cloudpods resource and permission model
+After entering the **Artificial Intelligence** section of the console, there are three main modules:
 
-More capabilities and guides will be added in future releases.
+- **Applications**: Manage AI application instances and application templates.
+- **Inference**: Manage inference instances, inference templates, and inference model libraries.
+- **Images**: Manage container images used by AI applications and inference services.
+
+Instance = Image + Template Spec + (optional) Model.
+
+## Supported Applications
+
+### AI Inference
+
+- **Ollama**: A lightweight local LLM inference service that requires GPU, suitable for quick validation and small-scale inference scenarios.
+<!-- - **vLLM**：高吞吐、低延迟推理服务。 -->
+
+### AI Applications
+
+- **Dify**: An LLM application development and orchestration platform that supports building conversational, RAG, Agent, and workflow applications. Does not require GPU.
+- **OpenClaw**: An open-source self-hosted personal agent assistant. Does not require GPU.
+- **ComfyUI**: An image generation and visual workflow application with node-based workflow orchestration. Requires GPU.
+
+## Getting Started
+
+- Deploy the platform: [Quick Start](../getting-started/quickstart)
+- Configure GPU environment: [NVIDIA/CUDA](../getting-started/setup-nvidia-cuda)
+- User guide: [User Guide](../guides)
+- Platform operations: [Operations Guide](../operations)

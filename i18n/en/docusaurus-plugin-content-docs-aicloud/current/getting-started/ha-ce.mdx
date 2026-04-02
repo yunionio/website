@@ -1,0 +1,38 @@
+---
+sidebar_position: 3
+edition: ce
+---
+
+# High Availability Installation
+
+Use the [ocboot](https://github.com/yunionio/ocboot) deployment tool for high-availability installation of Cloudpods services, which is more suitable for production environment deployments.
+
+## Prerequisites
+
+import HAEnv from '../../shared/getting-started/_parts/_ha-env.mdx';
+
+<HAEnv />
+
+## Start Installation
+
+import OcbootReleaseDownload from '../../shared/getting-started/_parts/_quickstart-ocboot-release-download.mdx';
+
+<OcbootReleaseDownload />
+
+### Write Deployment Configuration
+
+import OcbootConfigHA from '@site/src/components/OcbootConfigHA';
+
+<OcbootConfigHA productVersion='AI' />
+
+### Start Deployment
+
+```bash
+$ ./ocboot.sh install ./config-ha.yml
+```
+
+After deployment completes, you can open https://10.127.190.10 (VIP) in a browser, enter the username `admin` and password `admin@123`, and access the web console.
+
+After deployment, you can add more nodes to the existing cluster. Refer to: [Adding Compute Nodes](./host).
+
+Note: When adding nodes, please use the actual IP of the first control node (do not use the VIP), because the VIP may drift. Typically only the first control node has SSH passwordless login permissions configured for other nodes; otherwise, SSH login may fail.

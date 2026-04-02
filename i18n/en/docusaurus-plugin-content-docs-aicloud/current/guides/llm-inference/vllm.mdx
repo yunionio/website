@@ -1,0 +1,408 @@
+---
+sidebar_position: 3
+edition: ce
+title: vLLM
+draft: true
+---
+
+# vLLM
+
+vLLM is a high-throughput, low-latency LLM inference service that **requires a GPU**, suitable for online inference scenarios that demand high concurrency, throughput, and OpenAI-compatible interfaces.
+
+## Quick Start {#quickstart}
+
+Creating a vLLM inference instance generally involves the following steps:
+
+1. **Prepare GPU Environment**: Complete the [NVIDIA and CUDA Environment Setup](../../getting-started/setup-nvidia-cuda), and plan GPU VRAM, memory, and persistent storage space in advance.
+2. **Configure Template Specifications and Image**: Go to [Inference Templates](./template) to configure GPU, CPU, memory, data disk, and [AI Image](../llm-image) for the vLLM template; the platform usually provides default templates, but you can also create or edit them as needed.
+3. **Select Model and Version (Optional)**: If the [Inference Model Library](./model-library) already has the target model, you can select it directly in the template or instance parameters; if no models are available yet, you can prepare the model directory first.
+4. **Create Inference Instance**: In the console, go to **AI > Inference > Inference Instances**, click New, and select a **vLLM** inference template with specifications configured to create the instance.
+5. **Get Service Address and Verify**: Go to the instance details page "Connection Info" to get the inference service address; use the running status, logs, and API calls to confirm the model has been successfully loaded and is ready to serve inference requests.
+
+### 1. Prepare GPU Environment
+
+vLLM relies on GPU for inference. Please first complete the [NVIDIA and CUDA Environment Setup](../../getting-started/setup-nvidia-cuda), and confirm the following:
+
+1. The node can detect the GPU and the driver status is normal.
+2. The target GPU has enough VRAM to accommodate the model to be loaded.
+3. CPU and memory meet the requirements for model loading and concurrent request processing.
+4. Data disk space is sufficient, as the model directory `/data/models/huggingface` and cache directory `/root/.cache/huggingface` will both be stored on persistent storage.
+5. If you need to download models online, verify network connectivity from the node to the model source in advance; the platform defaults the Hugging Face access URL to `https://hf-mirror.com`.
+
+You can run the following commands on the GPU node for a basic check:
+
+```bash
+nvidia-smi
+```
+
+```bash
+curl -I https://hf-mirror.com
+```
+
+![](./images/ollama-gpu.png)
+
+:::tip
+If you plan to run large models or multiple models, it is recommended to plan GPU VRAM, memory, and data disk capacity together before creating the template. In addition to loading model weights, vLLM also consumes extra memory for caching and swap space.
+:::
+
+### 2. Configure Template Specifications and Image
+
+Before creating an instance, it is recommended to go to **AI > Inference > Inference Templates** and configure the specifications and image for the vLLM template. Think of it as "first configure the GPU, CPU, memory, data disk, and image the instance will use, then return to the instance page to create"; if the platform already has a suitable vLLM template preset, you can also reuse it directly.
+
+1. Go to **AI > Inference > Inference Templates** in the console.
+2. Select an existing vLLM template and click **Edit**, or click **New** to create a `vLLM` inference template.
+3. In the specification configuration, select appropriate CPU, memory, GPU model, GPU quantity, and data disk size.
+4. Select the corresponding [AI Image](../llm-image) in the image field, and save the template.
+
+When configuring template specifications and image, focus on:
+
+- **GPU Quantity and VRAM**: Directly determines whether the model can be loaded and the default value of `tensor-parallel-size`. The platform will automatically set the parallelism based on the number of GPUs allocated.
+- **CPU / Memory**: Affects request processing, queuing, and model runtime stability; even when VRAM is sufficient, insufficient CPU and memory can still cause startup failure or slow responses.
+- **Data Disk**: The model directory `/data/models` and cache directory `/root/.cache` both rely on persistent storage; a disk that is too small will cause model mounting, download, or upgrade failures.
+- **Image Version**: Prefer vLLM images verified by the platform, and try to pin a specific version for easier upgrades and rollbacks.
+
+![](./images/vllm-sku-update.png)
+![](./images/vllm-gpu.png)
+
+:::tip
+If you want model files and Hugging Face cache to persist after instance restarts, make sure to use a template with a persistent data disk; the platform will mount `/data/models` and `/root/.cache` to persistent storage rather than relying on the container's ephemeral layer.
+:::
+
+### 3. Select Model and Version (Optional)
+
+If the model-related fields on the template or instance page already have the target model available, it is recommended to select it directly. This way, after instance creation, the corresponding model can usually be mounted directly to vLLM's model directory, reducing redundant downloads and version drift.
+
+The recommended workflow is:
+
+1. Go to **AI > Inference > Inference Model Library**.
+2. Prepare the target model via "Import Community Model".
+3. Return to the **Inference Template** or **Inference Instance** page and select the model version to mount in the model-related configuration items.
+4. After instance creation, wait for model mounting or warmup to complete.
+
+![](./images/vllm-sku-instant-model.png)
+
+If there are no vLLM models available in the model library yet, it does not affect creating the instance first. You can prepare the model directory and ensure it is located under `/data/models/huggingface/<model-relative-path>`. A common approach is to use `huggingface-cli download` to pull the model directly to the target directory:
+
+```bash
+huggingface-cli download <model> \
+  --local-dir /data/models/huggingface/<model-relative-path>
+```
+
+For example:
+
+```bash
+huggingface-cli download Qwen/Qwen2.5-7B-Instruct \
+  --local-dir /data/models/huggingface/Qwen2.5-7B-Instruct
+```
+
+After download, the target directory typically contains `config.json`, `tokenizer.json`, `tokenizer_config.json`, `*.safetensors`, and other files that can be directly loaded by vLLM.
+
+When there are multiple models in the directory, it is recommended to explicitly configure `preferred_model`; otherwise, the platform will attempt to use the first model directory it finds.
+
+:::tip
+It is recommended to prioritize using the model library to centrally manage model sources and versions. This allows the same model to be reused by multiple instances and makes it easier to troubleshoot differences caused by "same model name but different versions".
+:::
+
+### 4. Create Inference Instance
+
+The console entry is **AI > Inference > Inference Instances**.
+
+1. Click **New**.
+2. Select a `vLLM` inference template or instance type with specifications and image configured.
+3. Fill in the instance name and select project, region, network, and other general configurations as required by the page.
+4. Confirm the template, image, specifications, and advanced configuration, then submit to create; if the model-related configuration items already have a target model available, you can also select it here; if no models are currently available, you can leave it empty and create first.
+
+If there are no available vLLM templates in the console, you can first go to **AI > Inference > Inference Templates** to create or edit a template, then return to the instance page to create.
+
+![](./images/instantce-create.png)
+>
+> Screenshot placeholder: New vLLM inference instance form
+
+The general fields on the page can be configured based on your actual scenario:
+
+- **Bandwidth**: Used to limit container network bandwidth; fill in based on business traffic volume.
+- **Host (Optional)**: If you need to pin the instance to a specific GPU node, you can specify it manually; otherwise, the platform will schedule automatically.
+- **Network**: You can use automatic allocation or specify an existing IP subnet.
+
+### 5. Get Service Address and Verify
+
+After the instance is created successfully, go to the instance details page, open **Connection Info**, and you can get the vLLM service address. Based on the current platform implementation, the vLLM container listens on port `8000` by default internally, but the external access address should follow the connection info displayed in the console.
+
+> Screenshot placeholder: Instance details page connection info
+
+It is recommended to verify in the following order:
+
+1. First confirm that the instance status is "Running".
+2. Open the **Logs** on the details page to confirm there are no errors such as model loading failure, insufficient VRAM, parameter errors, or download failure.
+3. If needed, enter the container via the **Terminal** on the details page to check the model directory and runtime logs.
+4. Perform a health check and model enumeration verification using the HTTP API.
+
+First check if the service is accessible:
+
+```bash
+curl <service-url>/health
+```
+
+Then check the model list currently exposed by vLLM:
+
+```bash
+curl <service-url>/v1/models
+```
+
+If a `200 OK` is returned and you can see a model `id` in `/v1/models`, the service is basically ready. You can then make OpenAI-compatible requests following the examples later in this document.
+
+:::tip
+The `model` field in `/v1/chat/completions` and `/v1/completions` requests should directly use the `id` returned by `/v1/models`; do not guess manually.
+:::
+
+## Model and Persistence
+
+### Persistence Paths
+
+The following directories and paths in the vLLM container are most noteworthy:
+
+- `/data/models`: The model data root directory mounted by the platform for vLLM.
+- `/data/models/huggingface`: The default model directory scanned by vLLM.
+- `/root/.cache/huggingface`: The Hugging Face cache directory; the platform will persist `/root/.cache`.
+- `/tmp/vllm.log`: The vLLM startup log file, useful for troubleshooting startup timeouts or parameter errors; this path is more for runtime debugging and is not recommended as a long-term persistent log directory.
+
+### Model Selection Rules
+
+When starting vLLM, the platform first resolves the model directory to load under `/data/models/huggingface`, following these rules:
+
+1. If `preferred_model` is configured and the corresponding directory exists, that directory is loaded first.
+2. If `preferred_model` is not configured, or the configured directory does not exist, it falls back to the first directory found in the model directory.
+3. After the service starts, the platform passes the basename of the final loaded directory to vLLM as `served-model-name`.
+
+This means:
+
+- If you place the model at `/data/models/huggingface/Qwen2.5-7B-Instruct`, the model name in the API will typically be `Qwen2.5-7B-Instruct`.
+- If your directory structure is `/data/models/huggingface/Qwen/Qwen2.5-7B-Instruct`, the actually exposed model name will typically still be based on the leaf directory name.
+- When there are multiple models in the directory, it is strongly recommended to explicitly set `preferred_model` to avoid loading the wrong model due to directory scan order.
+
+## vLLM-Specific Configuration
+
+### `preferred_model`
+
+`preferred_model` specifies the model directory that vLLM should prioritize when starting. It takes the relative directory name under `/data/models/huggingface`, not the model display name in the API.
+
+For example:
+
+- When the directory is `/data/models/huggingface/Qwen2.5-7B-Instruct`, fill in `Qwen2.5-7B-Instruct`
+- When the directory is `/data/models/huggingface/Qwen/Qwen2.5-7B-Instruct`, fill in `Qwen/Qwen2.5-7B-Instruct`
+
+If you modify `preferred_model`, it is recommended to rebuild the instance after the change, or at least perform a complete restart, and verify the actual loaded result again with `/v1/models`.
+
+### `customized_args`
+
+`customized_args` is used to supplement vLLM startup parameters. The platform appends these configurations on top of the default startup parameters with a layer of safety restrictions.
+
+Filling rules:
+
+- `key` should not include the leading `--`; for example, fill in `max-model-len`, not `--max-model-len`
+- `key` only allows letters, numbers, `-`, and `_`
+- Parameters with the same name are merged in an "instance-level overrides template-level" manner
+- When `value` is empty, the platform treats it as a flag parameter without a value, such as `trust-remote-code`
+- The empty value approach only applies to boolean flag parameters; if a vLLM parameter requires a value, you still need to fill in the corresponding `value`
+
+The following parameters are managed by the platform and cannot be overridden via `customized_args`:
+
+- `model`
+- `served-model-name`
+- `port`
+- `tensor-parallel-size`
+
+Among these:
+
+- `tensor-parallel-size` is automatically set based on the actual number of GPUs allocated to the instance
+- `swap-space` is automatically calculated by the platform based on the template memory, typically about half the memory (in GiB, minimum `1`), but you can explicitly override it
+
+A common configuration example:
+
+| Startup Parameter | `key` | `value` | Description |
+| --- | --- | --- | --- |
+| `--max-model-len 32768` | `max-model-len` | `32768` | Controls context length |
+| `--gpu-memory-utilization 0.9` | `gpu-memory-utilization` | `0.9` | Controls VRAM utilization upper limit |
+| `--swap-space 8` | `swap-space` | `8` | Overrides the platform default swap space |
+| `--trust-remote-code` | `trust-remote-code` | Leave empty | Boolean flag parameter |
+
+### Key Parameters Appended by the Platform
+
+When starting vLLM, the platform's core command is equivalent to:
+
+```bash
+python3 -m vllm.entrypoints.openai.api_server \
+  --model <resolved-model-path> \
+  --served-model-name <basename-of-model-dir> \
+  --port 8000 \
+  --tensor-parallel-size <gpu-count> \
+  --swap-space <computed-swap-space>
+```
+
+When troubleshooting, you can focus on the following:
+
+- Whether the model directory exists and is complete
+- Whether the model name returned by `/v1/models` matches the `model` used in your request
+- Whether the GPU count and `tensor-parallel-size` match
+- Whether `customized_args` includes parameters not supported by the current image version
+
+## API Call Examples
+
+vLLM runs in OpenAI-compatible mode on the current platform, so you can directly use OpenAI-style HTTP interfaces. The following uses `curl` as an example to illustrate the most common verification methods.
+
+:::note
+If your connection info goes through a gateway, load balancer, or authentication proxy, add the `Authorization` and other required headers as appropriate; if authentication is not enabled in the current environment, you can omit this header.
+:::
+
+### 1. Health Check
+
+```bash
+curl <service-url>/health
+```
+
+Under normal circumstances, this should return `200 OK`.
+
+### 2. View Model List
+
+```bash
+curl <service-url>/v1/models
+```
+
+The returned result typically looks like:
+
+```json
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "<model-name>",
+      "object": "model"
+    }
+  ]
+}
+```
+
+The `model` field in subsequent requests should directly use the `<model-name>` returned here.
+
+### 3. OpenAI-Compatible Chat Interface
+
+```bash
+curl <service-url>/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "<model-name>",
+    "messages": [
+      {
+        "role": "system",
+        "content": "你是一个简洁的中文助手。"
+      },
+      {
+        "role": "user",
+        "content": "请用一句话介绍你自己。"
+      }
+    ],
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "max_tokens": 256,
+    "stream": false
+  }'
+```
+
+To enable streaming output, change `stream` to `true`, and the client reads incremental results via Server-Sent Events.
+
+### 4. OpenAI-Compatible Completion Interface
+
+```bash
+curl <service-url>/v1/completions \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "<model-name>",
+    "prompt": "请用三句话介绍 vLLM 的主要用途。",
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "max_tokens": 256,
+    "stream": false
+  }'
+```
+
+For pure text completion scenarios, use `/v1/completions`; for instruction following, conversation, and Agent scenarios, `/v1/chat/completions` is usually recommended.
+
+### Common Parameter Reference
+
+- `model`: Must match the model name returned by `/v1/models`.
+- `messages`: Input message array for the chat interface, organized by `role` + `content`.
+- `prompt`: Input text for the completion interface.
+- `stream`: Whether to enable streaming output; `true` means generating and returning incrementally.
+- `temperature`: Sampling temperature; higher values increase randomness.
+- `top_p`: Nucleus sampling threshold, commonly used together with `temperature`.
+- `max_tokens`: Maximum number of output tokens for this generation.
+
+## Configuration Recommendations
+
+### Image and Specifications
+
+- **Specification Selection**: Refer to [Inference Templates](./template), focusing on the match between GPU VRAM, GPU quantity, CPU/memory, and concurrency scale.
+- **Image Selection**: Refer to [AI Images](../llm-image), use specific versions (tag/digest) for easier upgrades and rollbacks, and note CUDA, driver, and vLLM version compatibility.
+
+### Model and Version
+
+- **Model Library**: Use the [Inference Model Library](./model-library) to centrally manage model sources, versions, and reuse strategies.
+- **Directory Planning**: It is recommended to use clear and stable directory names for each model, making it easy for `preferred_model` to precisely point to the target directory.
+- **Cache and Disk**: Model files typically consume significant disk space. It is recommended to prepare sufficient persistent storage for the model directory and Hugging Face cache, and establish cleanup strategies.
+
+### Concurrency, Throughput, and Latency
+
+- **Capacity Planning**: Throughput and latency are typically affected by GPU VRAM, concurrency, and batching strategies; when capacity is insufficient, scale horizontally by adding instances or upgrade GPU specifications.
+- **Network**: Inference APIs are sensitive to network latency. It is recommended to maintain a stable, low-latency link between the business side and the inference service, avoiding cross-region and high-jitter links.
+- **Parameter Tuning**: When higher throughput or longer context is needed, prioritize evaluating advanced parameters such as `gpu-memory-utilization`, `max-model-len`, and `swap-space`.
+
+### Changes and Observability
+
+- **Upgrade and Rollback**: Control the runtime version through [AI Images](../llm-image); evaluate CUDA, driver, image, and model version compatibility before making changes.
+- **Observability Metrics**: Focus on GPU utilization, VRAM usage, QPS, P95/P99 latency, and error rates.
+- **Log Troubleshooting**: When model loading fails, VRAM is insufficient, or advanced parameter errors occur, check the console logs first as well as `/tmp/vllm.log` inside the container.
+
+## FAQ
+
+### How to enter the container?
+
+The **Terminal** on the instance details page allows you to directly enter the container, useful for checking the model directory, cache directory, or runtime logs.
+
+> Screenshot placeholder: vLLM instance terminal entry
+>
+> Screenshot placeholder: vLLM container terminal interface
+
+### How to view service logs?
+
+Via the frontend interface: Click the corresponding inference instance, go to the details page, then click **Logs** to view vLLM's service output logs, which is useful for error troubleshooting.
+
+> Screenshot placeholder: vLLM instance log page
+
+If you need to further diagnose startup issues, you can also enter the container and check:
+
+```bash
+tail -n 50 /tmp/vllm.log
+```
+
+### Cannot load model after startup
+
+- Check whether the model directory is under `/data/models/huggingface` and whether its contents are complete.
+- Check whether `preferred_model` is spelled correctly and whether the corresponding directory actually exists.
+- Check whether the specifications meet the VRAM and memory peak requirements for model loading.
+- Check whether advanced parameters include options not supported by the current image version.
+
+### `/v1/models` returns results, but calls report model not found
+
+- The `model` field in requests should exactly match the `id` returned by `/v1/models`.
+- Do not directly use repository names, parent directory paths, or self-guessed names; the platform uses the leaf directory name of the final loaded model directory as `served-model-name`.
+
+### Low throughput or high latency
+
+- Check whether GPU utilization and VRAM usage are too low or too high, and check for CPU, memory, or network bottlenecks.
+- Adjust specifications and concurrency strategies, and scale horizontally with multiple instances to distribute traffic if necessary.
+- Evaluate whether parameter tuning for `gpu-memory-utilization`, context length, or load distribution strategies is needed based on business request volume.
+
+### GPU unavailable or driver mismatch
+
+- Check the driver, CUDA version, and node status according to [NVIDIA and CUDA Environment Setup](../../getting-started/setup-nvidia-cuda).
+- Run `nvidia-smi` on the node to verify the driver and GPU status.

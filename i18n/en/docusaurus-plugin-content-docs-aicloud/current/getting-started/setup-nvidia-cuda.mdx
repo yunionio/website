@@ -1,0 +1,110 @@
+---
+sidebar_position: 2
+title: Setting up NVIDIA and CUDA Environment
+description: Install NVIDIA drivers and CUDA on AI Cloud nodes to run GPU-based AI applications such as Ollama
+# 原文保留：在 AI 云节点上安装 NVIDIA 驱动与 CUDA，以运行 Ollama、vLLM 等 GPU 类 AI 应用
+edition: ce
+---
+
+# Setting up NVIDIA and CUDA Environment
+
+This document describes how to use ocboot's `setup-ai-env` command to configure NVIDIA drivers, CUDA, containerd, and other AI runtime environments on an existing cluster or standalone machine, without deploying or modifying Cloudpods cloud management services. This is applicable for scenarios that require running GPU-dependent AI container applications such as Ollama.<!-- 适用于需要运行 Ollama、vLLM 等依赖 GPU 的 AI 容器应用的场景。 -->
+
+:::tip Notes
+- If the target environment does not have an Nvidia GPU, or you do not need to run GPU-dependent container AI applications like Ollama, you can skip this document.<!-- 如果待部署环境没有 Nvidia GPU，或不需要运行 Ollama 和 vLLM 这类需要 GPU 的容器 AI 应用，可以跳过本文。 -->
+- Without the Nvidia runtime environment configured, you can still run AI container applications that do not depend on GPU, such as OpenClaw and Dify.
+:::
+
+## Command Format
+
+Please first download and prepare the NVIDIA driver and CUDA installation packages (e.g., CUDA 12.8). Note that you should download the **.run** installation packages:
+- NVIDIA driver: Available from [NVIDIA Driver Downloads](https://www.nvidia.com/en-us/drivers/unix/).
+- CUDA installation package: Available from [NVIDIA CUDA Toolkit Downloads](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64).
+
+After downloading, transfer the installation packages to the target machine or a path accessible from the machine running ocboot.
+
+```bash
+./ocboot.sh setup-ai-env <target_host1> [target_host2 ...] \
+  --nvidia-driver-installer-path <full_path_to_driver> \
+  --cuda-installer-path <full_path_to_cuda> \
+  [--gpu-device-virtual-number 2] [--user USER] [--key-file KEY] [--port PORT]
+```
+
+## Examples
+
+```bash
+# Basic usage
+./run.py setup-ai-env 10.127.222.247 \
+  --nvidia-driver-installer-path /root/nvidia/NVIDIA-Linux-x86_64-570.133.07.run \
+  --cuda-installer-path /root/nvidia/cuda_12.8.1_570.124.06_linux.run
+
+# Specify GPU virtual number and SSH options
+./run.py setup-ai-env 10.127.222.247 \
+  --nvidia-driver-installer-path /root/nvidia/NVIDIA-Linux-x86_64-570.133.07.run \
+  --cuda-installer-path /root/nvidia/cuda_12.8.1_570.124.06_linux.run \
+  --gpu-device-virtual-number 2 \
+  --user admin \
+  --port 2222
+```
+
+## Parameter Reference
+
+| Parameter | Required | Default | Description |
+|------|------|--------|------|
+| `--nvidia-driver-installer-path` | Yes | - | Full path to the NVIDIA driver installation package. |
+| `--cuda-installer-path` | Yes | - | Full path to the CUDA installation package. |
+| `--gpu-device-virtual-number` | No | 2 | Virtual number for NVIDIA GPU shared devices. |
+| `--user` / `-u` | No | root | SSH username. |
+| `--key-file` / `-k` | No | - | SSH private key file path. |
+| `--port` / `-p` | No | 22 | SSH port. |
+
+## Installation Steps and Workflow
+
+ocboot will perform the following steps (among others) on the target host:
+
+1. Check OS support and local installation files (if paths are specified)
+2. Install kernel headers and development packages
+3. Clean up vfio-related configurations (if present)
+4. Install NVIDIA driver (if `--nvidia-driver-installer-path` is provided)
+5. Install CUDA environment (if `--cuda-installer-path` is provided)
+6. Configure GRUB (add nvidia-drm.modeset=1)
+7. Install NVIDIA Container Toolkit
+8. Configure containerd runtime
+9. Configure host device mappings (auto-discover NVIDIA corresponding `/dev/dri/renderD*` and generate configuration)
+10. Verify the installation
+
+## Important Notes
+
+- During installation, the target host may **automatically reboot** after installing kernel packages or updating GRUB. Please be aware of this in advance.
+- Ensure the target host has sufficient disk space and network connectivity to download dependencies such as the NVIDIA Container Toolkit.
+- The installation packages must be prepared on the **machine running ocboot**, and ensure they have been **transferred to the target machine before running the playbook**. For transfer methods, refer to the Quick Start FAQ: [How to transfer installation packages to the target machine?](./quickstart#3-如何将安装包传输到目标机).
+- Ensure passwordless SSH login between the machine running ocboot and the target host (or use parameters such as `--key-file`).
+
+## FAQ
+
+### No GPU listed or GPU not detected in the host list after deployment?
+
+Confirm that the NVIDIA driver and CUDA are installed on the target machine, and that the driver version matches the CUDA version. If you used `run.py ai` without passing `--nvidia-driver-installer-path` / `--cuda-installer-path`, you need to manually install the driver and CUDA on the target machine beforehand. After installation, run `nvidia-smi` to verify.
+
+### Is it normal for the target host to automatically reboot during installation?
+
+Yes. After installing kernel-related packages or updating GRUB, ocboot may trigger a reboot to load new drivers or configurations. Do not interrupt the process. If the deployment is not complete after the reboot, re-run the original deployment command to continue.
+
+### How to transfer installation packages to the target machine?
+
+Before running `setup-ai-env` or `ai` with installation package parameters, you can first transfer the packages to the target machine, for example:
+
+```bash
+# Using rsync (recommended)
+rsync -avP /path/to/nvidia/NVIDIA-Linux-x86_64-570.133.07.run target_host:/root/nvidia/
+rsync -avP /path/to/cuda/cuda_12.8.1_570.124.06_linux.run target_host:/root/nvidia/
+
+# Using scp
+scp /path/to/nvidia/NVIDIA-Linux-x86_64-570.133.07.run target_host:/root/nvidia/
+scp /path/to/cuda/cuda_12.8.1_570.124.06_linux.run target_host:/root/nvidia/
+```
+
+### How to check if the platform has GPUs available?
+
+If the configuration is successful, go to **Compute -> Infrastructure -> Passthrough Devices** to see the detected and reported GPUs.
+![](./images/gpu-list.png)
