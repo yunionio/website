@@ -17,7 +17,7 @@ const config = {
   },
 
   url: process.env.DOCUSAURUS_URL || 'https://www.cloudpods.org',
-  baseUrl: process.env.DOCUSAURUS_BASE_URL || '/',
+  baseUrl: process.env.DOCUSAURUS_BASE_URL || '/v3.11/',
 
   organizationName: 'yunionio',
   projectName: 'cloudpods',
