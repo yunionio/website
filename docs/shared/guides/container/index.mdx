@@ -1,0 +1,33 @@
+---
+sidebar_position: 10
+hide_table_of_contents: true
+---
+
+# 容器主机
+
+平台在虚拟化主机之外提供了容器主机。是一个分布式容器管理平台。底层基于 containerd 容器运行时，网络、存储及管控框架复用了现有的基础设施，实现了云平台与容器的深度融合。
+
+容器主机采用 Pod 模型，通过自研的 CRI 实现层直接与 containerd 通信，无需依赖 Docker 或 Kubernetes。
+
+容器主机具备如下独特特性使其适合运行ai应用、云桌面、云游戏等有状态的单机工作负载：
+
+* 有状态，容器主机分配不变IP地址，支持挂载持久的本地存储，支持系统盘overlay持久化
+* 支持调整配置，垂直扩容
+* 支持Pod内多容器按指定顺序启动
+* 每台宿主机独立的网络端口映射规则（区别于K8s的全局NodePort实现）
+* 原生支持透传、共享GPU设备，NUMA拓扑感知与自动均衡（无需额外device plugin配置）
+* 原生支持 lxcfs，CPU仿真
+
+容器主机的主要功能如下：
+
+* 容器Pod实例全生命周期管理：容器创建、启停、重启、删除、配置调整、在线磁盘扩容，支持异常崩溃自动恢复
+* 网络集成：复用 VPC/经典网络，支持端口映射（TCP/UDP）、弹性公网 IP 绑定
+* 存储管理：宿主机目录挂载、Overlay 文件系统、CephFS 卷挂载、容器快照和镜像提交
+* GPU设备透传：NVIDIA GPU、华为昇腾 NPU、瀚博等设备透传至容器，支持NVIDIA MPS
+* 资源隔离：CPU Set 绑定、NUMA 感知调度、内存/PID 限制、cgroup 设备权限控制
+* 运维能力：容器终端 exec、日志查询、文件拷贝、健康探针、容器监控指标
+* 安全特性：RunAsUser/RunAsGroup、命名空间隔离、no_new_privs
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />
