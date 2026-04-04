@@ -41,7 +41,7 @@ const ProductCards = () => {
     },
     {
       id: 'cmp',
-      name: '多云管理',
+      name: '多云',
       nameId: 'productCards.cmp.name',
       description: '统一管理主流公有云和私有云资源',
       descriptionId: 'productCards.cmp.description',
@@ -74,7 +74,7 @@ const ProductCards = () => {
     },
     {
       id: 'baremetal',
-      name: '裸金属',
+      name: '裸金属云',
       nameId: 'productCards.baremetal.name',
       description: '物理机全生命周期自动化管理',
       descriptionId: 'productCards.baremetal.description',
