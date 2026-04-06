@@ -34,12 +34,12 @@ edition: ce
 
 ```bash
 # 基本用法
-./run.py setup-ai-env 10.127.222.247 \
+./ocboot.sh setup-ai-env 10.127.222.247 \
   --nvidia-driver-installer-path /root/nvidia/NVIDIA-Linux-x86_64-570.133.07.run \
   --cuda-installer-path /root/nvidia/cuda_12.8.1_570.124.06_linux.run
 
 # 指定 GPU 虚拟编号与 SSH
-./run.py setup-ai-env 10.127.222.247 \
+./ocboot.sh setup-ai-env 10.127.222.247 \
   --nvidia-driver-installer-path /root/nvidia/NVIDIA-Linux-x86_64-570.133.07.run \
   --cuda-installer-path /root/nvidia/cuda_12.8.1_570.124.06_linux.run \
   --gpu-device-virtual-number 2 \
