@@ -7,7 +7,16 @@ edition: ce
 
 如果要运行私有云虚拟机，需要先添加对应的计算节点(宿主机)，本节介绍如何部署相应组件。
 
-计算节点主要负责虚拟机、网络和存储的管理，需要安装的组件如下:
+计算节点根据用途不同，分为以下两种类型：
+
+- **虚拟机节点**：运行 KVM 虚拟机，负责虚拟机、网络和存储的管理。
+- **AI 容器节点**：运行 AI 容器应用（例如 Ollama），负责容器、网络、存储和 GPU 的管理。请参考 [AI 云/添加计算节点](../../aicloud/getting-started/host) 进行部署。
+
+以下内容介绍如何添加**虚拟机节点**。
+
+## 虚拟机节点
+
+虚拟机节点需要安装的组件如下:
 
 |     组件      |           用途           |
 | :-----------: | :----------------------: |
@@ -17,7 +26,7 @@ edition: ce
 |  openvswitch  | 虚拟机网络端口和流表配置 |
 |     qemu      |        运行虚拟机        |
 
-## 环境
+### 环境
 
 - 硬件要求:
 	- Virtualization: CPU 要支持虚拟化，用于虚拟机 KVM 加速
@@ -33,7 +42,7 @@ import OcbootEnv from '../../shared/getting-started/_parts/_quickstart-ocboot-k3
 如果是以测试为目的，可以拿一台虚拟机部署计算节点的服务，但可能无法使用 KVM 加速和 GPU 透传。
 :::
 
-## 使用 ocboot 添加对应节点
+### 使用 ocboot 添加对应节点
 
 以下操作在控制节点进行，在控制节点使用 `ocboot.sh add-node` 命令把对应计算节点添加进来。
 
@@ -57,16 +66,13 @@ $ ssh-copy-id -i ~/.ssh/id_rsa.pub root@10.168.222.140
 $ ssh root@10.168.222.140 "hostname"
 ```
 
-### 添加节点
+#### 添加节点
 
 以下命令都是在之前部署的控制节点运行，控制节点应该提前安装好了 [ocboot](https://github.com/yunionio/ocboot) 部署工具。
 
 ```bash
-# 使用 ocboot 添加节点
+# 使用 ocboot 添加虚拟机节点
 $ ./ocboot.sh add-node 10.168.26.216 10.168.222.140
-
-# 使用 ocboot 添加容器环境节点
-$ ./ocboot.sh add-node --runtime containerd 10.168.26.216 10.168.222.141
 
 # 其他选项，使用 '--help' 参考帮助
 $ ./ocboot.sh add-node --help
@@ -106,7 +112,7 @@ options:
 该命令会使用 ansible-playbook 把对应的计算节点加入进来。
 
 
-### 启用计算节点(宿主机)
+#### 启用计算节点(宿主机)
 
 等计算节点添加完成后，需要启用刚才上报的计算节点，只有启用的宿主机才能运行虚拟机。
 

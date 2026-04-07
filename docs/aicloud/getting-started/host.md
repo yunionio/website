@@ -71,10 +71,6 @@ $ ssh root@10.168.222.140 "hostname"
 
 以下命令在之前部署的控制节点运行；控制节点应提前安装好 [ocboot](https://github.com/yunionio/ocboot) 部署工具。
 
-::::tip 如果要运行 GPU 的 AI 应用
-如果你计划在新增计算节点上运行依赖 GPU 的 AI 应用（例如 Ollama），请先在目标计算节点完成 [配置 NVIDIA 与 CUDA 环境](./setup-nvidia-cuda)，再执行 `ocboot.sh add-node` 添加节点。<!-- 如果你计划在新增计算节点上运行依赖 GPU 的 AI 应用（例如 Ollama/vLLM），请先在目标计算节点完成 [配置 NVIDIA 与 CUDA 环境](./setup-nvidia-cuda)，再执行 `ocboot.sh add-node` 添加节点。 -->
-::::
-
 ```bash
 # 使用 ocboot 添加节点
 $ ./ocboot.sh add-node --enable-ai-env 10.168.26.216 10.168.222.140
@@ -96,6 +92,10 @@ $ climc host-list
 # 启动指定 host
 $ climc host-enable <host_name>
 ```
+
+::::tip 如果要运行 GPU 的 AI 应用
+如果你计划在该计算节点上运行依赖 GPU 的 AI 应用（例如 Ollama），请在添加节点完成后，前往目标计算节点完成 [配置 NVIDIA 与 CUDA 环境](./setup-nvidia-cuda)。<!-- 如果你计划在该计算节点上运行依赖 GPU 的 AI 应用（例如 Ollama/vLLM），请在添加节点完成后，前往目标计算节点完成 [配置 NVIDIA 与 CUDA 环境](./setup-nvidia-cuda)。 -->
+::::
 
 ## 常见问题排查
 
