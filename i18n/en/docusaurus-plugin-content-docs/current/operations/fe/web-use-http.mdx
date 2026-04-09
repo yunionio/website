@@ -2,6 +2,9 @@
 sidebar_position: 3
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Frontend Using HTTP
 
 Introduction to how to configure frontend access protocol as HTTP
@@ -86,7 +89,36 @@ $ kubectl get ingress -n onecloud $(kubectl get ingress -n onecloud | grep web |
 
 If using a helm-deployed cluster, skip this step. The ingress controller implementation is related to the specific k8s deployment platform. Now the web service is already using HTTP protocol.
 
-The following steps only apply to platforms deployed using ocboot. Need to set traefik ingress controller to turn off the http redirect to https configuration, as follows:
+The following steps only apply to platforms deployed using ocboot. Need to set traefik ingress controller to turn off the http redirect to https configuration.
+
+<Tabs>
+  <TabItem value="K3s" label="K3s">
+
+K3s uses Traefik v2 as the default ingress controller, which is configured differently from K8s.
+
+Edit the traefik DaemonSet configuration file on the first control node:
+
+```bash
+$ vim /var/lib/rancher/k3s/server/manifests/traefik-ds.yaml
+```
+
+Find the container args section and comment out the `--entrypoints.web.http.redirections.entrypoint.to=websecure` line:
+
+```diff
+       containers:
+       - args:
+         - --entrypoints.web.address=:80/tcp
+         - --entrypoints.websecure.address=:443/tcp
+-        - --entrypoints.web.http.redirections.entrypoint.to=websecure
++        #- --entrypoints.web.http.redirections.entrypoint.to=websecure
+         - --entrypoints.web.http.redirections.entrypoint.scheme=https
+         - --entrypoints.web.http.redirections.entrypoint.permanent=true
+```
+
+After saving, K3s will automatically detect the changes in the manifests directory and redeploy traefik. No manual restart is needed.
+
+  </TabItem>
+  <TabItem value="K8s" label="K8s">
 
 ```bash
 $ kubectl edit configmaps -n kube-system traefik-ingress-lb
@@ -111,6 +143,9 @@ Restart traefik ingress controller:
 $ kubectl delete pods -n kube-system $(kubectl get pods -n kube-system | grep traefik-ingress-controller | awk '{print $1}')
 pod "traefik-ingress-controller-xkmct" deleted
 ```
+
+  </TabItem>
+</Tabs>
 
 At this point, all HTTP configuration is complete.
 
