@@ -130,14 +130,15 @@ $ ./ocboot.sh install ./config.yml
 ### 切换计算节点到k3s
 
 需要分别登录到各个计算节点卸载k8s相关组件
-`
+
+```bash
 $ kubeadm reset --force
 $ ipvsadm --clear
 $ systemctl disable --now docker.socket docker kubelet
 $ sudo apt remove -y kubeadm kubectl kubelet kubernetes-cni openvswitch-common openvswitch-switch
 $ rm -rf /etc/kubernetes/ /var/lib/etcd/ /root/.kube/
 $ reboot
-`
+```
 
 v4.0.2及之后版本，需要依次登录到各个计算节点，往 /etc/yunion/host.conf 末尾加一行配置 disable_probe_kubelet: true
 
