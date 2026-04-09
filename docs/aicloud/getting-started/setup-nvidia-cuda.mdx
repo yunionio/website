@@ -15,18 +15,32 @@ edition: ce
 - 没有配置 Nvidia 运行环境的情况下，仍然可以运行 OpenClaw 和 Dify 等不依赖 GPU 的 AI 容器应用。
 :::
 
-## 命令形式
+## 下载驱动文件
 
 请先下载并准备好 NVIDIA 驱动与 CUDA 安装包（如 CUDA 12.8），注意是下载 **.run** 的安装包：
 - NVIDIA 驱动：可从 [NVIDIA Driver Downloads](https://www.nvidia.com/en-us/drivers/unix/) 获取。
 - CUDA 安装包：可从 [NVIDIA CUDA Toolkit Downloads](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64) 获取。
 
-下载后将安装包传输到目标机或执行 ocboot 的机器上可访问的路径。
+下载后将安装包传输到执行 ocboot.sh 的机器上 ocboot 代码所在的路径。
+
+:::warning
+nvidia driver文件和cuda安装文件都要放到 ocboot 代码所在目录下，因为 ocboot.sh 会启动 buildah 容器来运行部署代码，宿主机上其它路径没有映射到容器里面。
+:::
+
+```bash
+# 使用 rsync（推荐）
+rsync -avP /path/to/nvidia/NVIDIA-Linux-x86_64-570.133.07.run target_host:/root/ocboot-master-v4.0.2-3
+rsync -avP /path/to/cuda/cuda_12.8.1_570.124.06_linux.run target_host:/root/ocboot-master-v4.0.2-3
+```
+
+## 命令形式
+
+运行 `ocboot.sh setup-ai-env` 设置目标机器 nvidia 容器运行环境。
 
 ```bash
 ./ocboot.sh setup-ai-env <target_host1> [target_host2 ...] \
-  --nvidia-driver-installer-path <full_path_to_driver> \
-  --cuda-installer-path <full_path_to_cuda> \
+  --nvidia-driver-installer-path /ocboot/<driver_file>.run \
+  --cuda-installer-path /ocboot/<cuda_file>.run \
   [--gpu-device-virtual-number 2] [--user USER] [--key-file KEY] [--port PORT]
 ```
 
@@ -35,13 +49,13 @@ edition: ce
 ```bash
 # 基本用法
 ./ocboot.sh setup-ai-env 10.127.222.247 \
-  --nvidia-driver-installer-path /root/nvidia/NVIDIA-Linux-x86_64-570.133.07.run \
-  --cuda-installer-path /root/nvidia/cuda_12.8.1_570.124.06_linux.run
+  --nvidia-driver-installer-path /ocboot/NVIDIA-Linux-x86_64-570.133.07.run \
+  --cuda-installer-path /ocboot/cuda_12.8.1_570.124.06_linux.run
 
 # 指定 GPU 虚拟编号与 SSH
 ./ocboot.sh setup-ai-env 10.127.222.247 \
-  --nvidia-driver-installer-path /root/nvidia/NVIDIA-Linux-x86_64-570.133.07.run \
-  --cuda-installer-path /root/nvidia/cuda_12.8.1_570.124.06_linux.run \
+  --nvidia-driver-installer-path /ocboot/NVIDIA-Linux-x86_64-570.133.07.run \
+  --cuda-installer-path /ocboot/cuda_12.8.1_570.124.06_linux.run \
   --gpu-device-virtual-number 2 \
   --user admin \
   --port 2222
@@ -89,20 +103,6 @@ ocboot 会在目标主机上执行包括但不限于以下步骤：
 ### 安装过程中目标主机自动重启是否正常？
 
 是。安装内核相关包或更新 GRUB 后，ocboot 可能会触发重启以加载新驱动或配置，请勿中断。重启后若部署未完成，可重新执行原部署命令继续。
-
-### 如何将安装包传输到目标机？
-
-在运行 `setup-ai-env` 或带安装包参数的 `ai` 前，可先将安装包传到目标机，例如：
-
-```bash
-# 使用 rsync（推荐）
-rsync -avP /path/to/nvidia/NVIDIA-Linux-x86_64-570.133.07.run target_host:/root/nvidia/
-rsync -avP /path/to/cuda/cuda_12.8.1_570.124.06_linux.run target_host:/root/nvidia/
-
-# 使用 scp
-scp /path/to/nvidia/NVIDIA-Linux-x86_64-570.133.07.run target_host:/root/nvidia/
-scp /path/to/cuda/cuda_12.8.1_570.124.06_linux.run target_host:/root/nvidia/
-```
 
 ### 怎么查看平台是否有 GPU 可用？
 

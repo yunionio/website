@@ -15,18 +15,32 @@ This document describes how to use ocboot's `setup-ai-env` command to configure 
 - Without the Nvidia runtime environment configured, you can still run AI container applications that do not depend on GPU, such as OpenClaw and Dify.
 :::
 
-## Command Format
+## Download Driver Files
 
 Please first download and prepare the NVIDIA driver and CUDA installation packages (e.g., CUDA 12.8). Note that you should download the **.run** installation packages:
 - NVIDIA driver: Available from [NVIDIA Driver Downloads](https://www.nvidia.com/en-us/drivers/unix/).
 - CUDA installation package: Available from [NVIDIA CUDA Toolkit Downloads](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64).
 
-After downloading, transfer the installation packages to the target machine or a path accessible from the machine running ocboot.
+After downloading, transfer the installation packages to the ocboot code directory on the machine running ocboot.sh.
+
+:::warning
+The nvidia driver file and cuda installation file must be placed in the ocboot code directory, because ocboot.sh launches a buildah container to run the deployment code, and other paths on the host are not mapped into the container.
+:::
+
+```bash
+# Using rsync (recommended)
+rsync -avP /path/to/nvidia/NVIDIA-Linux-x86_64-570.133.07.run target_host:/root/ocboot-master-v4.0.2-3
+rsync -avP /path/to/cuda/cuda_12.8.1_570.124.06_linux.run target_host:/root/ocboot-master-v4.0.2-3
+```
+
+## Command Format
+
+Run `ocboot.sh setup-ai-env` to set up the nvidia container runtime environment on the target machine.
 
 ```bash
 ./ocboot.sh setup-ai-env <target_host1> [target_host2 ...] \
-  --nvidia-driver-installer-path <full_path_to_driver> \
-  --cuda-installer-path <full_path_to_cuda> \
+  --nvidia-driver-installer-path /ocboot/<driver_file>.run \
+  --cuda-installer-path /ocboot/<cuda_file>.run \
   [--gpu-device-virtual-number 2] [--user USER] [--key-file KEY] [--port PORT]
 ```
 
@@ -34,14 +48,14 @@ After downloading, transfer the installation packages to the target machine or a
 
 ```bash
 # Basic usage
-./run.py setup-ai-env 10.127.222.247 \
-  --nvidia-driver-installer-path /root/nvidia/NVIDIA-Linux-x86_64-570.133.07.run \
-  --cuda-installer-path /root/nvidia/cuda_12.8.1_570.124.06_linux.run
+./ocboot.sh setup-ai-env 10.127.222.247 \
+  --nvidia-driver-installer-path /ocboot/NVIDIA-Linux-x86_64-570.133.07.run \
+  --cuda-installer-path /ocboot/cuda_12.8.1_570.124.06_linux.run
 
 # Specify GPU virtual number and SSH options
-./run.py setup-ai-env 10.127.222.247 \
-  --nvidia-driver-installer-path /root/nvidia/NVIDIA-Linux-x86_64-570.133.07.run \
-  --cuda-installer-path /root/nvidia/cuda_12.8.1_570.124.06_linux.run \
+./ocboot.sh setup-ai-env 10.127.222.247 \
+  --nvidia-driver-installer-path /ocboot/NVIDIA-Linux-x86_64-570.133.07.run \
+  --cuda-installer-path /ocboot/cuda_12.8.1_570.124.06_linux.run \
   --gpu-device-virtual-number 2 \
   --user admin \
   --port 2222
@@ -89,20 +103,6 @@ Confirm that the NVIDIA driver and CUDA are installed on the target machine, and
 ### Is it normal for the target host to automatically reboot during installation?
 
 Yes. After installing kernel-related packages or updating GRUB, ocboot may trigger a reboot to load new drivers or configurations. Do not interrupt the process. If the deployment is not complete after the reboot, re-run the original deployment command to continue.
-
-### How to transfer installation packages to the target machine?
-
-Before running `setup-ai-env` or `ai` with installation package parameters, you can first transfer the packages to the target machine, for example:
-
-```bash
-# Using rsync (recommended)
-rsync -avP /path/to/nvidia/NVIDIA-Linux-x86_64-570.133.07.run target_host:/root/nvidia/
-rsync -avP /path/to/cuda/cuda_12.8.1_570.124.06_linux.run target_host:/root/nvidia/
-
-# Using scp
-scp /path/to/nvidia/NVIDIA-Linux-x86_64-570.133.07.run target_host:/root/nvidia/
-scp /path/to/cuda/cuda_12.8.1_570.124.06_linux.run target_host:/root/nvidia/
-```
 
 ### How to check if the platform has GPUs available?
 
