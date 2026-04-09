@@ -2,6 +2,9 @@
 sidebar_position: 3
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # 前端使用 HTTP
 
 介绍如何配置前端访问协议为 HTTP
@@ -86,7 +89,36 @@ $ kubectl get ingress -n onecloud $(kubectl get ingress -n onecloud | grep web |
 
 如果是使用 helm 部署的集群，就不用执行该步骤了，ingress controller 的实现和具体的 k8s 部署平台有关，现在 web 服务已经是使用 HTTP 协议了。
 
-下面的步骤仅适用于使用 ocboot 部署的平台，需要设置 traefik ingress controller ，把 http 重定向到 https 这个配置关掉，操作如下：
+下面的步骤仅适用于使用 ocboot 部署的平台，需要设置 traefik ingress controller ，把 http 重定向到 https 这个配置关掉。
+
+<Tabs>
+  <TabItem value="K3s" label="K3s">
+
+K3s 默认使用 Traefik v2 作为 ingress controller，配置方式与 K8s 不同。
+
+在第一个控制节点编辑 traefik 的 DaemonSet 配置文件：
+
+```bash
+$ vim /var/lib/rancher/k3s/server/manifests/traefik-ds.yaml
+```
+
+找到容器的 args 部分，注释掉 `--entrypoints.web.http.redirections.entrypoint.to=websecure` 这一行：
+
+```diff
+       containers:
+       - args:
+         - --entrypoints.web.address=:80/tcp
+         - --entrypoints.websecure.address=:443/tcp
+-        - --entrypoints.web.http.redirections.entrypoint.to=websecure
++        #- --entrypoints.web.http.redirections.entrypoint.to=websecure
+         - --entrypoints.web.http.redirections.entrypoint.scheme=https
+         - --entrypoints.web.http.redirections.entrypoint.permanent=true
+```
+
+保存后 K3s 会自动检测到 manifests 目录的变更并重新部署 traefik，无需手动重启。
+
+  </TabItem>
+  <TabItem value="K8s" label="K8s">
 
 ```bash
 $ kubectl edit configmaps -n kube-system traefik-ingress-lb
@@ -111,5 +143,8 @@ $ kubectl edit configmaps -n kube-system traefik-ingress-lb
 $ kubectl delete pods -n kube-system $(kubectl get pods -n kube-system | grep traefik-ingress-controller | awk '{print $1}')
 pod "traefik-ingress-controller-xkmct" deleted
 ```
+
+  </TabItem>
+</Tabs>
 
 至此 HTTP 所有配置完成。
