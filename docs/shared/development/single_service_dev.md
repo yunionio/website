@@ -496,6 +496,64 @@ $ climc monitor-alert-list
 ***  Total: 0  ***
 ```
 
+### MCP 服务（mcp-server）初始化
+
+mcp-server 通过 MCP 协议对外暴露平台 API 能力，供 Cursor 等客户端连接。需本集群 Keystone（及必要时 API 网关）已可用；本节在无容器镜像前提下，与上文一致从源码编译运行。
+
+1) 创建 mcp-server 专用用户。mcp-server 以普通用户身份认证，须在 **system** 项目下为该用户绑定 **admin** 角色。
+
+```sh
+$ source /etc/yunion/rc_admin
+
+$ climc user-create --enabled --password '请替换为强密码' mcp-server-admin
+$ climc user-join-project --role admin --project system mcp-server-admin
+```
+
+2) 编译 mcp-server。
+
+```sh
+$ cd /root/cloudpods && make cmd/mcp-server
+```
+
+编译产物默认位于 `/root/cloudpods/_output/bin/mcp-server`。
+
+3) 编写配置文件。在 `/etc/yunion/mcp-server/mcp-server.conf` 中设置监听地址端口、`auth_url` 与上一步用户密码。**auth_url** 须与客户端访问身份认证 API 的地址一致：本文最小集群可与 `rc_admin` 中 Keystone 端点一致，例如 `http://127.0.0.1:35357/v3`；若经 API 网关或 HTTPS 暴露，请改为实际公网/内网可访问的 `.../v3`。启动时请使用 **`--conf`** 显式指定该文件。
+
+```sh
+$ mkdir -p /etc/yunion/mcp-server
+
+$ cat<<'EOF' >/etc/yunion/mcp-server/mcp-server.conf
+address = '127.0.0.1'
+port = 12001
+admin_domain = 'Default'
+admin_password = '请替换为强密码'
+admin_project = 'system'
+admin_project_domain = 'Default'
+admin_user = 'mcp-server-admin'
+auth_url = 'http://127.0.0.1:35357/v3'
+session_endpoint_type = 'public'
+
+mcp_server_name = 'cloudpods-mcp-server'
+mcp_server_version = '1.0.0'
+mcp_server_description = 'Cloudpods MCP Server'
+EOF
+```
+
+4) 启动 mcp-server（调试可先前台运行；生产可用文末所述 systemd / launchctl 托管）。
+
+```sh
+$ /root/cloudpods/_output/bin/mcp-server --log-level debug --conf /etc/yunion/mcp-server/mcp-server.conf
+```
+
+5) 验证服务。默认在配置的 `address:port` 上提供 SSE 路由；若修改了监听地址或端口，请相应替换 URL。
+
+```sh
+$ curl http://127.0.0.1:12001/sse
+```
+
+若需远端访问，可将配置中的 `address` 改为 `0.0.0.0` 并放行防火墙。若全站使用 HTTPS，`auth_url` 应改为 HTTPS 端点且证书可信。
+
+客户端连接、AK/SK 与各工具用法见 [MCP Server 使用说明](./mcp_server_usage)。
 
 ## 后续改进
 
