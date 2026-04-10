@@ -496,6 +496,64 @@ $ climc monitor-alert-list
 ***  Total: 0  ***
 ```
 
+### MCP service (mcp-server) setup
+
+mcp-server exposes platform APIs over MCP for clients such as Cursor. Keystone (and the API gateway when applicable) must already be running. This section builds and runs from source without a container image, consistent with the rest of this document.
+
+1) Create a dedicated mcp-server user. The server authenticates as a normal user and must have the **admin** role in the **system** project.
+
+```sh
+$ source /etc/yunion/rc_admin
+
+$ climc user-create --enabled --password 'replace-with-strong-password' mcp-server-admin
+$ climc user-join-project --role admin --project system mcp-server-admin
+```
+
+2) Build mcp-server.
+
+```sh
+$ cd /root/cloudpods && make cmd/mcp-server
+```
+
+The binary is usually at `/root/cloudpods/_output/bin/mcp-server`.
+
+3) Write the configuration file. Set listen address/port, `auth_url`, and the password from the previous step in `/etc/yunion/mcp-server/mcp-server.conf`. **auth_url** must match how clients reach the identity API: for this minimal cluster it can match the Keystone endpoint in `rc_admin`, e.g. `http://127.0.0.1:35357/v3`; if you expose the API through a gateway or HTTPS, use the reachable `.../v3` URL. Always pass **`--conf`** to this file at startup.
+
+```sh
+$ mkdir -p /etc/yunion/mcp-server
+
+$ cat<<'EOF' >/etc/yunion/mcp-server/mcp-server.conf
+address = '127.0.0.1'
+port = 12001
+admin_domain = 'Default'
+admin_password = 'replace-with-strong-password'
+admin_project = 'system'
+admin_project_domain = 'Default'
+admin_user = 'mcp-server-admin'
+auth_url = 'http://127.0.0.1:35357/v3'
+session_endpoint_type = 'public'
+
+mcp_server_name = 'cloudpods-mcp-server'
+mcp_server_version = '1.0.0'
+mcp_server_description = 'Cloudpods MCP Server'
+EOF
+```
+
+4) Start mcp-server (foreground for debugging; use systemd or launchctl in production as described at the end of this document).
+
+```sh
+$ /root/cloudpods/_output/bin/mcp-server --log-level debug --conf /etc/yunion/mcp-server/mcp-server.conf
+```
+
+5) Verify. By default SSE is served on the configured `address:port`; change host/port in the URL if you customized them.
+
+```sh
+$ curl http://127.0.0.1:12001/sse
+```
+
+For remote access, set `address` to `0.0.0.0` and open the port in the firewall. If the site uses HTTPS, set `auth_url` to an HTTPS endpoint with a trusted certificate.
+
+For client wiring, AK/SK, and tool usage, see [MCP Server Usage](./mcp_server_usage).
 
 ## Future Improvements
 
