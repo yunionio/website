@@ -20,7 +20,7 @@ sidebar_position: 20
 climc pod-create test-climc \
     2g \
     registry.cn-beijing.aliyuncs.com/yunion/climc:v4.0.2 \
-    -auto-start \
+    --auto-start \
     --command sleep --args 3600 \
     --net vnet221 \
     --disk local:10g:raw:ext4 \
@@ -62,4 +62,14 @@ climc container-start <container_id>
 只有container状态为exited时才能修改容器的spec
 ```bash
 climc container-update-spec <container_id>
+```
+
+## container exec
+
+只有container状态为running才能进入容器exec执行命令
+
+```bash
+climc container-exec <container_id> <command> [--args arg0 --args arg1 ...]
+# 举例
+climc container-exec claw-0 sh
 ```
