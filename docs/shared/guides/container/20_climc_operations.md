@@ -64,12 +64,31 @@ climc container-start <container_id>
 climc container-update-spec <container_id>
 ```
 
-## container exec
+## 查看容器的日志
+
+```bash
+climc container-log [--follow|-f] [--tail TAIL] [--timestamps] [--limit-bytes LIMIT_BYTES] [--since SINCE] <container_id>
+# 举例: 查看过去3小时的 claw-0 容器日志，并等待实时输出
+climc container-log -f claw-0 --since 3h
+```
+
+## 在容器内执行命令
 
 只有container状态为running才能进入容器exec执行命令
 
 ```bash
 climc container-exec <container_id> <command> [--args arg0 --args arg1 ...]
-# 举例
+# 举例: 进入claw-0 的shell
 climc container-exec claw-0 sh
+```
+
+## 容器拷文件
+
+只有container状态为running才能执行拷贝命令
+
+```bash
+# 将本地文件拷贝进入容器的指定路径
+climc container-cp <local_path> <container_id:container_path>
+# 举例
+climc container-cp /etc/hosts claw-0:/etc/hosts
 ```
