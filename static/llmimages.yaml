@@ -1,0 +1,4 @@
+## OpenClaw
+- image: registry.cn-beijing.aliyuncs.com/zexi/openclaw:v2026.4.9-20260409.0
+  description: v2026.4.9
+  llm_type: openclaw
