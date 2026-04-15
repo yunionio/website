@@ -47,8 +47,7 @@ climc server-network-update --port-mapping <PORT_MAPPING_RULE> <SID> <NID>
 | port            | 容器内服务端口                                                   | 必填 |
 | protocol        | 端口协议，tcp或者udp                                             | 必填 |
 | host_port       | 对应的宿主机端口                                                 | 必填  |
-| host_port_range | 如果不指定host_port，则从host_port_range中自动选择一个可用的随机端口, | 可选  |
-|                 | 不指定则默认为20000-25000                                        | 可选  |
+| host_port_range | 如果不指定host_port，则从host_port_range中自动选择一个可用的随机端口,不指定则默认为20000-25000. | 可选  |
 | remote_ips      | 访问该端口的白名单列表，多个用 \| 隔开。不指定则无限制。                | 可选 |
 
 一个网卡允许指定多个port_mapping规则。
