@@ -204,6 +204,12 @@ const data = {
         },
         "IPv6网关": {
             "同步": { [Apsara]: "Y" }
+        },
+        "SSL证书": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [HuaweiCloud]: "Y", [Aws]: "Y", [Cloudflare]: "Y" },
+        },
+        "WAF": {
+            "同步": { [Aliyun]: "Y", [TencentCloud]: "Y", [Azure]: "Y", [Aws]: "Y", [Cloudflare]: "Y" },
         }
     },
     "存储": {
