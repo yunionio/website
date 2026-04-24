@@ -1,7 +1,8 @@
 ## OpenClaw
-- image: registry.cn-beijing.aliyuncs.com/zexi/openclaw:v2026.4.14-20260415.0
-  description: v2026.4.14
+- image: registry.cn-beijing.aliyuncs.com/zexi/openclaw:v2026.4.22-20260424.0
+  description: v2026.4.22，支持手动配置模式
   llm_type: openclaw
-- image: registry.cn-beijing.aliyuncs.com/zexi/openclaw:v2026.4.9-20260409.0
-  description: v2026.4.9
-  llm_type: openclaw
+## HermesAgent
+- image: registry.cn-beijing.aliyuncs.com/zexi/hermes:v2026.4.23-20260424.0
+  description: v2026.4.23
+  llm_type: hermes-agent
