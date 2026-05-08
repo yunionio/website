@@ -1,3 +1,4 @@
+import * as XLSX from 'xlsx';
 import styles from './styles.module.css';
 
 const Aliyun = '阿里云'
@@ -355,13 +356,118 @@ const getTableItem = (item, rowIdx, colIdx) => {
         </td>
     )
 }
+
+function buildFeatureSupportWorksheet() {
+    const headerRow0 = tableList[0]
+    const publicCols = headerRow0[3].colspan || 16
+    const privateCols = headerRow0[4].colspan || 16
+    const fixedCols = 3
+    const numClouds = cloudList.length
+    const lastCloudCol = fixedCols + numClouds - 1
+    const privateStartCol = fixedCols + publicCols
+
+    let dataRowCount = 0
+    typeList.forEach((typeItem) => {
+        Object.keys(data[typeItem]).forEach((resourceItem) => {
+            dataRowCount += Object.keys(data[typeItem][resourceItem]).length
+        })
+    })
+    const rowCount = 2 + dataRowCount
+    const colCount = fixedCols + numClouds
+    const aoa = Array.from({ length: rowCount }, () => Array(colCount).fill(''))
+
+    aoa[0][0] = headerRow0[0].text
+    aoa[0][1] = headerRow0[1].text
+    aoa[0][2] = headerRow0[2].text
+    cloudList.forEach((cloud, i) => {
+        aoa[1][fixedCols + i] = cloud
+    })
+
+    const merges = [
+        { s: { r: 0, c: 0 }, e: { r: 1, c: 0 } },
+        { s: { r: 0, c: 1 }, e: { r: 1, c: 1 } },
+        { s: { r: 0, c: 2 }, e: { r: 1, c: 2 } },
+    ]
+
+    if (lastCloudCol >= fixedCols) {
+        const publicEndCol = Math.min(fixedCols + publicCols - 1, lastCloudCol)
+        aoa[0][3] = headerRow0[3].text
+        merges.push({ s: { r: 0, c: 3 }, e: { r: 0, c: publicEndCol } })
+    }
+    if (privateStartCol <= lastCloudCol) {
+        const privateEndCol = Math.min(fixedCols + publicCols + privateCols - 1, lastCloudCol)
+        aoa[0][privateStartCol] = headerRow0[4].text
+        merges.push({ s: { r: 0, c: privateStartCol }, e: { r: 0, c: privateEndCol } })
+    }
+    const afterPrivateStart = fixedCols + publicCols + privateCols
+    if (afterPrivateStart <= lastCloudCol) {
+        merges.push({ s: { r: 0, c: afterPrivateStart }, e: { r: 0, c: lastCloudCol } })
+    }
+
+    let r = 2
+    typeList.forEach((typeItem) => {
+        const resourceList = Object.keys(data[typeItem])
+        let actionsLen = 0
+        resourceList.forEach((resourceItem) => {
+            actionsLen += Object.keys(data[typeItem][resourceItem]).length
+        })
+        const typeStartRow = r
+        resourceList.forEach((resourceItem, resourceIdx) => {
+            const actionList = Object.keys(data[typeItem][resourceItem])
+            const resStartRow = r
+            actionList.forEach((action, index) => {
+                if (resourceIdx === 0 && index === 0) {
+                    aoa[r][0] = typeItem
+                }
+                if (index === 0) {
+                    aoa[r][1] = resourceItem
+                }
+                aoa[r][2] = action
+                cloudList.forEach((cloud, ci) => {
+                    aoa[r][fixedCols + ci] = data[typeItem][resourceItem][action][cloud] || ''
+                })
+                r += 1
+            })
+            if (actionList.length > 1) {
+                merges.push({
+                    s: { r: resStartRow, c: 1 },
+                    e: { r: resStartRow + actionList.length - 1, c: 1 },
+                })
+            }
+        })
+        if (actionsLen > 1) {
+            merges.push({
+                s: { r: typeStartRow, c: 0 },
+                e: { r: typeStartRow + actionsLen - 1, c: 0 },
+            })
+        }
+    })
+
+    const worksheet = XLSX.utils.aoa_to_sheet(aoa)
+    worksheet['!merges'] = merges
+    return worksheet
+}
+
+function downloadFeatureSupportExcel() {
+    const worksheet = buildFeatureSupportWorksheet()
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, '云功能支持')
+    const date = new Date().toISOString().slice(0, 10)
+    XLSX.writeFile(workbook, `cloud-feature-support-${date}.xlsx`)
+}
+
 export default function CloudFeatureSupportTable() {
   return (
     <div>
-      <ul>
-        <li>Y: 支持</li>
-        <li>-: 平台本身不支持</li>
-      </ul>
+      <div className={styles.toolbar}>
+        <ul className={styles.legend}>
+          <li>Y: 支持</li>
+          <li>-: 平台本身不支持</li>
+        </ul>
+        <button type="button" className={styles.downloadBtn} onClick={downloadFeatureSupportExcel}>
+          下载为 Excel
+        </button>
+      </div>
 
     <table>
         <thead>

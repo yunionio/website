@@ -1,3 +1,39 @@
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.legend {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.downloadBtn {
+  appearance: none;
+  border: 1px solid var(--ifm-color-primary);
+  background: var(--ifm-color-primary);
+  color: var(--ifm-font-color-base-inverse, #fff);
+  border-radius: 6px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.downloadBtn:hover {
+  filter: brightness(1.05);
+}
+
+.downloadBtn:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
 .fixed-table thead tr th {
   /* min - width: 80px; */
 }

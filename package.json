@@ -22,7 +22,8 @@
     "clsx": "^1.2.1",
     "prism-react-renderer": "^2.1.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.10.0",
