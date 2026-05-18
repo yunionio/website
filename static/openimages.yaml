@@ -1,6 +1,27 @@
 - distribution: Debian
   os_name: Linux
   os_arch: x86_64
+  os_version: 14 (Forky)
+  build: latest
+  source: cloud.debian.org
+  url: https://cloud.debian.org/images/cloud/forky/daily/latest/debian-14-generic-amd64-daily.qcow2
+- distribution: Debian
+  os_name: Linux
+  os_arch: aarch64
+  os_version: 14 (Forky)
+  build: latest
+  source: cloud.debian.org
+  url: https://cloud.debian.org/images/cloud/forky/daily/latest/debian-14-generic-arm64-daily.qcow2
+- distribution: Debian
+  os_name: Linux
+  os_arch: riscv64
+  os_version: 14 (Forky)
+  build: latest
+  source: cloud.debian.org
+  url: https://cloud.debian.org/images/cloud/forky/daily/latest/debian-14-generic-riscv64-daily.qcow2
+- distribution: Debian
+  os_name: Linux
+  os_arch: x86_64
   os_version: 13 (Trixie)
   build: latest
   source: cloud.debian.org
