@@ -1,4 +1,5 @@
 ---
+edition: ce
 sidebar_position: 24
 ---
 
