@@ -3,7 +3,7 @@ edition: ce
 sidebar_position: 25
 ---
 
-# 卸载
+# 卸载平台
 
 根据平台安装方式，卸载方式各有不同，方式如下。
 

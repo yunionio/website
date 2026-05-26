@@ -1,5 +1,5 @@
 ---
-sidebar_position: 26
+sidebar_position: 50
 title: 配置 NVIDIA MPS 环境
 edition: ce
 ---
