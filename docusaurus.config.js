@@ -11,9 +11,9 @@ const config = {
   customFields: {
     release_branch: 'release/4.0',
     pre_release_branch: 'release/3.11',
-    release_version: 'v4.0.2',
+    release_version: 'v4.0.3',
     pre_release_version: 'v3.11.13',
-    ocboot_release_version: 'master-v4.0.2-5',
+    ocboot_release_version: 'master-v4.0.3-0',
   },
 
   url: process.env.DOCUSAURUS_URL || 'https://www.cloudpods.org',

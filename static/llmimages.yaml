@@ -9,3 +9,13 @@
 - image: registry.cn-beijing.aliyuncs.com/zexi/hermes:v2026.4.23-20260424.0
   description: v2026.4.23
   llm_type: hermes-agent
+## Desktop (LinuxServer Selkies)
+- image: registry.cn-beijing.aliyuncs.com/cloudpods/firefox:latest
+  description: LinuxServer Firefox browser desktop
+  llm_type: desktop
+  desktop:
+    ui_title: Cloudpods Firefox
+    profile: selkies
+    upstream_image: lscr.io/linuxserver/firefox:latest
+    default_port: 3001
+    protocol: https
