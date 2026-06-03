@@ -1,6 +1,6 @@
 ## OpenClaw
-- image: registry.cn-beijing.aliyuncs.com/zexi/openclaw:v2026.4.22-20260424.0
-  description: v2026.4.22，支持手动配置模式
+- image: registry.cn-beijing.aliyuncs.com/zexi/openclaw:v2026.5.28-20260602.0
+  description: v2026.5.28，支持手动配置模式
   llm_type: openclaw
 ## HermesAgent
 - image: registry.cn-beijing.aliyuncs.com/zexi/hermes:v2026.5.16-20260527.1
@@ -10,12 +10,21 @@
   description: v2026.4.23
   llm_type: hermes-agent
 ## Desktop (LinuxServer Selkies)
-- image: registry.cn-beijing.aliyuncs.com/cloudpods/firefox:latest
+- image: registry.cn-beijing.aliyuncs.com/cloudpods/firefox:1151.0.3build1-1xtradeb1.2404.1-ls96
   description: LinuxServer Firefox browser desktop
   llm_type: desktop
+  app_name: firefox
   desktop:
     ui_title: Cloudpods Firefox
     profile: selkies
-    upstream_image: lscr.io/linuxserver/firefox:latest
+    default_port: 3001
+    protocol: https
+- image: registry.cn-beijing.aliyuncs.com/cloudpods/bambustudio:02.07.00
+  description: Bambu Studio desktop
+  llm_type: desktop
+  app_name: bambustudio
+  desktop:
+    ui_title: Cloudpods Bambu Studio
+    profile: selkies
     default_port: 3001
     protocol: https
