@@ -55,15 +55,15 @@
     profile: selkies
     default_port: 3001
     protocol: https
-- image: registry.cn-beijing.aliyuncs.com/cloudpods/steam:b6afafe3-ls25
-  description: Steam desktop
-  llm_type: desktop
-  app_name: steam
-  desktop:
-    ui_title: Cloudpods Steam
-    profile: selkies
-    default_port: 3001
-    protocol: https
+# - image: registry.cn-beijing.aliyuncs.com/cloudpods/steam:b6afafe3-ls25
+#   description: Steam desktop
+#   llm_type: desktop
+#   app_name: steam
+#   desktop:
+#     ui_title: Cloudpods Steam
+#     profile: selkies
+#     default_port: 3001
+#     protocol: https
 - image: registry.cn-beijing.aliyuncs.com/cloudpods/webtop:ubuntu-xfce-version-be8fdec1
   description: Ubuntu XFCE desktop (LinuxServer webtop)
   llm_type: desktop
