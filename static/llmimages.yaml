@@ -9,6 +9,60 @@
 - image: registry.cn-beijing.aliyuncs.com/zexi/hermes:v2026.4.23-20260424.0
   description: v2026.4.23
   llm_type: hermes-agent
+## ComfyUI
+- image: registry.cn-beijing.aliyuncs.com/cloudpods/comfyui-boot:cu128-slim.20260324.0
+  description: ComfyUI Boot cu128-slim 默认镜像
+  llm_type: comfyui
+  sku:
+    cpu: 8
+    memory: 16384
+    volume_size_mb: 40960
+    bandwidth: 1000
+    port_mappings:
+      - protocol: tcp
+        container_port: 8188
+## Dify
+- name: dify-1.7.2
+  llm_type: dify
+  import_kind: bundle
+  description: Dify 1.7.2（含 9 个组件镜像）
+  images:
+    - role: nginx_image_id
+      generate_name: nginx-stable-alpine
+      image: registry.cn-beijing.aliyuncs.com/cloudpods/nginx:stable-alpine
+    - role: redis_image_id
+      generate_name: redis-6-alpine
+      image: registry.cn-beijing.aliyuncs.com/cloudpods/redis:6-alpine
+    - role: postgres_image_id
+      generate_name: postgres-15-alpine
+      image: registry.cn-beijing.aliyuncs.com/cloudpods/postgres:15-alpine
+    - role: dify_api_image_id
+      generate_name: dify-api-1.7.2
+      image: registry.cn-beijing.aliyuncs.com/cloudpods/dify-api:1.7.2
+    - role: dify_sandbox_image_id
+      generate_name: dify-sandbox-0.2.12
+      image: registry.cn-beijing.aliyuncs.com/cloudpods/dify-sandbox:0.2.12
+    - role: dify_plugin_image_id
+      generate_name: dify-plugin-daemon-0.2.0-local
+      image: registry.cn-beijing.aliyuncs.com/cloudpods/dify-plugin-daemon:0.2.0-local
+    - role: dify_web_image_id
+      generate_name: dify-web-1.7.2
+      image: registry.cn-beijing.aliyuncs.com/cloudpods/dify-web:1.7.2
+    - role: dify_ssrf_image_id
+      generate_name: squid-5.2-22.04_beta
+      image: registry.cn-beijing.aliyuncs.com/cloudpods/squid:5.2-22.04_beta
+    - role: dify_weaviate_image_id
+      generate_name: weaviate-1.19.0
+      image: registry.cn-beijing.aliyuncs.com/cloudpods/weaviate:1.19.0
+  sku:
+    generate_name: dify-4c8g
+    cpu: 4
+    memory: 8192
+    volume_size_mb: 40960
+    bandwidth: 1000
+    port_mappings:
+      - protocol: tcp
+        container_port: 80
 ## Desktop (LinuxServer Selkies)
 - image: registry.cn-beijing.aliyuncs.com/cloudpods/firefox:1151.0.3build1-1xtradeb1.2404.1-ls96
   description: LinuxServer Firefox browser desktop
