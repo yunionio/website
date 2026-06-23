@@ -112,7 +112,7 @@ $ kubectl get onecloudcluster -n onecloud
 ```
 ```bash
 # 以yaml文件的形式查看OC的API对象信息，该信息中包含集群的所有配置信息。
-$ kubeclt get oc -n onecloud -o yaml
+$ kubectl get oc -n onecloud -o yaml
 
 ```
 
