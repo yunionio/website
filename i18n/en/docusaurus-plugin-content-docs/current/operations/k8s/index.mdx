@@ -16,6 +16,8 @@ Kubernetes has a container eviction mechanism. When host CPU, memory, and storag
 
 Kubernetes does not have systemd's ability to stop and start services. [Pause Cluster Services](./halt_cluster) introduces methods to pause and restore services through operator.
 
+k3s clusters deployed with older ocboot versions may encounter internal certificate expiration issues. [Renew k3s Cluster Certificates](./k3s-renew-certs) explains how to use ocboot scripts to update control plane and worker node certificates.
+
 
 import IndexDocCardList from '@site/src/components/IndexDocCardList';
 
