@@ -16,6 +16,8 @@ Kubernetes设计了驱逐容器(Eviction)的机制，在宿主机CPU，内存和
 
 Kubernetes并不具备systemd停止和启动服务的控制能力，[暂停集群服务](./halt_cluster)介绍了通过operator暂停和恢复服务的方法。
 
+使用老版本 ocboot 部署的 k3s 集群可能遇到内部证书失效的问题。[更新 k3s 集群证书](./k3s-renew-certs)介绍了使用 ocboot 脚本更新 control plane 和 worker 节点证书的方法。
+
 
 import IndexDocCardList from '@site/src/components/IndexDocCardList';
 
