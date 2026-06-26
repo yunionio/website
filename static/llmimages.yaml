@@ -9,14 +9,28 @@
 - image: registry.cn-beijing.aliyuncs.com/zexi/hermes:v2026.4.23-20260424.0
   description: v2026.4.23
   llm_type: hermes-agent
+## Ollama
+- image: registry.cn-beijing.aliyuncs.com/cloudpods/ollama:0.15.1
+  description: Ollama 0.15.1
+  llm_type: ollama
+  sku:
+    generate_name: ollama-4c4g
+    cpu: 4
+    memory: 4096
+    volume_size_mb: 4096
+    bandwidth: 1000
+    port_mappings:
+      - protocol: tcp
+        container_port: 11434
 ## vLLM
 - image: registry.cn-beijing.aliyuncs.com/cloudpods/vllm-opanai:v0.23.0
   description: vLLM v0.23.0
   llm_type: vllm
   sku:
+    generate_name: vllm-8c8g
     cpu: 8
-    memory: 16384
-    volume_size_mb: 40960
+    memory: 8192
+    volume_size_mb: 4096
     bandwidth: 1000
     port_mappings:
       - protocol: tcp
