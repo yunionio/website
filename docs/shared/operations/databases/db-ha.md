@@ -55,7 +55,7 @@ Reload privilege tables now? [Y/n] y
 
 修改 Mariadb 配置文件，准备配置主主复制。
 
-备注：主、从区别是`confserver-id`、`auto_increment_offset`两个字段。
+备注：主、从区别是`server-id`、`auto_increment_offset`两个字段。
 
 ```bash
 # 主节点
