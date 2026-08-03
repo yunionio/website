@@ -2,13 +2,13 @@
 sidebar_position: 5
 ---
 
-## 切换为对象存储
+# 切换为对象存储
 
 Glance服务默认将镜像存储在本地的 /opt/cloud/workspace/data/glance/images 目录中，该目录通过一个本地目录的PVC提供。本地存储简单方便，但是存在glance锁死在单个节点，并且存储空间受限的缺陷。
 
 Glance同时支持将镜像存储在对象存储，下面介绍Glance使用对象存储的配置方法：
 
-### 1. 修改glance配置
+## 1. 修改glance配置
 
 ```bash
 climc service-config-edit glance
@@ -28,6 +28,6 @@ climc service-config-edit glance
 
 设置后，重启glance服务
 
-### 2. 工作原理
+## 2. 工作原理
 
 Glance启用对象存储后端后，会将对象存储桶通过s3fs挂载在本地的 /opt/cloud/workspace/data/glance/s3images 目录下。用户上传镜像时，会先将镜像保存在本地路径，等上传成功后，才会调用s3协议将镜像转存到对象存储。
