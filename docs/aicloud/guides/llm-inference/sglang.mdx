@@ -1,26 +1,27 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 edition: ce
-title: vLLM
+title: SGLang
+draft: true
 ---
 
-# vLLM
+# SGLang
 
-vLLM 是高吞吐、低延迟的 LLM 推理服务，**需要 GPU**，适用于对并发、吞吐和 OpenAI 兼容接口有要求的在线推理场景。
+SGLang 是面向大语言模型和多模态模型的高性能推理服务，**需要 GPU**，适用于需要 OpenAI 兼容接口、较高吞吐和灵活后端参数调优的在线推理场景。
 
 ## 快速开始 {#quickstart}
 
-创建 vLLM 推理实例大致分为以下几步：
+创建 SGLang 推理实例大致分为以下几步：
 
 1. **准备 GPU 环境**：完成 [配置 NVIDIA 与 CUDA 环境](../../getting-started/setup-nvidia-cuda)，并提前规划好 GPU 显存、内存与持久化存储空间。
-2. **为模板配置规格与镜像**：先到 [推理模板](./template) 中为 vLLM 模板配置 GPU、CPU、内存、数据盘与 [AI镜像](../llm-image)；平台通常会预置默认模板，也可以按需新建或编辑。
-3. **准备并挂载模型**：vLLM 实例需要挂载可加载的模型。建议先在 [推理模型库](./model-library) 中导入 Hugging Face 模型，再在模板或实例参数中选择对应模型版本。
-4. **创建推理实例**：控制台 **人工智能 → 推理 → 推理实例**，新建，选择已经配好规格的 **vLLM** 推理模板创建实例。
+2. **为模板配置规格与镜像**：先到 [推理模板](./template) 中为 SGLang 模板配置 GPU、CPU、内存、数据盘与 [AI镜像](../llm-image)；平台通常会预置默认模板，也可以按需新建或编辑。
+3. **准备并挂载模型**：SGLang 实例需要挂载可加载的模型。建议先在 [推理模型库](./model-library) 中导入 Hugging Face 模型，再在模板或实例参数中选择对应模型版本。
+4. **创建推理实例**：控制台 **人工智能 → 推理 → 推理实例**，新建，选择已经配好规格的 **SGLang** 推理模板创建实例。
 5. **获取服务地址并验证**：进入实例详情页「连接信息」获取推理服务地址；结合运行状态、日志与 API 调用确认模型已成功加载并可对外提供推理服务。
 
 ### 1. 准备 GPU 环境
 
-vLLM 依赖 GPU 做推理，请先完成 [配置 NVIDIA 与 CUDA 环境](../../getting-started/setup-nvidia-cuda)，并重点确认以下几项：
+SGLang 依赖 GPU 做推理，请先完成 [配置 NVIDIA 与 CUDA 环境](../../getting-started/setup-nvidia-cuda)，并重点确认以下几项：
 
 1. 节点能够识别到 GPU，且驱动状态正常。
 2. 目标 GPU 显存足够容纳待加载模型。
@@ -38,30 +39,29 @@ nvidia-smi
 curl -I https://hf-mirror.com
 ```
 
-![](./images/ollama-gpu.png)
+> 截图占位：GPU 节点执行 `nvidia-smi` 并确认驱动状态正常
 
 :::tip
-如果计划运行大模型或多模型，建议在创建模板前就把 GPU 显存、内存和数据盘容量一起规划好。vLLM 除了加载模型权重，还会消耗额外内存作为缓存与交换空间。
+如果计划运行大模型或多模型，建议在创建模板前就把 GPU 显存、内存和数据盘容量一起规划好。SGLang 除了加载模型权重，还会消耗额外显存和内存用于 KV Cache、请求队列与运行时缓存。
 :::
 
 ### 2. 为模板配置规格与镜像
 
-在创建实例前，建议先进入 **人工智能 → 推理 → 推理模板**，把 vLLM 模板对应的规格和镜像调好。可以先理解为“先把实例要用的 GPU、CPU、内存、数据盘和镜像配好，再回到实例页面创建”；如果平台已经预置了合适的 vLLM 模板，也可以直接复用。
+在创建实例前，建议先进入 **人工智能 → 推理 → 推理模板**，把 SGLang 模板对应的规格和镜像调好。可以先理解为“先把实例要用的 GPU、CPU、内存、数据盘和镜像配好，再回到实例页面创建”；如果平台已经预置了合适的 SGLang 模板，也可以直接复用。
 
 1. 进入控制台 **人工智能 → 推理 → 推理模板**。
-2. 选择现有 vLLM 模板点击 **修改**，或点击 **新建** 创建一个 `vLLM` 推理模板。
+2. 选择现有 SGLang 模板点击 **修改**，或点击 **新建** 创建一个 `SGLang` 推理模板。
 3. 在规格配置中，选择合适的 CPU、内存、GPU 型号、GPU 数量和数据盘大小。
 4. 在镜像字段中选择对应的 [AI镜像](../llm-image)，保存模板。
 
 为模板配置规格与镜像时，重点关注：
 
-- **GPU 数量与显存**：直接决定模型能否加载，以及 `tensor-parallel-size` 的默认值。平台会按模板/SKU 中配置的 GPU 数量自动设置并行度，建议实例创建时保持 GPU 配置与模板一致。
+- **GPU 数量与显存**：直接决定模型能否加载，以及 `tp-size` 的默认值。平台会按模板/SKU 中配置的 GPU 数量自动设置张量并行度，建议实例创建时保持 GPU 配置与模板一致。
 - **CPU / 内存**：会影响请求处理、排队和模型运行稳定性；显存够用时，CPU 和内存不足同样可能导致启动失败或响应变慢。
 - **数据盘**：模型目录 `/data/models` 与缓存目录 `/root/.cache` 都依赖持久化存储，磁盘过小会导致模型挂载、下载或升级失败。
-- **镜像版本**：优先选择平台验证过的 vLLM 镜像，并尽量固定明确版本，便于后续升级与回滚。
+- **镜像版本**：优先选择平台验证过的 SGLang 镜像，并尽量固定明确版本，便于后续升级与回滚。
 
-![](./images/vllm-sku-update.png)
-![](./images/vllm-gpu.png)
+> 截图占位：SGLang 推理模板规格与镜像配置
 
 :::tip
 如果希望实例重启后仍然保留模型文件和 Hugging Face 缓存，务必使用带持久化数据盘的模板；平台会将 `/data/models` 和 `/root/.cache` 挂载到持久化存储，而不是依赖容器临时层。
@@ -69,18 +69,18 @@ curl -I https://hf-mirror.com
 
 ### 3. 准备并挂载模型
 
-vLLM 实例创建时需要有可挂载模型：可以由模板预挂载，也可以在实例创建参数中选择。按当前平台实现，vLLM 会从 `/data/models/huggingface` 下选择模型目录并启动服务；如果没有挂载模型，实例创建会被校验拦截，或者容器无法进入可服务状态。
+SGLang 实例创建时需要有可挂载模型：可以由模板预挂载，也可以在实例创建参数中选择。按当前平台实现，SGLang 会从 `/data/models/huggingface` 下选择模型目录并启动服务；如果没有挂载模型，实例创建会被校验拦截，或者容器只会保留模型目录并进入等待状态，不能对外提供推理服务。
 
-如果模板或实例页面的模型相关字段里已经有目标模型可选，建议优先直接选择。这样实例创建完成后，平台会把对应模型挂载到 vLLM 的模型目录里，减少重复下载和版本漂移。
+如果模板或实例页面的模型相关字段里已经有目标模型可选，建议优先直接选择。这样实例创建完成后，平台会把对应模型挂载到 SGLang 的模型目录里，减少重复下载和版本漂移。
 
 可参考以下流程：
 
-1. 进入 **人工智能 → 模型库**。
-2. 通过“导入社区模型”准备目标模型，模型类型选择 `vLLM`，来源通常选择 Hugging Face。
+1. 进入 **人工智能 → 推理 → 推理模型库**。
+2. 通过“导入社区模型”准备目标模型，模型类型选择 `SGLang`，来源通常选择 Hugging Face。
 3. 回到 **推理模板** 或 **推理实例** 页面，在模型相关配置项中选择要挂载的模型版本。
 4. 在实例创建完成后，等待模型挂载或预热完成。
 
-![](./images/vllm-sku-instant-model.png)
+> 截图占位：SGLang 模板或实例中选择已导入的模型
 
 导入 Hugging Face 模型时，可以把 `model_name` 理解为仓库名，例如 `Qwen/Qwen2.5-7B-Instruct`；`model_tag` 通常对应 revision、branch 或 tag，例如 `main`。平台下载后会把模型放到 `/data/models/huggingface/<仓库末级名称>`，例如：
 
@@ -102,7 +102,7 @@ huggingface-cli download Qwen/Qwen2.5-7B-Instruct \
   --local-dir /data/models/huggingface/Qwen2.5-7B-Instruct
 ```
 
-下载完成后，目标目录下通常会包含 `config.json`、`tokenizer.json`、`tokenizer_config.json`、`*.safetensors` 等文件，可直接供 vLLM 加载。
+下载完成后，目标目录下通常会包含 `config.json`、`tokenizer.json`、`tokenizer_config.json`、`*.safetensors` 等文件，可直接供 SGLang 加载。
 
 当目录下有多个模型时，建议显式配置 `preferred_model`，否则平台会按目录名排序后使用找到的第一个一级模型目录。
 
@@ -115,15 +115,13 @@ huggingface-cli download Qwen/Qwen2.5-7B-Instruct \
 控制台入口为 **人工智能 → 推理 → 推理实例**。
 
 1. 点击 **新建**。
-2. 选择已经配好规格与镜像的 `vLLM` 推理模板或实例类型。
+2. 选择已经配好规格与镜像的 `SGLang` 推理模板或实例类型。
 3. 填写实例名称，并按页面要求选择项目、区域、网络等通用配置。
 4. 确认模板、镜像、规格、挂载模型和高级配置后提交创建；如果模板没有预挂载模型，需要在实例创建页面选择目标模型。
 
-如果控制台里还没有可用的 vLLM 模板，可以先前往 **人工智能 → 推理 → 推理模板** 创建或编辑模板，再返回实例页面创建。vLLM 模板或实例必须具备 GPU 和挂载模型，否则无法正常创建或启动。
+如果控制台里还没有可用的 SGLang 模板，可以先前往 **人工智能 → 推理 → 推理模板** 创建或编辑模板，再返回实例页面创建。SGLang 模板或实例必须具备 GPU 和挂载模型，否则无法正常创建或启动为推理服务。
 
-![](./images/instantce-create.png)
-
-![](./images/vllm-instance-create.png)
+> 截图占位：新建 SGLang 推理实例表单
 
 页面中的通用字段可按实际场景决定：
 
@@ -133,9 +131,9 @@ huggingface-cli download Qwen/Qwen2.5-7B-Instruct \
 
 ### 5. 获取服务地址并验证
 
-实例创建成功后，进入实例详情页，打开 **连接信息**，即可获取 vLLM 服务地址。按当前平台实现，vLLM 容器内默认监听 `8000` 端口，但对外访问地址仍应以控制台显示的连接信息为准。
+实例创建成功后，进入实例详情页，打开 **连接信息**，即可获取 SGLang 服务地址。按当前平台实现，SGLang 容器内默认监听 `30000` 端口，但对外访问地址仍应以控制台显示的连接信息为准。
 
-![](./images/vllm-connect-info.png)
+> 截图占位：SGLang 实例详情页连接信息
 
 建议按下面顺序验证：
 
@@ -150,7 +148,7 @@ huggingface-cli download Qwen/Qwen2.5-7B-Instruct \
 curl <service-url>/health
 ```
 
-再查看 vLLM 当前暴露的模型列表：
+再查看 SGLang 当前暴露的模型列表：
 
 ```bash
 curl <service-url>/v1/models
@@ -166,12 +164,12 @@ curl <service-url>/v1/models
 
 ### 持久化路径
 
-vLLM 容器中这些目录与路径最值得关注：
+SGLang 容器中这些目录与路径最值得关注：
 
-- `/data/models`：平台为 vLLM 挂载的模型数据根目录。
-- `/data/models/huggingface`：vLLM 默认扫描的模型目录。
+- `/data/models`：平台为 SGLang 挂载的模型数据根目录。
+- `/data/models/huggingface`：SGLang 默认扫描的模型目录。
 - `/root/.cache/huggingface`：Hugging Face 缓存目录，平台会将 `/root/.cache` 持久化。
-- vLLM 服务日志：默认输出到容器标准输出，可在实例详情页 **日志** 中查看。
+- SGLang 服务日志：默认输出到容器标准输出，可在实例详情页 **日志** 中查看。
 
 平台还会为容器注入以下环境变量：
 
@@ -180,11 +178,11 @@ vLLM 容器中这些目录与路径最值得关注：
 
 ### 模型选择规则
 
-平台启动 vLLM 时，会先在 `/data/models/huggingface` 下解析要加载的模型目录，规则如下：
+平台启动 SGLang 时，会先在 `/data/models/huggingface` 下解析要加载的模型目录，规则如下：
 
 1. 如果配置了 `preferred_model`，且对应目录存在，则优先加载该目录。
 2. 如果没有配置 `preferred_model`，或者配置目录不存在，则回退到模型目录下按目录名排序后找到的第一个一级目录。
-3. 服务启动后，平台会把最终加载目录的 basename 作为 `served-model-name` 传给 vLLM。
+3. 服务启动后，平台会把最终加载目录的 basename 作为 `served-model-name` 传给 SGLang。
 
 这意味着：
 
@@ -192,11 +190,11 @@ vLLM 容器中这些目录与路径最值得关注：
 - 如果你的目录结构是 `/data/models/huggingface/Qwen/Qwen2.5-7B-Instruct`，需要显式设置 `preferred_model=Qwen/Qwen2.5-7B-Instruct`；实际暴露的模型名通常仍会以末级目录名为准。
 - 当目录里有多个模型时，强烈建议显式设置 `preferred_model`，避免因为目录扫描顺序导致加载错模型。
 
-## vLLM 特有配置
+## SGLang 特有配置
 
 ### `preferred_model`
 
-`preferred_model` 用来指定 vLLM 启动时优先选择的模型目录。它填写的是 `/data/models/huggingface` 下的相对目录名，而不是接口中的模型显示名。
+`preferred_model` 用来指定 SGLang 启动时优先选择的模型目录。它填写的是 `/data/models/huggingface` 下的相对目录名，而不是接口中的模型显示名。
 
 例如：
 
@@ -207,135 +205,83 @@ vLLM 容器中这些目录与路径最值得关注：
 
 ### `customized_args`
 
-`customized_args` 用来补充 vLLM 启动参数。平台会在默认启动参数和模板/SKU 的后端参数基础上追加这些配置，并做一层安全限制。
+`customized_args` 用来补充 SGLang 启动参数。平台会在默认启动参数和模板/SKU 的后端参数基础上追加这些配置，并做一层安全限制。
 
 填写规则如下：
 
-- `key` 不要带前导 `--`，例如填写 `max-model-len`，不要填写 `--max-model-len`
+- `key` 不要带前导 `--`，例如填写 `context-length`，不要填写 `--context-length`
 - `key` 只允许字母、数字、`-`、`_`
 - 同名参数按“实例级覆盖模板/SKU 级”的方式合并
-- `value` 为空时，平台会把它当作不带值的开关参数，例如 `trust-remote-code`
-- 空值方式只适用于布尔开关类参数；如果某个 vLLM 参数本身必须带值，仍然要填写对应 `value`
+- `value` 为空时，平台会把它当作不带值的开关参数，例如 `disable-radix-cache`
+- 空值方式只适用于布尔开关类参数；如果某个 SGLang 参数本身必须带值，仍然要填写对应 `value`
 
 以下参数由平台接管，不能通过 `customized_args` 覆盖：
 
-- `model`
+- `model-path`
 - `served-model-name`
+- `host`
 - `port`
-- `tensor-parallel-size`
+- `tp-size`
 
-其中，`tensor-parallel-size` 会根据模板/SKU 中配置的 GPU 数量自动设置。如果需要调整 `swap-space`、`max-model-len`、`gpu-memory-utilization` 等 vLLM 自身参数，应通过后端参数或 `customized_args` 显式传入。
+其中，`tp-size` 会根据模板/SKU 中配置的 GPU 数量自动设置。如果需要调整 `context-length`、`mem-fraction-static` 等 SGLang 自身参数，应通过后端参数或 `customized_args` 显式传入。
 
 一个常见的填写方式如下：
 
 | 启动参数 | `key` | `value` | 说明 |
 | --- | --- | --- | --- |
-| `--max-model-len 32768` | `max-model-len` | `32768` | 控制上下文长度 |
-| `--gpu-memory-utilization 0.9` | `gpu-memory-utilization` | `0.9` | 控制显存利用率上限 |
-| `--swap-space 8` | `swap-space` | `8` | 设置 vLLM 交换空间 |
-| `--trust-remote-code` | `trust-remote-code` | 留空 | 为布尔开关类参数 |
-
-### TurboQuant KV Cache 压缩
-
-TurboQuant 为 vLLM v1 attention backend 增加了 KV Cache 在线压缩能力。它会在写入 KV Cache 时通过 Triton kernel 对 key/value 做量化，不需要离线校准、修改模型权重或重新导出模型。
-
-#### 支持版本与范围
-
-- **vLLM 版本**：TurboQuant 已出现在 vLLM `v0.20.0` 发布说明中；需要使用 `v0.20.0` 或更新版本的 vLLM 镜像。实际使用前建议在实例内执行 `vllm --version`，并通过 `vllm serve --help` 确认 `--kv-cache-dtype` 中包含 TurboQuant 选项。
-- **推理后端**：TurboQuant 面向 vLLM v1 attention backend；下方性能测试基于 NVIDIA CUDA 环境。
-- **模型范围**：支持 full-attention transformer 模型，以及 attention 类型统一的 sliding-window transformer 模型。hybrid mamba+attention、interleaved SWA 等混合架构不在该功能支持范围内。
-
-可用的 `kv-cache-dtype` 取值如下：
-
-| `kv-cache-dtype` | Key 压缩 | Value 压缩 | KV Cache 压缩比 | 建议 |
-| --- | --- | --- | --- | --- |
-| `turboquant_k8v4` | FP8 E4M3 | 4-bit uniform | 约 `2.6x` | 质量与吞吐折中配置，建议优先评估 |
-| `turboquant_4bit_nc` | 4-bit MSE + norm correction | 4-bit uniform + norm correction | 约 `3.8x` | 更高压缩比，吞吐相对下降更多 |
-| `turboquant_k3v4_nc` | 3-bit MSE + norm correction | 4-bit uniform + norm correction | 约 `4.3x` | 面向更激进的显存压缩 |
-| `turboquant_3bit_nc` | 3-bit MSE + norm correction | 3-bit uniform + norm correction | 约 `4.9x` | 压缩最高，但质量和吞吐都需要重点验证 |
-
-#### 启用方式
-
-如果通过平台的 `customized_args` 追加 vLLM 参数，可以填写：
-
-| `key` | `value` | 说明 |
-| --- | --- | --- |
-| `kv-cache-dtype` | `turboquant_k8v4` | 启用 TurboQuant；建议先从该配置开始验证 |
-| `kv-cache-dtype-skip-layers` | `0,1,34,35` | 可选，跳过指定层，保留这些层的 FP16 KV Cache |
-
-等价的 vLLM 启动参数为：
-
-```bash
-vllm serve <model> \
-  --kv-cache-dtype turboquant_k8v4
-```
-
-如果需要跳过首尾层或特定 attention 类型，可以追加 `--kv-cache-dtype-skip-layers`。例如：
-
-```bash
-vllm serve <model> \
-  --kv-cache-dtype turboquant_k8v4 \
-  --kv-cache-dtype-skip-layers 0,1,34,35
-```
-
-```bash
-vllm serve <model> \
-  --kv-cache-dtype turboquant_k8v4 \
-  --kv-cache-dtype-skip-layers sliding_window
-```
+| `--context-length 32768` | `context-length` | `32768` | 控制上下文长度 |
+| `--mem-fraction-static 0.88` | `mem-fraction-static` | `0.88` | 控制 SGLang 静态显存占用比例 |
+| `--disable-radix-cache` | `disable-radix-cache` | 留空 | 关闭 radix cache |
+| `--trust-remote-code` | `trust-remote-code` | 留空 | 允许加载模型仓库中的自定义代码 |
 
 :::note
-TurboQuant 会改变 KV Cache 的存储格式，建议先在非生产实例上用目标模型、目标上下文长度和真实请求分布做压测；如果生成质量、首 token 延迟或长上下文表现不符合预期，再尝试调整压缩档位或使用 `kv-cache-dtype-skip-layers` 保护部分层。
+SGLang 参数会随镜像中的 SGLang 版本变化。填写高级参数前，建议先确认当前镜像里的 `python3 -m sglang.launch_server --help` 输出。
 :::
 
-#### 性能测试结果
+### 模板/SKU 后端参数
 
-以下测试模型为 `Qwen/Qwen3-4B`，硬件为 `4x RTX PRO 6000 Blackwell`，并开启 `cudagraphs+compile`。不同 GPU、模型、上下文长度和并发分布下结果会有差异，不能直接视为平台 SLA。
+如果模板或 SKU 页面提供了后端参数配置，可以把它理解为一组模板级 SGLang 参数。平台会先解析模板/SKU 的 `backend_parameters`，再合并实例级 `customized_args`；同名参数以后者为准。
 
-| 场景 | Baseline 输出吞吐 | `turboquant_k8v4` | `turboquant_4bit_nc` | `turboquant_k3v4_nc` | `turboquant_3bit_nc` |
-| --- | --- | --- | --- | --- | --- |
-| short-decode `128→512` | `8977 tok/s` | `7113 tok/s` (`79%`) | `6397 tok/s` (`71%`) | `6206 tok/s` (`69%`) | `6114 tok/s` (`68%`) |
-| long-prefill `4096→128` | `850 tok/s` | `811 tok/s` (`95%`) | `766 tok/s` (`90%`) | `745 tok/s` (`88%`) | `730 tok/s` (`86%`) |
-| mixed `512→512` | `6618 tok/s` | `5279 tok/s` (`80%`) | `4829 tok/s` (`73%`) | `4584 tok/s` (`69%`) | `4491 tok/s` (`68%`) |
-| high-load `512→128, n=500` | `5633 tok/s` | `4751 tok/s` (`84%`) | `4456 tok/s` (`79%`) | `4337 tok/s` (`77%`) | `4240 tok/s` (`75%`) |
-| very-long-prefill `8192→64` | `233 tok/s` | `234 tok/s` (`100%`) | `224 tok/s` (`96%`) | `220 tok/s` (`94%`) | `216 tok/s` (`93%`) |
-| decode-heavy `64→1024` | `8304 tok/s` | `6521 tok/s` (`79%`) | `5887 tok/s` (`71%`) | `5650 tok/s` (`68%`) | `5430 tok/s` (`65%`) |
+常见写法包括：
 
-测试结论可以概括为：
+```text
+--context-length 32768
+```
 
-- `turboquant_k8v4` 在 6 个测试场景中达到 baseline `79%` 到 `100%` 的输出吞吐，是优先评估的配置。
-- `turboquant_4bit_nc` 在 `3.8x` KV Cache 压缩下达到 baseline `71%` 到 `96%` 的输出吞吐。
-- 在长 prefill 场景中，`turboquant_k8v4` 的 TPOT 低于 baseline，例如 `4096→128` 场景为 `135.2 ms` 对比 baseline `138.1 ms`；`8192→64` 场景为 `235.2 ms` 对比 baseline `241.9 ms`。这是因为压缩后的 KV Cache 减少了部分内存带宽压力。
-- TTFT 在测试里通常高于 baseline，例如 short-decode 从 `305 ms` 增加到 `389 ms`，long-prefill 从 `6095 ms` 增加到 `6530 ms`。因此在线服务启用前应同时观察吞吐、P95/P99 延迟和首 token 延迟。
+```text
+mem-fraction-static=0.88
+```
+
+也可以使用字符串数组形式保存多项参数。无论哪种形式，短参数（如 `-x`）不支持，受保护参数也不能覆盖。
 
 ### 平台默认追加的关键参数
 
-平台启动 vLLM 时，核心命令等价于：
+平台启动 SGLang 时，核心命令等价于：
 
 ```bash
-vllm serve \
-  --model <resolved-model-path> \
+python3 -m sglang.launch_server \
+  --model-path <resolved-model-path> \
   --served-model-name <basename-of-model-dir> \
-  --port 8000 \
-  --tensor-parallel-size <gpu-count>
+  --host 0.0.0.0 \
+  --port 30000 \
+  --tp-size <gpu-count>
 ```
 
 因此在排查问题时，可以优先围绕下面几项定位：
 
 - 模型目录是否存在、是否完整
 - `/v1/models` 返回的模型名是否与你请求中使用的 `model` 一致
-- GPU 数量与 `tensor-parallel-size` 是否匹配
+- GPU 数量与 `tp-size` 是否匹配
 - 后端参数或 `customized_args` 是否传入了当前镜像不支持的参数
 
-{/*
 ### GPU 显存利用率
 
-如果你通过模型部署或批量副本能力创建 vLLM 服务，可以在部署层配置 GPU 显存利用率：
+如果你通过模型部署或批量副本能力创建 SGLang 服务，可以在部署层配置 GPU 显存利用率：
 
-- `gpu_memory_utilization`：手动指定 0 到 1 之间的显存利用率，平台会转换为 vLLM 的 `--gpu-memory-utilization` 参数。
-- `auto_gpu_memory_utilization`：由平台根据挂载模型大小、GPU 显存和 GPU 数量计算显存利用率，再转换为 `--gpu-memory-utilization` 参数。
+- `gpu_memory_utilization`：手动指定 0 到 1 之间的显存利用率，平台会转换为 SGLang 的 `--mem-fraction-static` 参数。
+- `auto_gpu_memory_utilization`：由平台根据挂载模型大小、GPU 显存和 GPU 数量计算显存利用率，再转换为 `--mem-fraction-static` 参数。
 
-> 截图占位：vLLM 模型部署中的 GPU 显存利用率配置
+> 截图占位：SGLang 模型部署中的 GPU 显存利用率配置
 
 两者不能同时启用。自动计算依赖挂载模型和 GPU 设备信息；如果没有挂载模型，或者 GPU 型号缺少显存信息，平台会拒绝创建。自动计算结果会保留安全余量并限制在合理范围内，适合希望减少手工估算但仍由平台控制上限的场景。
 
@@ -343,13 +289,11 @@ vllm serve \
 
 | `key` | `value` |
 | --- | --- |
-| `gpu-memory-utilization` | `0.9` |
-*/}
-
+| `mem-fraction-static` | `0.88` |
 
 ## 接口调用示例
 
-vLLM 在当前平台中以 OpenAI 兼容模式运行，因此可以直接使用 OpenAI 风格的 HTTP 接口。下面以 `curl` 为例说明最常见的验证方式。
+SGLang 在当前平台中以 OpenAI 兼容模式运行，因此可以直接使用 OpenAI 风格的 HTTP 接口。下面以 `curl` 为例说明最常见的验证方式。
 
 :::note
 如果你的连接信息经过了网关、负载均衡或鉴权代理，请按实际要求补充 `Authorization` 等请求头；如果当前环境没有开启鉴权，可以省略该请求头。
@@ -418,7 +362,7 @@ curl <service-url>/v1/completions \
   -H 'Content-Type: application/json' \
   -d '{
     "model": "<model-name>",
-    "prompt": "请用三句话介绍 vLLM 的主要用途。",
+    "prompt": "请用三句话介绍 SGLang 的主要用途。",
     "temperature": 0.7,
     "top_p": 0.9,
     "max_tokens": 256,
@@ -443,7 +387,7 @@ curl <service-url>/v1/completions \
 ### 镜像与规格
 
 - **规格选择**：参考 [推理模板](./template)，重点关注 GPU 显存、GPU 数量、CPU/内存与并发规模之间的匹配。
-- **镜像选择**：参考 [AI镜像](../llm-image)，使用明确版本（tag/digest）便于升级与回滚，并注意 CUDA、驱动与 vLLM 版本兼容性。
+- **镜像选择**：参考 [AI镜像](../llm-image)，使用明确版本（tag/digest）便于升级与回滚，并注意 CUDA、驱动与 SGLang 版本兼容性。
 
 ### 模型与版本
 
@@ -455,13 +399,13 @@ curl <service-url>/v1/completions \
 
 - **容量规划**：吞吐与延迟通常受 GPU 显存、并发和批处理策略影响；容量不足时可横向扩展实例或升级 GPU 规格。
 - **网络**：推理接口对网络延迟敏感，建议业务侧与推理服务之间保持稳定低延迟链路，避免跨地域和高抖动链路。
-- **参数调优**：需要更高吞吐或更长上下文时，可优先评估 `gpu-memory-utilization`、`max-model-len` 和 `swap-space` 等高级参数。
+- **参数调优**：需要更高吞吐或更长上下文时，可优先评估 `mem-fraction-static`、`context-length` 和缓存策略等高级参数。
 
 ### 变更与观测
 
 - **升级与回滚**：通过 [AI镜像](../llm-image) 控制运行时版本；变更前评估 CUDA、驱动、镜像与模型版本兼容性。
 - **观测指标**：重点关注 GPU 利用率、显存占用、QPS、P95/P99 延迟、错误率。
-- **日志排查**：模型加载失败、显存不足或高级参数错误时，可优先检查实例详情页的 **日志**；当前 vLLM 服务日志默认输出到容器标准输出。
+- **日志排查**：模型加载失败、显存不足或高级参数错误时，可优先检查实例详情页的 **日志**；当前 SGLang 服务日志默认输出到容器标准输出。
 
 ## 常见问题
 
@@ -469,21 +413,21 @@ curl <service-url>/v1/completions \
 
 通过实例详情页面中的 **终端** 可以直接进入容器，用于检查模型目录、缓存目录或运行日志。
 
-![](./images/vllm-into-shell.png)
-![](./images/vllm-shell-content.png)
+> 截图占位：SGLang 实例详情页终端入口
+> 截图占位：进入容器后查看 `/data/models/huggingface`
 
 ### 怎么查看服务日志？
 
-通过前端界面：点击对应的推理实例，进入详情页面，再点击 **日志**，就能查看 vLLM 的服务输出日志，方便用于错误排查。
+通过前端界面：点击对应的推理实例，进入详情页面，再点击 **日志**，就能查看 SGLang 的服务输出日志，方便用于错误排查。
 
-![](./images/vllm-logs.png)
+> 截图占位：SGLang 实例详情页日志
 
 如果需要进一步定位启动问题，也可以进入容器后检查模型目录、缓存目录和进程参数：
 
 ```bash
 ls -lah /data/models/huggingface
 du -sh /data/models/huggingface /root/.cache/huggingface
-ps -ef | grep 'vllm serve'
+ps -ef | grep 'sglang.launch_server'
 ```
 
 ### 启动后无法加载模型
@@ -502,7 +446,7 @@ ps -ef | grep 'vllm serve'
 
 - 关注 GPU 利用率与显存占用是否偏低或偏高，检查是否存在 CPU、内存或网络瓶颈。
 - 调整规格与并发策略，必要时横向扩容多个实例分摊流量。
-- 结合业务请求规模评估是否需要调优 `gpu-memory-utilization`、上下文长度或负载分配策略。
+- 结合业务请求规模评估是否需要调优 `mem-fraction-static`、上下文长度或负载分配策略。
 
 ### GPU 不可用或驱动不匹配
 

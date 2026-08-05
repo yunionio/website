@@ -9,6 +9,10 @@
 - image: registry.cn-beijing.aliyuncs.com/zexi/hermes:v2026.4.23-20260424.0
   description: v2026.4.23
   llm_type: hermes-agent
+## LLMBench
+- image: registry.cn-beijing.aliyuncs.com/cloudpods/guidellm:v0.7.0-amd64
+  description: v0.7.0-amd64
+  llm_type: benchmark
 ## Ollama
 - image: registry.cn-beijing.aliyuncs.com/cloudpods/ollama:0.15.1
   description: Ollama 0.15.1
