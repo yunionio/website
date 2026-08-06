@@ -12,7 +12,7 @@ Ollama is a lightweight local LLM inference service that **requires a GPU**, sui
 
 Creating an Ollama inference instance generally involves the following steps:
 
-1. **Prepare GPU Environment**: Complete the [NVIDIA and CUDA Environment Setup](../../getting-started/setup-nvidia-cuda), and prepare sufficient persistent storage for model caching.
+1. **Prepare GPU Environment**: Complete the [NVIDIA and CUDA Environment Setup](/docs/aicloud/getting-started/setup-nvidia-cuda), and prepare sufficient persistent storage for model caching.
 2. **Assign GPU to Plan**: Go to [Inference Templates](./template) to configure GPU, CPU, memory, and data disk for the Ollama plan template; the platform usually provides default templates, but you can also create or edit them as needed.
 3. **Create Inference Instance**: In the console, go to **AI > Inference > Inference Instances**, click New, and select an **Ollama** inference template with GPU configured to create the instance.
 4. **Select Model (Optional)**: If the [Inference Model Library](./model-library) already has the target model, you can select it directly in the template or instance parameters; if no models are available yet, you can create the instance first and then manually pull models via `ollama pull`.
@@ -20,7 +20,7 @@ Creating an Ollama inference instance generally involves the following steps:
 
 ### 1. Prepare GPU Environment
 
-Ollama relies on GPU for inference. Please first complete the [NVIDIA and CUDA Environment Setup](../../getting-started/setup-nvidia-cuda), and confirm the following:
+Ollama relies on GPU for inference. Please first complete the [NVIDIA and CUDA Environment Setup](/docs/aicloud/getting-started/setup-nvidia-cuda), and confirm the following:
 
 1. The node can detect the GPU and the driver status is normal.
 2. The target GPU has enough VRAM to accommodate the model you plan to run.
@@ -50,7 +50,7 @@ Before creating an instance, it is recommended to go to **AI > Inference > Infer
 1. Go to **AI > Inference > Inference Templates** in the console.
 2. Select an existing Ollama template and click **Edit**, or click **New** to create an `Ollama` inference template.
 3. In the specification configuration, select an appropriate GPU model for the plan, and confirm CPU, memory, and data disk size accordingly.
-4. Select the corresponding [AI Image](../llm-image) in the image field, and save the template.
+4. Select the corresponding [Inference Image](./image) in the image field, and save the template.
 
 When assigning GPU to the plan, focus on:
 
@@ -159,7 +159,7 @@ If `api/tags` is accessible but the model list is empty, it usually means the in
 ### Image and Specifications
 
 - **Specification Selection**: Refer to [Inference Templates](./template) and select CPU/memory/GPU based on model size and concurrency requirements (focus on GPU VRAM).
-- **Image Selection**: Refer to [AI Images](../llm-image) and use specific versions (tag/digest) for easier upgrades and rollbacks.
+- **Image Selection**: Refer to [Inference Images](./image) and use specific versions (tag/digest) for easier upgrades and rollbacks.
 
 ### Model and Cache
 
@@ -173,7 +173,7 @@ If `api/tags` is accessible but the model list is empty, it usually means the in
 ### Capacity and Changes
 
 - **Capacity**: Monitor GPU VRAM, model loading time, and concurrency queue; when capacity is insufficient, prioritize evaluating more GPU resources or larger VRAM.
-- **Upgrade and Rollback**: Perform changes through version management of [AI Images](../llm-image); it is recommended to operate during off-peak hours.
+- **Upgrade and Rollback**: Perform changes through version management of [Inference Images](./image); it is recommended to operate during off-peak hours.
 - **Observability**: Focus on GPU/CPU utilization, VRAM usage, request latency, and error rates; use logs to diagnose issues such as model loading failures and insufficient VRAM.
 
 ## FAQ
@@ -213,7 +213,7 @@ ls -lah /root/.ollama/models
 
 ### Node cannot see GPU / Abnormal inference performance
 
-- Check whether the [NVIDIA and CUDA Environment Setup](../../getting-started/setup-nvidia-cuda) has been completed.
+- Check whether the [NVIDIA and CUDA Environment Setup](/docs/aicloud/getting-started/setup-nvidia-cuda) has been completed.
 - Run `nvidia-smi` on the node to verify the driver and GPU status.
 
 ### Model download is slow or consumes too much disk space

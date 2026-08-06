@@ -1,0 +1,15 @@
+### 镜像拉取失败 {#image-pull-failed}
+
+部署长时间无法就绪，或在 **操作日志** / 实例日志中出现镜像拉取错误时，可 SSH 登录该部署所调度到的 **容器主机** 节点，用 `ctr` 验证节点能否拉取镜像。完整镜像地址可在 **容器主机** 详情中查看（与模板 / [推理镜像](../image) 登记一致）。
+
+```bash
+ctr -a /var/run/onecloud/containerd/containerd.sock -n k8s.io images pull <镜像名称>
+```
+
+将 `<镜像名称>` 替换为完整 `仓库/路径:标签`。SGLang 示例如下：
+
+```bash
+ctr -a /var/run/onecloud/containerd/containerd.sock -n k8s.io images pull registry.cn-beijing.aliyuncs.com/cloudpods/sglang:v0.5.14-cu130
+```
+
+命令失败时，按报错排查节点到镜像仓库的网络、DNS 与私有仓库鉴权。命令成功而平台仍失败时，结合部署 **操作日志** 继续排查。

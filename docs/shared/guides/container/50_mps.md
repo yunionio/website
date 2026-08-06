@@ -34,7 +34,8 @@ container_device_config_file: /etc/yunion/host_container_device.yml
 
 # 修改 host_container_device.yml 配置 MPS
 # 这里的 path 为 NVIDIA GPU 对应的渲染设备
-# type 修改为 NVIDIA_MPS，默认添加的 AI 节点 type 为 NVIDIA_GPU_SHARE
+# type 修改为 NVIDIA_MPS
+# 默认 AI 节点通过 HAMi 探测 GPU；仅指定 --gpu-device-virtual-number 时 type 为 NVIDIA_GPU_SHARE
 # virtual_number 是要使用 MPS 虚拟设备数量，单个设备可以显存为 memory.total / virtual_number
 $ vi /etc/yunion/host_container_device.yml
 devices:
