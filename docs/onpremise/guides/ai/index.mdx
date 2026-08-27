@@ -1,0 +1,35 @@
+---
+sidebar_position: 12
+hide_table_of_contents: true
+title: 人工智能
+---
+
+# 人工智能
+
+对应私有云控制台顶层菜单 **人工智能**。分组为 **Agent**、**推理**、**AI 网关**。工作负载运行在 [容器主机](../container/) 之上。
+
+:::tip 前提
+至少添加并启用一台 **容器节点** 后，控制台才会显示 **人工智能** 菜单。添加方式见 [添加计算节点](../../getting-started/host) 中的 AI 容器节点，以及 [AI 云/添加计算节点](../../aicloud/getting-started/host)。
+
+若只使用 [AI 网关](./ai-proxy/)（不部署本地 Agent 或推理服务），可执行以下命令打开菜单，无需添加容器节点：
+
+```bash
+climc feature-config-ai --switch on
+```
+:::
+
+## 推荐阅读顺序
+
+1. [Agent](./llm-app/)：导入社区应用并创建实例。
+2. [AI推理](./llm-inference/)：导入模型、创建部署，以及 chat / curl 验证。
+3. [AI 网关](./ai-proxy/)：API Key、路由与用量分析。
+
+## 常见问题
+
+### 控制台没有人工智能菜单
+
+确认环境中已添加并启用在线的容器节点（`host_type` 为 container），或已执行 `climc feature-config-ai --switch on`（仅使用 AI 网关时）。添加容器节点见 [添加计算节点](../../getting-started/host)。
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />

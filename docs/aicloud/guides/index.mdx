@@ -6,31 +6,47 @@ edition: ce
 
 # 用户手册
 
-围绕 AI 应用、推理、模板、模型库、镜像的概念与使用说明。
+围绕控制台 **人工智能** 下的 Agent、推理与相关资源，说明概念与操作路径。
 
 ## 阅读指南
 
-- 部署见 [快速开始](../getting-started/quickstart)。
-- GPU部署见 [NVIDIA/CUDA](../getting-started/setup-nvidia-cuda)。
-- 按 [AI应用](./llm-app/)（含 [应用模板](./llm-app/template)）→ [AI推理](./llm-inference/)（含 [推理模板](./llm-inference/template) / [AI模型库](./llm-inference/model-library)）→ [AI镜像](./llm-image) 阅读。
+- 安装与节点准备见 [快速开始](../getting-started/quickstart)。
+- GPU 环境见 [NVIDIA/CUDA](../getting-started/setup-nvidia-cuda)。
+- Agent 见 [Agent](./llm-app/)：应用文档在 [Agent实例](./llm-app/instance/) 下，建议阅读 [OpenClaw](./llm-app/instance/openclaw) / [HermesAgent](./llm-app/instance/hermes) / [Dify](./llm-app/instance/dify) / [ComfyUI](./llm-app/instance/comfyui) 快速开始（先导入模板再创建实例），并按需查阅 [Agent模板](./llm-app/template)、[Agent镜像](./llm-app/agent-image)。
+- 推理服务见 [AI推理](./llm-inference/)：建议先读 [快速开始](./llm-inference/quickstart)，再按需查阅 [推理部署](./llm-inference/deployment)、[推理模板](./llm-inference/template) / [模型文件](./llm-inference/model-library) / [推理镜像](./llm-inference/image)，以及（可选）[基准测试](./llm-inference/benchmark)、[算力卡场景](./llm-inference/gpu-scenarios/)（如 [华为昇腾 NPU运行DeepSeek V4 Flash](./llm-inference/gpu-scenarios/ascend-deepseek-v4-flash)）。
+- AI 网关见 [AI 网关](./ai-proxy/)：建议先读 [快速开始](./ai-proxy/quickstart)（[场景1](./ai-proxy/quickstart#scenario-claude) 经网关使用 Claude 多模态、[场景2](./ai-proxy/quickstart#scenario-metering) 查看多租户用量统计），再按需查阅 [API Key](./ai-proxy/api-key)、[供应商](./ai-proxy/provider)、[路由规则](./ai-proxy/routing)、[接入点](./ai-proxy/proxy-node) 与 [用量分析](./ai-proxy/usage)。
 
 ## 控制台菜单与功能对照
 
-进入 **人工智能** 后分为 **应用**、**推理**、**镜像**：
+进入 **人工智能** 后，主要分组包括 **Agent**、**推理**、**AI 网关** 等：
 
-- **应用**：应用实例（Dify/OpenClaw/HermesAgent/ComfyUI）、应用模板。
-- **推理**：推理实例（Ollama/vLLM）、推理模板、推理模型库。
-- **镜像**：在「人工智能」→「镜像」管理；创建模板时选择。
+- **Agent实例**：创建与管理 OpenClaw、HermesAgent、Dify、ComfyUI 等实例。
+- **Agent模板**：Agent 实例可复用的规格（镜像、CPU/内存/GPU、端口等）。
+- **Agent镜像**：Agent 类应用的容器镜像。
+- **推理部署**：以部署为单位管理推理服务；部署下包含可扩缩的 **实例** 副本。
+- **推理模板**：可复用的规格（镜像、CPU/内存/GPU、挂载模型、端口等）。
+- **模型文件**：平台内可挂载、可缓存的模型数据条目（旧称「推理模型库」）。
+- **推理镜像**：Ollama / vLLM / SGLang 等推理运行时镜像。
+- **基准测试**：对已有推理部署做压测并查看报告。
+- **AI 网关 · 用量分析**：网关调用统计、分析与请求明细；可按 API Key 查看多租户用量。
+- **AI 网关 · API Key**：调用鉴权与限流。
+- **AI 网关 · 路由规则**：将请求 model 绑定到上游模型。
+- **AI 网关 · 供应商**：公有或推理部署注册的上游。
+- **AI 网关 · 接入点**：网关对外地址与心跳。
 
 ## 名词约定
 
-- **模板**：运行实例所需的 CPU/内存/GPU 等资源配置。
-- **模型库**：可复用模型资源，供推理应用使用。
-- **镜像**：实例运行环境的容器镜像，决定功能与版本。
+- **Agent实例**：运行 OpenClaw、HermesAgent、Dify、ComfyUI 等应用的实例。
+- **Agent模板**：创建 Agent 实例时可复用的默认规格。
+- **Agent镜像**：决定 Agent 应用运行环境的容器镜像。
+- **推理部署**：对外提供服务的部署对象；旧文档中的「推理实例」在菜单层面已合并到部署，实例现为部署下的子资源。
+- **推理模板**：创建部署时可复用的默认规格。
+- **模型文件**：可挂载到模板/部署的模型数据（旧称「模型库」）。
+- **推理镜像**：决定推理引擎与运行环境的容器镜像。
 
 ## 典型关系
 
-实例 = 镜像 + 规格 +（可选）模型。
+推理部署 ≈ 推理镜像 + 推理模板规格 +（可选）模型文件；部署下可有多份实例副本。
 
 import IndexDocCardList from '@site/src/components/IndexDocCardList';
 

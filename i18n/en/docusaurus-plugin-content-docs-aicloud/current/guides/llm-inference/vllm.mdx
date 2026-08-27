@@ -13,15 +13,15 @@ vLLM is a high-throughput, low-latency LLM inference service that **requires a G
 
 Creating a vLLM inference instance generally involves the following steps:
 
-1. **Prepare GPU Environment**: Complete the [NVIDIA and CUDA Environment Setup](../../getting-started/setup-nvidia-cuda), and plan GPU VRAM, memory, and persistent storage space in advance.
-2. **Configure Template Specifications and Image**: Go to [Inference Templates](./template) to configure GPU, CPU, memory, data disk, and [AI Image](../llm-image) for the vLLM template; the platform usually provides default templates, but you can also create or edit them as needed.
+1. **Prepare GPU Environment**: Complete the [NVIDIA and CUDA Environment Setup](/docs/aicloud/getting-started/setup-nvidia-cuda), and plan GPU VRAM, memory, and persistent storage space in advance.
+2. **Configure Template Specifications and Image**: Go to [Inference Templates](./template) to configure GPU, CPU, memory, data disk, and [Inference Image](./image) for the vLLM template; the platform usually provides default templates, but you can also create or edit them as needed.
 3. **Select Model and Version (Optional)**: If the [Inference Model Library](./model-library) already has the target model, you can select it directly in the template or instance parameters; if no models are available yet, you can prepare the model directory first.
 4. **Create Inference Instance**: In the console, go to **AI > Inference > Inference Instances**, click New, and select a **vLLM** inference template with specifications configured to create the instance.
 5. **Get Service Address and Verify**: Go to the instance details page "Connection Info" to get the inference service address; use the running status, logs, and API calls to confirm the model has been successfully loaded and is ready to serve inference requests.
 
 ### 1. Prepare GPU Environment
 
-vLLM relies on GPU for inference. Please first complete the [NVIDIA and CUDA Environment Setup](../../getting-started/setup-nvidia-cuda), and confirm the following:
+vLLM relies on GPU for inference. Please first complete the [NVIDIA and CUDA Environment Setup](/docs/aicloud/getting-started/setup-nvidia-cuda), and confirm the following:
 
 1. The node can detect the GPU and the driver status is normal.
 2. The target GPU has enough VRAM to accommodate the model to be loaded.
@@ -52,7 +52,7 @@ Before creating an instance, it is recommended to go to **AI > Inference > Infer
 1. Go to **AI > Inference > Inference Templates** in the console.
 2. Select an existing vLLM template and click **Edit**, or click **New** to create a `vLLM` inference template.
 3. In the specification configuration, select appropriate CPU, memory, GPU model, GPU quantity, and data disk size.
-4. Select the corresponding [AI Image](../llm-image) in the image field, and save the template.
+4. Select the corresponding [Inference Image](./image) in the image field, and save the template.
 
 When configuring template specifications and image, focus on:
 
@@ -342,7 +342,7 @@ For pure text completion scenarios, use `/v1/completions`; for instruction follo
 ### Image and Specifications
 
 - **Specification Selection**: Refer to [Inference Templates](./template), focusing on the match between GPU VRAM, GPU quantity, CPU/memory, and concurrency scale.
-- **Image Selection**: Refer to [AI Images](../llm-image), use specific versions (tag/digest) for easier upgrades and rollbacks, and note CUDA, driver, and vLLM version compatibility.
+- **Image Selection**: Refer to [Inference Images](./image), use specific versions (tag/digest) for easier upgrades and rollbacks, and note CUDA, driver, and vLLM version compatibility.
 
 ### Model and Version
 
@@ -358,7 +358,7 @@ For pure text completion scenarios, use `/v1/completions`; for instruction follo
 
 ### Changes and Observability
 
-- **Upgrade and Rollback**: Control the runtime version through [AI Images](../llm-image); evaluate CUDA, driver, image, and model version compatibility before making changes.
+- **Upgrade and Rollback**: Control the runtime version through [Inference Images](./image); evaluate CUDA, driver, image, and model version compatibility before making changes.
 - **Observability Metrics**: Focus on GPU utilization, VRAM usage, QPS, P95/P99 latency, and error rates.
 - **Log Troubleshooting**: When model loading fails, VRAM is insufficient, or advanced parameter errors occur, check the console logs first as well as `/tmp/vllm.log` inside the container.
 
@@ -404,5 +404,5 @@ tail -n 50 /tmp/vllm.log
 
 ### GPU unavailable or driver mismatch
 
-- Check the driver, CUDA version, and node status according to [NVIDIA and CUDA Environment Setup](../../getting-started/setup-nvidia-cuda).
+- Check the driver, CUDA version, and node status according to [NVIDIA and CUDA Environment Setup](/docs/aicloud/getting-started/setup-nvidia-cuda).
 - Run `nvidia-smi` on the node to verify the driver and GPU status.

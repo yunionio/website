@@ -14,7 +14,7 @@ It can be understood as the "standard specification for inference instances". Th
 
 Creating an inference template generally involves the following steps:
 
-1. **Prepare Image, Model, and GPU Environment**: Confirm the target type, [AI Image](../llm-image), and GPU environment are ready; this document uses `Ollama` templates as an example. If you want the template to pre-mount models, prepare the target models in the [Inference Model Library](./model-library) in advance.
+1. **Prepare Image, Model, and GPU Environment**: Confirm the target type, [Inference Image](./image), and GPU environment are ready; this document uses `Ollama` templates as an example. If you want the template to pre-mount models, prepare the target models in the [Inference Model Library](./model-library) in advance.
 2. **Create or Edit Template**: In the console, go to **AI > Inference > Inference Templates**, create a new template or modify the platform's preset template.
 3. **Fill in Template Configuration**: Set the type, image, CPU, memory, data disk, GPU, port mapping, and mounted models as needed.
 4. **Use Template to Create Instance**: Go to **AI > Inference > Inference Instances**, select the template to create an instance and complete verification.
@@ -24,7 +24,7 @@ Creating an inference template generally involves the following steps:
 Before creating a template, it is recommended to confirm the following:
 
 1. You have identified the type of template to create; this document uses `Ollama` templates as an example.
-2. An [AI Image](../llm-image) matching the template type has been prepared.
+2. An [Inference Image](./image) matching the template type has been prepared.
 3. If you want the template to pre-mount models, the target models have been prepared in the [Inference Model Library](./model-library).
 4. The target node has sufficient GPU, CPU, memory, and data disk capacity.
 5. If the template needs to pull models or images online, the node has network connectivity to access the target repositories.
@@ -138,7 +138,7 @@ If you plan to maintain a set of standardized inference environments long-term, 
 
 ### Template save fails with image or model type mismatch error
 
-- Check whether the template type matches the [AI Image](../llm-image) type.
+- Check whether the template type matches the [Inference Image](./image) type.
 - Check whether the mounted model comes from a [Inference Model Library](./model-library) entry of the same type.
 - In this example, do not mount non-`Ollama` type images or models to an `Ollama` template.
 

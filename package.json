@@ -11,7 +11,12 @@
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids"
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "screenshots:install": "yarn --cwd scripts/screenshots install && yarn --cwd scripts/screenshots playwright install chromium",
+    "screenshots:llm-sku": "yarn --cwd scripts/screenshots capture llm-sku-template",
+    "screenshots:llm-quickstart": "yarn --cwd scripts/screenshots capture llm-quickstart",
+    "screenshots:llm-inference": "yarn --cwd scripts/screenshots capture llm-inference",
+    "screenshots:app-desktop": "yarn --cwd scripts/screenshots capture app-desktop"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.0",

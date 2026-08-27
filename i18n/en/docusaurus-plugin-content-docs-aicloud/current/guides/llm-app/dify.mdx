@@ -98,7 +98,7 @@ Model provider API Keys are typically configured and stored in the Dify web back
 :::
 
 :::tip
-If the downstream is a GPU inference service, the node where the inference service runs still needs to have the GPU environment prepared according to [Configure NVIDIA and CUDA Environment](../../getting-started/setup-nvidia-cuda).
+If the downstream is a GPU inference service, the node where the inference service runs still needs to have the GPU environment prepared according to [Configure NVIDIA and CUDA Environment](/docs/aicloud/getting-started/setup-nvidia-cuda).
 :::
 
 ### 4. Verify the Application Pipeline
@@ -235,7 +235,7 @@ The following types of environment variables are generally not recommended for c
 - **Plugins and code execution**: Plugin installation depends on the `plugin` component, and code execution depends on the `sandbox` and `ssrf` components. If these features are abnormal, it is usually not just a frontend configuration issue.
 - **Sandbox network**: Per the current platform default configuration, the code execution sandbox allows network access, but the access path goes through the `ssrf` proxy. If code nodes or plugins fail to access external resources, prioritize investigating `sandbox` and `ssrf`.
 - **Scaling**: When scaling up, it is recommended to evaluate the capacity of the API, Worker, database, vector store, and downstream model services together, rather than focusing only on frontend traffic volume.
-- **Upgrades and rollbacks**: Manage runtime versions through [AI Images](../llm-image). Before upgrading, it is recommended to back up critical data directories and databases.
+- **Upgrades and rollbacks**: Manage runtime versions through [Inference Images](../llm-inference/image). Before upgrading, it is recommended to back up critical data directories and databases.
 - **Observability**: Monitor request volume, error rates, downstream model call latency, and database and vector store storage capacity. Use logs to diagnose issues such as unavailable dependencies, timeouts, and initialization failures.
 
 ## FAQ
