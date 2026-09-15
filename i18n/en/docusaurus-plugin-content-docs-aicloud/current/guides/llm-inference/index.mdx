@@ -7,13 +7,25 @@ title: AI Inference
 
 # AI Inference
 
-Documentation for LLM inference services, including deployment and usage instructions for Ollama.<!-- 提供 LLM 推理服务相关文档，包含 Ollama 与 vLLM 的部署与使用说明。 -->
+Maps to console **Artificial Intelligence → Inference**. Used to manage LLM inference services: image and model preparation, template specs, deployment runtime, and optional benchmarks. Engine type is determined by the template (e.g. `vLLM`, `SGLang`).
 
-- [Ollama Quick Start](./ollama#quickstart)
-<!-- - [vLLM 快速开始](./vllm#quickstart) -->
-- [Inference Templates](./template)
-- [AI Model Library](./model-library)
-- (Optional) [Accelerator Scenarios](./gpu-scenarios/): inference on heterogeneous accelerators such as Ascend and Hygon
+## Recommended Reading Order
+
+1. [Quick Start](./quickstart): import model → create deployment → API Key → chat / curl.
+2. [Inference Deployments](./deployment): deployment concepts, detail tabs, and operations.
+3. [Inference Templates](./template), [Model Files](./model-library), [Inference Images](./image): specs and resource preparation.
+4. (Optional) [Benchmark](./benchmark): load-test an existing deployment.
+5. (Optional) [Accelerator Scenarios](./gpu-scenarios/): inference on Ascend, Hygon, and other accelerators.
+
+## Menu Mapping
+
+| Console menu | Description |
+| --- | --- |
+| Inference Deployments | Primary entry; the old "Inference Instances" menu is hidden and redirected here |
+| Inference Templates | Reusable specs |
+| Model Files | Mountable model data (formerly "inference model library") |
+| Inference Images | Inference runtime images |
+| Benchmark | Load-test deployments |
 
 import IndexDocCardList from '@site/src/components/IndexDocCardList';
 

@@ -19,7 +19,7 @@ This chapter walks you through quickly setting up an AI Cloud environment using 
 
 - About GPU
   - If the target machine has an Nvidia GPU, you can choose to use the ocboot tool to automatically deploy the driver and CUDA. See details later in this document.
-  - If there is no Nvidia GPU, the deployed environment will not be able to run inference container instances like Ollama, but it can run application container instances like OpenClaw and Dify that do not depend on GPU.<!-- 如果没有 Nvidia GPU，部署后的环境就无法运行 ollama 和 vllm 这种推理容器实例，但可以运行 OpenClaw 和 dify 这种不依赖 GPU 的应用容器实例。 -->
+  - If there is no Nvidia GPU, the deployed environment will not be able to run inference container instances like vLLM or SGLang, but it can run application container instances like OpenClaw and Dify that do not depend on GPU.
 - The operating system must be a clean installation, because the deployment tool will build a k3s cluster of a specified version from scratch. Make sure the system does not have Kubernetes, Docker, or other container management tools installed, otherwise conflicts will cause installation failures.
 - Minimum requirements: 8 CPU cores, 8 GiB memory, 200 GiB storage.
 - Virtual machines and services store data under the **/opt** directory, so ideally it is recommended to set up a separate mount point for **/opt**.
@@ -53,7 +53,7 @@ The `./ocboot.sh run.py` script calls Ansible to deploy services. If the script 
 
 ### Configure NVIDIA Driver and CUDA (Optional)
 
-To install or configure NVIDIA drivers and CUDA on a node to run GPU-dependent AI container applications such as Ollama, please refer to: [Setting up NVIDIA and CUDA Environment](./setup-nvidia-cuda).<!-- 若需在节点上安装或配置 NVIDIA 驱动与 CUDA 以运行 Ollama、vLLM 等依赖 GPU 的 AI 容器应用，请参考：[配置 NVIDIA 与 CUDA 环境](./setup-nvidia-cuda)。 -->
+To install or configure NVIDIA drivers and CUDA on a node to run GPU-dependent AI container applications such as vLLM and SGLang, please refer to: [Setting up NVIDIA and CUDA Environment](./setup-nvidia-cuda).
 
 ## Start Using Cloudpods AI Cloud
 
@@ -89,8 +89,7 @@ Go to the **"Artificial Intelligence"** menu to quickly create AI applications. 
 | HermesAgent | AI App | Open-source autonomous agent from Nous Research | No | [HermesAgent Quick Start](../guides/llm-app/instance/hermes#quickstart) |
 | Dify | AI App | LLM application development and workflow orchestration platform (can connect to inference services) | No | [Dify Quick Start](../guides/llm-app/instance/dify#quickstart) |
 | ComfyUI | AI App | Image generation and node-based workflow application | Yes | [ComfyUI Quick Start](../guides/llm-app/instance/comfyui#quickstart) |
-| Ollama | AI Inference | Lightweight local inference service | Yes | [Ollama Quick Start](../guides/llm-inference/ollama#quickstart) |
-<!-- | vLLM | AI推理 | 高吞吐、低延迟推理服务 | 需要 | [vLLM 快速开始](../guides/llm-inference/vllm#quickstart) | -->
+| vLLM / SGLang | AI Inference | Inference services deployed by template type | Yes | [AI Inference Quick Start](../guides/llm-inference/quickstart) |
 
 ## FAQ
 

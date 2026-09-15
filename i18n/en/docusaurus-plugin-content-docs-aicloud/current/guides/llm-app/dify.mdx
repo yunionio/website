@@ -15,7 +15,7 @@ Creating a Dify application instance generally involves the following steps:
 1. **Create an application instance**: In the console, go to **Artificial Intelligence → Applications → Application Instances**, create a new instance and select the **Dify** template.
    - The platform usually provides preset templates. If you need to customize the image, specs, or advanced environment variables, go to **Artificial Intelligence → Applications → Application Templates** to create or edit one.
 2. **Access and complete initialization**: Go to the instance details page, open "Connection Info" to get the access URL, open the Dify initialization page in a browser, and complete the administrator account and workspace initialization.
-3. **Install model plugins and configure model providers**: To connect to OpenAI, OpenAI-compatible services, or platform-internal inference services such as Ollama, first install the corresponding plugin in the Dify web backend under **Plugins → Marketplace**, then configure the model provider and downstream inference service.<!-- To connect to OpenAI, OpenAI-compatible services, or platform-internal inference services such as Ollama or vLLM, first install the corresponding plugin in the Dify web backend under **Plugins → Marketplace**, then configure the model provider and downstream inference service. -->
+3. **Install model plugins and configure model providers**: To connect to OpenAI, OpenAI-compatible services, or platform-internal inference services such as vLLM, first install the corresponding plugin in the Dify web backend under **Plugins → Marketplace**, then configure the model provider and downstream inference service.
 4. **Verify the application pipeline**: Create a minimal conversational application or workflow in Dify, make a test call, and confirm that the application, model, and toolchain are all working properly.
 
 ### 1. Create an Application Instance
@@ -66,16 +66,16 @@ Dify's web pages, API, file access, and other paths share the same external entr
 
 Dify itself does not directly mount model directories or run model weights. It functions more like an application orchestration platform, with actual model inference handled by external model providers or other inference instances within the platform.
 
-After completing initialization, it is recommended to first confirm that downstream inference services are available. Whether you are connecting to external OpenAI, other OpenAI-compatible services, or platform-internal [Ollama](../llm-inference/ollama) instances, you typically need to first install the corresponding model plugin in the Dify web backend, then go to the model provider page to complete the integration.<!-- Whether you are connecting to external OpenAI, other OpenAI-compatible services, or platform-internal [Ollama](../llm-inference/ollama) / [vLLM](../llm-inference/vllm) instances, you typically need to first install the corresponding model plugin in the Dify web backend, then go to the model provider page to complete the integration. --> Common approaches include:
+After completing initialization, it is recommended to first confirm that downstream inference services are available. Whether you are connecting to external OpenAI, other OpenAI-compatible services, or platform-internal [inference deployments](../llm-inference/deployment), you typically need to first install the corresponding model plugin in the Dify web backend, then go to the model provider page to complete the integration. Common approaches include:
 
 - Using the `OpenAI` or `OpenAI-API-compatible` plugin to connect to external model services, such as OpenAI or other services compatible with the OpenAI API.
-- Connecting to platform-internal [Ollama](../llm-inference/ollama) inference instances.<!-- Connecting to platform-internal [Ollama](../llm-inference/ollama) or [vLLM](../llm-inference/vllm) inference instances. -->
+- Connecting to platform-internal [inference deployments](../llm-inference/deployment) (e.g. vLLM / SGLang).
 
 Recommended workflow:
 
 1. Log in to the Dify console.
 2. Go to **Plugins → Marketplace**.
-3. Search for and install the corresponding plugin in the Marketplace, such as `OpenAI`, `OpenAI-API-compatible`, or `Ollama`.<!-- Search for and install the corresponding plugin in the Marketplace, such as `OpenAI`, `OpenAI-API-compatible`, `Ollama`, or `vLLM`. -->
+3. Search for and install the corresponding plugin in the Marketplace, such as `OpenAI`, `OpenAI-API-compatible`, or `vLLM`.
 4. After the plugin is installed, go to the model configuration page of the model provider.
 5. Select the provider type you want to integrate.
 6. Fill in the `Base URL`, model name, API Key, or other authentication fields as prompted.
@@ -89,8 +89,7 @@ Recommended workflow:
 
 Here is how to understand the different provider types:
 
-<!-- - **Connecting to vLLM**: Typically, first install the `vLLM` plugin in **Plugins → Marketplace**; then select the corresponding type on the model provider page and fill in the vLLM service address. In most cases, the `Base URL` should point to the `/v1` root path of the service; refer to the field description on the current Dify page for specifics. -->
-- **Connecting to Ollama**: Typically, first install the `Ollama` plugin in **Plugins → Marketplace**; then select the corresponding Ollama provider type in Dify and fill in the Ollama service address.
+- **Connecting to vLLM**: You can use the `vLLM` plugin, or connect via `OpenAI` / `OpenAI-API-compatible` to its OpenAI-compatible API. In most cases, the `Base URL` should point to the `/v1` root path of the service; refer to the field description on the current Dify page for specifics.
 - **Connecting to OpenAI or OpenAI-compatible services**: Typically, first install the `OpenAI` or `OpenAI-API-compatible` plugin in **Plugins → Marketplace**; then select the corresponding type on the model provider page and fill in the official address or compatible service's `Base URL`, model name, and API Key as required.
 
 :::tip
@@ -174,10 +173,10 @@ Many of Dify's critical states are not stored in the browser locally but in Post
 
 ### Inference Integration and Keys
 
-- **Does not directly mount models**: Dify does not support directly mounting model directories to provide model capabilities like Ollama does.<!-- Dify does not support directly mounting model directories to provide model capabilities like Ollama or vLLM do. -->
+- **Does not directly mount models**: Dify does not support directly mounting model directories to provide model capabilities like vLLM does.
 - **Model provider configuration location**: Model API Keys, model addresses, etc. are typically configured in the model provider configuration page in the Dify web backend.
-- **OpenAI / OpenAI-compatible services**: You typically also need to first install the `OpenAI` or `OpenAI-API-compatible` plugin in Dify's **Plugins → Marketplace**, then fill in the official or compatible service address.<!-- You typically also need to first install the `OpenAI` or `OpenAI-API-compatible` plugin in Dify's **Plugins → Marketplace**, then fill in the official or compatible service address; when connecting to vLLM via the OpenAI-compatible interface, the common format is `<service-url>/v1`. -->
-- **Ollama integration**: If connecting to platform-internal inference instances, it is recommended to first verify their availability, then install the corresponding plugin in Dify's **Plugins → Marketplace**, and finally return to the model provider page to complete the integration.<!-- **Ollama / vLLM integration**: If connecting to platform-internal inference instances, it is recommended to first verify their availability separately, then install the corresponding plugins in Dify's **Plugins → Marketplace**, and finally return to the model provider page to complete the integration. -->
+- **OpenAI / OpenAI-compatible services**: You typically also need to first install the `OpenAI` or `OpenAI-API-compatible` plugin in Dify's **Plugins → Marketplace**, then fill in the official or compatible service address; when connecting to vLLM via the OpenAI-compatible interface, the common format is `<service-url>/v1`.
+- **vLLM integration**: If connecting to platform-internal inference deployments, first verify their availability, then install the corresponding plugin in Dify's **Plugins → Marketplace**, and finally return to the model provider page to complete the integration.
 
 <!--
 ### Advanced Configuration and `customized_envs`
@@ -249,7 +248,7 @@ The following types of environment variables are generally not recommended for c
 ### Downstream model call timeout or failure
 
 - Check whether the model provider address, model name, and API Key configured in Dify are correct.
-- If the downstream is a platform-internal Ollama, first verify that the corresponding inference instance itself is available.<!-- If the downstream is a platform-internal Ollama or vLLM, first verify that the corresponding inference instances themselves are available. -->
+- If the downstream is a platform-internal vLLM service, first verify that the corresponding inference deployment itself is available.
 - If the downstream is a GPU inference service, confirm that the GPU node environment is normal and check the inference service capacity and logs.
 
 ### Plugin installation failed, or code execution is unavailable

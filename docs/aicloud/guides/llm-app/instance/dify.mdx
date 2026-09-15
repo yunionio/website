@@ -15,7 +15,7 @@ Dify 是一个 LLM 应用开发与编排平台，支持构建对话、Agent 与�
 1. **导入 Agent模板**：控制台 **人工智能 → Agent → Agent模板**，**导入** 社区目录中的 Dify，生成镜像与默认模板。
 2. **创建 Agent实例**：控制台 **人工智能 → Agent → Agent实例**，新建并选择刚导入的 Dify 模板。
 3. **访问并完成初始化**：进入实例详情页「连接信息」获取访问地址，用浏览器打开 Dify 初始化页面，完成管理员账号与工作空间初始化。
-4. **安装模型插件并配置模型供应商**：如需对接 OpenAI、OpenAI 兼容服务，或平台内的 Ollama、vLLM 等下游推理服务，先在 Dify Web 后台的 **插件 → Marketplace** 安装对应插件，再配置模型供应商与下游推理服务。
+4. **安装模型插件并配置模型供应商**：如需对接 OpenAI、OpenAI 兼容服务，或平台内的 vLLM 等下游推理服务，先在 Dify Web 后台的 **插件 → Marketplace** 安装对应插件，再配置模型供应商与下游推理服务。
 5. **验证应用链路**：在 Dify 中创建一个最小对话应用或工作流，发起一次调用，确认应用、模型和工具链路都正常。
 
 ### 1. 导入 Agent模板
@@ -83,13 +83,13 @@ Dify 本身不直接挂载模型目录，也不直接运行模型权重。它更
 完成初始化后，建议先确认下游推理服务已经可用。无论你要对接外部 OpenAI、其它 OpenAI 兼容服务，还是平台内的 [推理部署](../../llm-inference/deployment)，通常都需要先在 Dify Web 后台安装对应的模型插件，再进入模型供应商页面完成接入。常见方式包括：
 
 - 通过 `OpenAI` 或 `OpenAI-API-compatible` 插件，对接外部模型服务，如 OpenAI 或其它兼容 OpenAI API 的服务。
-- 对接平台内已就绪的 [推理部署](../../llm-inference/deployment)（如 Ollama / vLLM 类型）。
+- 对接平台内已就绪的 [推理部署](../../llm-inference/deployment)（如 vLLM / SGLang 类型）。
 
 推荐操作流程：
 
 1. 登录 Dify 控制台。
 2. 进入 **插件 → Marketplace**。
-3. 在 Marketplace 中搜索并安装对应插件，例如 `OpenAI`、`OpenAI-API-compatible`、`Ollama` 或 `vLLM`。
+3. 在 Marketplace 中搜索并安装对应插件，例如 `OpenAI`、`OpenAI-API-compatible` 或 `vLLM`。
 4. 插件安装完成后，进入模型供应商的模型配置页面。
 5. 选择要接入的供应商类型。
 6. 按页面提示填写 `Base URL`、模型名称、API Key 或其它鉴权字段。
@@ -103,7 +103,6 @@ Dify 本身不直接挂载模型目录，也不直接运行模型权重。它更
 
 按不同供应商类型，可以这样理解：
 
-- **对接 Ollama**：通常先在 **插件 → Marketplace** 安装 `Ollama` 插件；完成后在 Dify 中选择对应的 Ollama 供应商类型，并填写 Ollama 的服务地址。
 - **对接 vLLM**：可以使用 `vLLM` 插件，也可以通过 `OpenAI` 或 `OpenAI-API-compatible` 插件接入其 OpenAI 兼容接口。多数情况下 `Base URL` 需要指向该服务的 `/v1` 根路径，具体以 Dify 当前页面字段说明为准。
 - **对接 OpenAI 或 OpenAI 兼容服务**：通常先在 **插件 → Marketplace** 安装 `OpenAI` 或 `OpenAI-API-compatible` 插件；完成后在模型供应商页选择对应类型，再按页面要求填写官方地址或兼容服务的 `Base URL`、模型名称与 API Key。
 
@@ -188,10 +187,10 @@ Dify 的很多关键状态并不在浏览器本地，而是在 Postgres、API �
 
 ### 推理对接与密钥
 
-- **不直接挂模型**：Dify 不支持像 Ollama、vLLM 那样直接挂载模型目录来提供模型能力。
+- **不直接挂模型**：Dify 不支持像 vLLM 那样直接挂载模型目录来提供模型能力。
 - **模型供应商配置位置**：模型 API Key、模型地址等，通常在 Dify Web 后台的模型供应商配置页内完成。
 - **OpenAI / OpenAI 兼容服务**：通常也需要先在 Dify 的 **插件 → Marketplace** 安装 `OpenAI` 或 `OpenAI-API-compatible` 插件，再填写官方地址或兼容服务地址；如对接 vLLM 且走 OpenAI 兼容接口，常见形式是 `<service-url>/v1`。
-- **Ollama / vLLM 联动**：如果对接平台内的推理实例，建议先分别完成其自身的可用性验证，再到 Dify 的 **插件 → Marketplace** 安装对应插件，最后回到模型供应商页做接入。
+- **vLLM 联动**：如果对接平台内的推理部署，建议先完成其可用性验证，再到 Dify 的 **插件 → Marketplace** 安装对应插件，最后回到模型供应商页做接入。
 
 <!--
 ### 高级配置与 `customized_envs`
@@ -263,7 +262,7 @@ Dify 的很多关键状态并不在浏览器本地，而是在 Postgres、API �
 ### 下游模型调用超时或失败
 
 - 检查 Dify 中配置的模型供应商地址、模型名称和 API Key 是否正确。
-- 如果下游为平台内的 Ollama 或 vLLM，先分别验证对应推理实例本身是否已经可用。
+- 如果下游为平台内的 vLLM，先分别验证对应推理部署本身是否已经可用。
 - 如果下游是 GPU 推理服务，确认 GPU 节点环境正常，并检查推理服务容量与日志。
 
 ### 插件安装失败，或者代码执行不可用
