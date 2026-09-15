@@ -44,7 +44,7 @@ $ ssh root@10.168.222.140 "hostname"
 The following commands are all run on the previously deployed control node. The control node should have the [ocboot](https://github.com/yunionio/ocboot) deployment tool installed in advance.
 
 ::::tip If you plan to run GPU-based AI applications
-If you plan to run GPU-dependent AI applications (such as Ollama) on the new compute node, please complete [Setting up NVIDIA and CUDA Environment](./setup-nvidia-cuda) on the target compute node before running `ocboot.sh add-node` to add the node.<!-- If you plan to run GPU-dependent AI applications (such as Ollama/vLLM) on the new compute node, please complete [Setting up NVIDIA and CUDA Environment](./setup-nvidia-cuda) on the target compute node before running `ocboot.sh add-node` to add the node. -->
+If you plan to run GPU-dependent AI applications (such as vLLM) on the new compute node, please complete [Setting up NVIDIA and CUDA Environment](./setup-nvidia-cuda) on the target compute node before running `ocboot.sh add-node` to add the node.
 ::::
 
 ```bash

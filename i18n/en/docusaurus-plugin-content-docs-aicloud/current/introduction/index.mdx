@@ -10,7 +10,7 @@ Cloudpods AI Cloud is a unified management platform for large language model (LL
 
 ## Core Capabilities
 
-- **AI Inference Services**: Deploy and manage LLM inference instances with GPU scheduling, model mounting, and inference service address allocation.
+- **AI Inference Services**: Deploy and manage LLM inference deployments with GPU scheduling, model mounting, and inference service address allocation.
 - **AI Application Management**: One-stop deployment of LLM application orchestration, agent assistants, image generation, and other AI container applications.
 - **Model Library**: Unified management of model sources, versions, and caches, supporting multi-instance reuse, offline distribution, and avoiding redundant downloads.
 - **Templates and Images**: Define resource specifications such as CPU/memory/GPU through templates, and manage container runtime environments through images for standardized delivery.
@@ -21,7 +21,7 @@ Cloudpods AI Cloud is a unified management platform for large language model (LL
 After entering the **Artificial Intelligence** section of the console, there are three main modules:
 
 - **Applications**: Manage AI application instances and application templates.
-- **Inference**: Manage inference instances, inference templates, and inference model libraries.
+- **Inference**: Manage inference deployments, inference templates, model files, inference images, and benchmarks.
 - **Images**: Manage container images used by AI applications and inference services.
 
 Instance = Image + Template Spec + (optional) Model.
@@ -30,8 +30,8 @@ Instance = Image + Template Spec + (optional) Model.
 
 ### AI Inference
 
-- **Ollama**: A lightweight local LLM inference service that requires GPU, suitable for quick validation and small-scale inference scenarios.
-<!-- - **vLLM**：高吞吐、低延迟推理服务。 -->
+- **vLLM**: A high-throughput, low-latency inference service that requires GPU, suitable for OpenAI-compatible APIs and higher concurrency scenarios.
+- **SGLang**: A high-performance inference engine that requires GPU, suitable for online inference scenarios similar to vLLM.
 
 ### AI Applications
 
