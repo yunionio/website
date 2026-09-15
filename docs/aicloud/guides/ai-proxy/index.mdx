@@ -1,0 +1,40 @@
+---
+sidebar_position: 4
+hide_table_of_contents: true
+edition: ce
+title: AI网关
+---
+
+# AI 网关
+
+对应控制台 **人工智能 → AI 网关**。AI 网关以 OpenAI 兼容接口统一对外暴露模型调用：用 **API Key** 鉴权，经 **路由规则** 将请求中的 model 转发到 **供应商**（公有模型或平台内 [推理部署](../llm-inference/deployment)），并由 **接入点** 提供访问地址；**用量分析** 用于查看调用统计与请求明细。
+
+## 推荐阅读顺序
+
+1. [快速开始](./quickstart)：[场景1](./quickstart#scenario-claude) 经 AI 网关使用 Claude（DeepSeek LLM + Moonshot 识图）多模态；[场景2](./quickstart#scenario-metering) 查看多租户用量统计（按 API Key）。
+2. [API Key](./api-key)：创建调用凭证与限流。
+3. [供应商](./provider)：接入公有模型或理解推理部署自动注册的上游。
+4. [路由规则](./routing)：配置 model 匹配、模型绑定与接入信息 / curl。
+5. [接入点](./proxy-node)：管理网关对外地址与心跳。
+6. [用量分析](./usage)：查看调用概览、分析与请求明细；按 API Key 查看多租户用量。
+
+推理侧从导入到部署就绪见 [AI 推理/快速开始](../llm-inference/quickstart)。
+
+## 菜单对照
+
+| 控制台菜单 | 说明 |
+| --- | --- |
+| 用量分析 | 调用统计、分析与请求明细；可按 API Key 查看多租户用量 |
+| API Key | 调用鉴权与限流（虚拟密钥） |
+| 路由规则 | 将请求 model 绑定到供应商模型；可查接入信息、chat 测试 |
+| 供应商 | 上游模型接入（内置 / 自定义）；推理部署注册后也会出现在此 |
+| 接入点 | 网关节点地址、访问地址与心跳 |
+
+## 与推理的关系
+
+- 在 [推理部署](../llm-inference/deployment) 上执行 **注册 AI 网关** 后，平台会生成对应的供应商侧资源，并可在部署详情 **AI 网关接入** 中查看接入地址与调用示例。
+- 使用部署详情 **chat测试** 或 curl 前，需先有可用的 [API Key](./api-key)。端到端见 [AI 推理/快速开始](../llm-inference/quickstart)。按 API Key 查看多租户用量见 [快速开始/场景2](./quickstart#scenario-metering)。
+
+import IndexDocCardList from '@site/src/components/IndexDocCardList';
+
+<IndexDocCardList />

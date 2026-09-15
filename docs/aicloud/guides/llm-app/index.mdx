@@ -2,24 +2,31 @@
 sidebar_position: 1
 hide_table_of_contents: true
 edition: ce
-title: AI应用
+title: Agent
 ---
 
-# AI应用
+# Agent
+
+对应控制台 **人工智能 → Agent**。菜单顺序为 **Agent实例** / **Agent模板** / **Agent镜像**。应用类型（OpenClaw、HermesAgent、Dify、ComfyUI）在 **Agent实例** 下按类型创建，不是与实例平级的独立菜单。主路径为：在 **Agent模板** **导入** 社区应用 → 在 **Agent实例** **新建** 实例。模型推理可由公有供应商或平台内 [AI 推理](../llm-inference/) / [AI 网关](../ai-proxy/) 提供。
+
+## 推荐阅读顺序
+
+1. 在 [Agent实例](./instance/) 下按应用阅读快速开始：[OpenClaw](./instance/openclaw#quickstart)、[HermesAgent](./instance/hermes#quickstart)、[Dify](./instance/dify#quickstart)、[ComfyUI](./instance/comfyui#quickstart)（均为先导入模板再创建实例）。
+2. [Agent模板](./template)、[Agent镜像](./agent-image)：导入、规格与运行时镜像。
+3. 需要平台内推理时：见 [AI 推理/快速开始](../llm-inference/quickstart)；经网关调用时见 [AI 网关/快速开始](../ai-proxy/quickstart)。
+
+## 菜单对照
+
+| 控制台菜单 | 说明 |
+| --- | --- |
+| Agent实例 | 创建与管理 OpenClaw / HermesAgent / Dify / ComfyUI 等实例；文档见 [Agent实例](./instance/) |
+| Agent模板 | 从社区目录 **导入**（主入口），或 **新建** 自定义规格 |
+| Agent镜像 | Agent 类应用的容器镜像（与推理镜像分菜单） |
 
 ## 应用类型
 
-- **应用编排**：LLM 应用、Agent 与工作流（Dify、OpenClaw、HermesAgent）。
-- **图像生成**：图像与节点式工作流（ComfyUI）。
-
-各应用的可操作快速开始步骤请直接跳转到对应页面：
-
-- [OpenClaw 快速开始](./openclaw#quickstart)
-- [HermesAgent 快速开始](./hermes#quickstart)
-- [Dify 快速开始](./dify#quickstart)
-- [ComfyUI 快速开始](./comfyui#quickstart)
-- [应用模板](./template)
-- [AI推理（Ollama / vLLM）](../llm-inference/)
+- **应用编排 / Agent**：OpenClaw、HermesAgent、Dify。
+- **图像生成**：ComfyUI（通常需要 GPU）。
 
 import IndexDocCardList from '@site/src/components/IndexDocCardList';
 
