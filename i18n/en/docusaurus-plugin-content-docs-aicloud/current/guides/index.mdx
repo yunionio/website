@@ -6,26 +6,27 @@ edition: ce
 
 # User Guide
 
-Concepts and usage instructions for AI applications, inference, templates, model libraries, and images.
+Concepts and operations for Agents, inference, and related resources under the console **Artificial Intelligence** menu.
 
 ## Reading Guide
 
-- For deployment, see [Quick Start](../getting-started/quickstart).
-- For GPU deployment, see [NVIDIA/CUDA](../getting-started/setup-nvidia-cuda).
-- Read in this order: [AI Applications](./llm-app/) (including [Application Templates](./llm-app/template)) → [AI Inference](./llm-inference/) (including [Inference Templates](./llm-inference/template) / [Model Files](./llm-inference/model-library) / [Inference Images](./llm-inference/image), and optionally [Accelerator Scenarios](./llm-inference/gpu-scenarios/) such as [Run DeepSeek V4 Flash on Huawei Ascend NPU](./llm-inference/gpu-scenarios/ascend-deepseek-v4-flash)).
+- For installation and node preparation, see [Quick Start](../getting-started/quickstart).
+- For GPU environment, see [NVIDIA/CUDA](../getting-started/setup-nvidia-cuda).
+- For Agents, see [AI Applications](./llm-app/): start with [OpenClaw](./llm-app/openclaw) / [HermesAgent](./llm-app/hermes) / [Dify](./llm-app/dify) / [ComfyUI](./llm-app/comfyui), and [Application Templates](./llm-app/template) as needed.
+- For inference, see [AI Inference](./llm-inference/): start with [Quick Start](./llm-inference/quickstart), then [Inference Templates](./llm-inference/template) / [Model Files](./llm-inference/model-library), and optionally [Accelerator Scenarios](./llm-inference/gpu-scenarios/).
 
 ## Console Menu and Feature Overview
 
-After entering **Artificial Intelligence**, the menu is divided into **Applications**, **Inference**, and **Images**:
+After entering **Artificial Intelligence**, main groups include **Applications** and **Inference**:
 
-- **Applications**: Application instances (Dify/OpenClaw/HermesAgent/ComfyUI), application templates.
-- **Inference**: Inference instances (Ollama), inference templates, inference model library.<!-- Inference instances (Ollama/vLLM), inference templates, inference model library. -->
-- **Images**: Managed under "Artificial Intelligence" → "Images"; selected when creating templates.
+- **Applications**: Application instances (Dify / OpenClaw / HermesAgent / ComfyUI) and application templates.
+- **Inference**: Inference deployments, inference templates, model files, and inference images for engines such as vLLM / SGLang.
+- **Images**: Container images used when creating templates.
 
 ## Terminology
 
 - **Template**: Resource configuration such as CPU/memory/GPU required to run an instance.
-- **Model Library**: Reusable model resources for use by inference applications.
+- **Model Files**: Reusable model resources for inference applications.
 - **Image**: Container image for the instance runtime environment, determining functionality and version.
 
 ## Typical Relationship

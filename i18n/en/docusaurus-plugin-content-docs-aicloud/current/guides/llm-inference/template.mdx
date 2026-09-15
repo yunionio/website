@@ -1,158 +1,121 @@
 ---
-sidebar_position: 4
+sidebar_position: 3
 edition: ce
 title: Inference Templates
 ---
 
 # Inference Templates
 
-Inference templates are used to preset a set of reusable runtime configurations for AI inference instances. When creating an instance, selecting a template applies the type, image, CPU, memory, GPU, data disk, mounted models, and port mapping settings all at once.
+## Overview
 
-It can be understood as the "standard specification for inference instances". The clearer the template configuration, the more stable batch creation, scaling, rollback, and troubleshooting will be. This document uses `Ollama` templates as an example to illustrate how to use inference templates; other inference engines will be covered later.
+An inference template presets reusable runtime configuration for inference services. When creating an [Inference Deployment](./deployment), select a template to reuse type, image, CPU, memory, GPU, data disk, mounted models, and port mappings.
 
-## Quick Start {#quickstart}
+Relationships with deployments, models, and images:
 
-Creating an inference template generally involves the following steps:
+- **Inference Deployment**: Created from a template. After editing a template, **restart** associated deployments for the new config to take effect; new deployments use the latest template directly.
+- **Model Files**: When generating a template via **Import Model** (from model catalog / Hugging Face / ModelScope / local path), mountable model resources are usually created together.
+- **Inference Image**: Must match the template type.
 
-1. **Prepare Image, Model, and GPU Environment**: Confirm the target type, [Inference Image](./image), and GPU environment are ready; this document uses `Ollama` templates as an example. If you want the template to pre-mount models, prepare the target models in the [Inference Model Library](./model-library) in advance.
-2. **Create or Edit Template**: In the console, go to **AI > Inference > Inference Templates**, create a new template or modify the platform's preset template.
-3. **Fill in Template Configuration**: Set the type, image, CPU, memory, data disk, GPU, port mapping, and mounted models as needed.
-4. **Use Template to Create Instance**: Go to **AI > Inference > Inference Instances**, select the template to create an instance and complete verification.
+Console path: **Artificial Intelligence → Inference → Inference Templates**. New templates are created via **Import Model**; the list has no **New** action. End-to-end import and deploy steps: [Quick Start](./quickstart).
 
-### 1. Prerequisites
+## Common Operations
 
-Before creating a template, it is recommended to confirm the following:
+### Import Model
 
-1. You have identified the type of template to create; this document uses `Ollama` templates as an example.
-2. An [Inference Image](./image) matching the template type has been prepared.
-3. If you want the template to pre-mount models, the target models have been prepared in the [Inference Model Library](./model-library).
-4. The target node has sufficient GPU, CPU, memory, and data disk capacity.
-5. If the template needs to pull models or images online, the node has network connectivity to access the target repositories.
+Primary list action. Import from model catalog, Hugging Face, ModelScope, or a local path to generate an inference template.
 
-:::tip
-Templates only define default specifications and do not "automatically create resources" for you. If the node lacks GPU, VRAM, memory, or storage, even if the template can be saved, subsequent instance creation may still fail during scheduling or startup.
-:::
+![](./images/modelscope-import-entry.png)
 
-### 2. Create or Edit Template
+Configure the following fields in the import drawer (same meanings when **Edit**ing an existing template). Type must match the image and mounted model, or saving will fail.
 
-The console entry is **AI > Inference > Inference Templates**.
+![](./images/modelscope-select-vllm-image.png)
+![](./images/modelscope-select-hami-gpu.png)
 
-1. Click **New**, or select an existing template and click **Edit**.
-2. Select the template type; this document uses `Ollama` as an example.
-3. Fill in the template name and complete the image, specifications, model, and port configurations.
-4. Save the template.
+- **Project**: Project that owns the template; usually read-only when editing.
+- **Name**: Template name; supports ordered `#` suffixes; usually read-only when editing.
+- **Type**: Inference engine type; must match image and mounted model. When importing from Hugging Face / ModelScope / local path, choose **vLLM** or **SGLang** in **Import Config** (default vLLM); usually read-only when importing from the model catalog or editing an existing template.
+- **Image**: Inference container runtime image. On import, choose source:
+  - **Local image**: An inference image already present in the environment.
+  - **Community image**: An image from the platform catalog; if missing locally, the platform can create / pull it on submit.
+  - When **Edit**ing: pick a matching type from existing [Inference Images](./image).
+- **CPU**: Container CPU limit (cores).
+- **Memory**: Container memory limit.
+- **Data disk**: Container data-disk size. Models are mounted via **overlay sharing** and **do not consume data-disk capacity**; the disk is mainly for cache and temporary runtime data.
+- **Bandwidth**: Network bandwidth limit.
+- **Model**: Model data mounted on the template, determined by the **Import Model** entry (see below).
+- **Custom parameters**: Extra CLI / engine parameters (if any).
+- **GPU model**: GPU device config (sharing mode, model, count). Count is the number of GPUs occupied. Common sharing modes:
+  - **HAMI**: Shared GPU scheduling; can limit per-GPU **VRAM (MiB)**. Fill manually or leave empty to estimate from the mounted model. After the deployment is ready, you can [verify HAMI VRAM limits](./quickstart#verify-hami-memory).
+  - **Exclusive**: Whole GPU dedicated to the workload.
+  - **Unlimited**: No HAMI-style VRAM slicing.
+  - **MPS**: NVIDIA MPS for multi-process GPU sharing.
+- **Port mapping**: Container listen ports; the system allocates and maps external ports.
+  - **vLLM** defaults to **TCP 8000**; keep the default unless using a custom image with a different listen port.
+  - **SGLang** defaults to **TCP 30000**; keep the default unless using a custom image with a different listen port.
+  - For custom images, follow the image documentation for container ports.
+- **Host path mount**: Map a host directory into the container (optional; often used with local-path import).
 
-The platform generally provides preset default templates, and you can also modify them directly, such as updating the GPU model, data disk size, or mounted models.
+#### Import from model catalog {#import-model-library}
 
-![](./images/sku-list.png)
-![](./images/sku-create.png)
-![](./images/sku-update.png)
+Search and pick a model from the platform **model catalog**, then choose a **spec** under that model (engine backend, quantization, source, etc.), configure image and resources, and submit to generate a template with the model mounted. Field meanings are as above.
 
-### 3. Use Template to Create Instance
+![](./images/import-model-library.png)
 
-After saving the template, go to **AI > Inference > Inference Instances** to create an instance. Selecting the corresponding template will reuse the main configurations from the template. Using `Ollama` as the current example, refer directly to [Ollama](./ollama) for instance creation and verification.
+#### Import from Hugging Face {#import-huggingface}
 
-## Core Configuration Items
+Search Hugging Face online, choose **vLLM** or **SGLang** in import config, and generate mountable resources plus a template. Nodes must reach Hugging Face. Field meanings are as above.
 
-Common configuration items for inference templates are as follows:
+![](./images/import-model-huggingface.png)
 
-| Configuration Item | Purpose | Usage Recommendations |
-| --- | --- | --- |
-| Type | Specifies the inference engine for the template | Must be consistent with the image and mounted model types; this document uses `Ollama` as an example |
-| AI Image | Specifies the container image used at instance runtime | Select an image matching the template type with a specific version |
-| CPU / Memory | Determines the base resources for the inference service | Even when VRAM is sufficient, CPU and memory still affect loading speed, concurrency, and stability |
-| Data Disk | Provides persistent storage for models, cache, and runtime data | Inference templates must plan for data disks; a disk that is too small will cause model download or mount failures |
-| GPU | Determines whether the model can be loaded and the throughput ceiling | Focus on GPU model, VRAM, and quantity |
-| Mounted Models | Pre-associates models from the inference model library | Mounted model types must match the template type |
-| Port Mapping | Exposes container ports for external access | Different engines use different ports; for `Ollama`, the common port is `11434` |
-| Bandwidth | Limits container network throughput | Consider this when downloading models/images online or providing external APIs |
+#### Import from ModelScope {#import-modelscope}
 
-### Type and Image
+Select a model from ModelScope, choose **vLLM** or **SGLang**, and generate a template with the model mounted (convenient for mainland China access). Field meanings are as above. Steps: [Quick Start / Import from ModelScope](./quickstart#import-modelscope).
 
-The template type determines the instance runtime behavior and the scope of selectable images and models. This document uses `Ollama` templates as an example, highlighting the following validation relationships:
+![](./images/import-model-scope.png)
 
-- An `Ollama` template should select an `Ollama` type image.
-- Models mounted to the template should also match the `Ollama` template type.
+#### Import from local path {#import-local-path}
 
-If the image or mounted model type does not match, the template cannot be saved.
-
-### CPU, Memory, GPU, and Data Disk
-
-These fields determine whether the template can support stable operation of the target model:
-
-- **CPU**: Affects model loading, request queuing, and some preprocessing tasks.
-- **Memory**: Affects the inference process, caching, and runtime stability; insufficient memory may cause OOM or frequent restarts.
-- **GPU**: Determines whether the large model can fit into VRAM, and also affects concurrency capacity and latency performance.
-- **Data Disk**: Used to store model files, cache, and runtime data; this is a critical item in inference templates.
-
-For inference templates, the data disk is not an optional "add-on". Using the `Ollama` template in this document as an example, the platform needs to persist the model directory:
-
-- Ollama's model directory is located at `/root/.ollama/models`
-- This directory relies on persistent storage to retain models and cache
+Import a model already on the host filesystem. Provide an absolute host model path and optionally prefer a host for scheduling; combine with **Host path mount** to map the directory into the container. Field meanings are as above.
 
 :::tip
-If you plan to mount multiple models, or want to continue reusing cache after instance restarts, it is recommended to increase the data disk size rather than relying on the container's ephemeral layer.
+For local-path imports with HAMI shared VRAM, fill in the VRAM limit manually.
 :::
 
-### Mounted Models
+![](./images/import-host-path.png)
 
-Templates support pre-mounting models from the [Inference Model Library](./model-library). This way, when creating an instance from the template, models are carried over with the template, reducing the need for manual selection or online downloading each time.
+### View Details
 
-The console links to the inference model library by default; if there are no suitable models in the model library yet, the template can be saved without mounting models and supplemented later.
+The list shows card status (e.g. **Ready vLLM**), resource specs, image, model source, and mounted models. Sidebar tabs commonly include:
 
-Note:
+- **Details**: Type, image, CPU/memory/GPU, data disk, mounted models, ports, etc.
+- **Operation logs**: Import, edit, and related task events.
 
-- The mounted model type must match the template type; in this example, an `Ollama` template should mount `Ollama` models.
-- A template can mount multiple models.
-- After instance creation, it inherits the mounted model list from the template.
-- Models pre-mounted by the template typically cannot be directly deleted or disabled in the model library without first removing the template reference.
+![](./images/llm-sku-detail.png)
 
-If models in the model library have auto-caching enabled, the platform will perform node-side caching based on the model's associated image, which usually helps reduce the wait time during first startup.
+### Other Operations
 
-![](./images/sku-instant-model.png)
-![](./images/sku-show-instant-model.png)
-
-### Port Mapping and Network
-
-The port mapping in the template determines how the instance service is exposed externally. Different inference engines may have different default ports; this document uses `Ollama` as an example, which typically exposes `11434`.
-
-Additionally:
-
-- **Bandwidth**: Affects API throughput and online model download speed.
-- **Host**: If you need to pin the instance to a specific GPU node, you can specify it during instance creation.
-- **Network**: You can choose automatic scheduling or specify an existing subnet; the final configuration is determined at the instance level.
-
-## Relationship Between Templates and Instances
-
-Inference templates provide "default values", while inference instances carry the "actual runtime state". Understanding this relationship helps avoid many operational misunderstandings:
-
-- **When creating a new instance**: The instance inherits the resource specifications, image, mounted models, port mapping, and other main configurations from the template.
-- **After modifying a template**: Changes typically only affect subsequently created instances; already running instances will not automatically sync to the new template configuration.
-- **During upgrades or rollbacks**: It is recommended to modify the template first and recreate the instance, or perform explicit specification/image change operations on the instance side.
-
-:::tip
-If you plan to maintain a set of standardized inference environments long-term, it is recommended to plan multiple templates by model size, GPU tier, or purpose, such as "7B test template", "32B production template", or "Ollama validation template".
-:::
+- **Clone**: Copy all specs from an existing template (type, image, CPU/memory/GPU, mounted models, source, custom parameters, etc.) and only set a new name. Mounted models are reused without re-download. Templates that are importing or failed to import cannot be cloned.
+- **Deploy**: Jump to create an inference deployment with this template preselected.
+- **Edit**: Adjust image, specs, mounted models, ports, etc. After saving, **restart** deployments that use the template for changes to take effect (see [Inference Deployments / Common Operations](./deployment#operations)).
+- **Change project** / **Set sharing scope**: As needed for project and visibility management.
+- **Delete**: Confirm no dependent deployments before deleting.
 
 ## FAQ
 
-### Template save fails with image or model type mismatch error
+### Template save failed: image or model type mismatch
 
-- Check whether the template type matches the [Inference Image](./image) type.
-- Check whether the mounted model comes from a [Inference Model Library](./model-library) entry of the same type.
-- In this example, do not mount non-`Ollama` type images or models to an `Ollama` template.
+Check that template type, [Inference Image](./image), and [Model Files](./model-library) belong to the same engine.
 
-### Template was created successfully, but instance still fails to schedule
+### Template saved, but deployment scheduling failed
 
-- A template being saveable does not mean the running node has sufficient resources.
-- Focus on checking whether GPU model, VRAM, CPU, memory, and data disk meet the requirements.
-- If a host was specified, also confirm that the node actually has allocatable GPU and storage resources.
+Check node GPU, VRAM, CPU, memory, and data disk; if a host is specified, confirm that host has allocatable resources.
 
-### Why do existing instances not change after modifying the template?
+### Edited the template, but existing deployments did not change
 
-Templates are primarily used for subsequent creation. Already running instances typically do not automatically follow template changes; you need to perform the rebuild process on the instance side separately.
+Editing a template does not hot-update running replicas. Open the [Inference Deployment](./deployment) and **restart** so the new config applies. New deployments use the latest template directly.
 
-### How to estimate data disk size?
+### How to size the data disk
 
-- **Ollama**: Focus on estimating the model volume in `/root/.ollama/models` and future cache growth.
-- If multiple models will be mounted, it is recommended to reserve space based on "total model files + cache + future growth", rather than estimating based on a single model size alone.
+Models are overlay-mounted; **model files do not consume the data disk**. Reserve space for runtime cache and temporary files; too small a disk can fill up.
+
+Import and deploy troubleshooting: [Quick Start / FAQ](./quickstart#faq).
