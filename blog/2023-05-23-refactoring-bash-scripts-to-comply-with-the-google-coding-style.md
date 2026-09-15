@@ -193,3 +193,4 @@ fi
 * [ShellCheck - A shell script static analysis tool](https://chromium.googlesource.com/chromiumos/third_party/shellcheck/+/HEAD/README.md)
 * [styleguide | Style guides for Google-originated open-source projects](https://google.github.io/styleguide/shellguide.html)* 
 * [regex101: build, test, and debug regex](https://regex101.com/)
+* [cyrilex: test and visualize regex](https://extendsclass.com/regex-tester.html)
