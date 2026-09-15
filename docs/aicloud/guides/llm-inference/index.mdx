@@ -7,13 +7,25 @@ title: AI推理
 
 # AI推理
 
-提供 LLM 推理服务相关文档，包含 Ollama、vLLM 与 SGLang 的部署与使用说明。
+对应控制台 **人工智能 → 推理**。用于管理 LLM 推理服务：镜像与模型准备、模板规格、部署运行，以及可选的基准测试。引擎类型以模板为准（如 `Ollama`、`vLLM`、`SGLang`）。
 
-- [Ollama 快速开始](./ollama#quickstart)
-- [vLLM 快速开始](./vllm#quickstart)
-{/* - [SGLang 快速开始](./sglang#quickstart) */}
-- [推理模板](./template)
-- [AI模型库](./model-library)
+## 推荐阅读顺序
+
+1. [快速开始](./quickstart)：导入模型 → 创建部署 → API Key → chat / curl。
+2. [推理部署](./deployment)：部署概念、详情页签与运维操作。
+3. [推理模板](./template)、[模型文件](./model-library)、[推理镜像](./image)：规格与资源准备。
+4. （可选）[基准测试](./benchmark)：对已有部署压测。
+5. （可选）[算力卡场景](./gpu-scenarios/)：昇腾、海光等异构算力卡上的推理部署场景。
+
+## 菜单对照
+
+| 控制台菜单 | 说明 |
+| --- | --- |
+| 推理部署 | 主入口；旧「推理实例」菜单已隐藏并重定向至此 |
+| 推理模板 | 可复用规格 |
+| 模型文件 | 可挂载模型数据（旧称「推理模型库」） |
+| 推理镜像 | 推理运行时镜像 |
+| 基准测试 | 对部署压测 |
 
 import IndexDocCardList from '@site/src/components/IndexDocCardList';
 

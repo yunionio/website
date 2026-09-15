@@ -46,7 +46,7 @@
     bandwidth: 1000
     port_mappings:
       - protocol: tcp
-        container_port: 3000
+        container_port: 30000
 ## ComfyUI
 - image: registry.cn-beijing.aliyuncs.com/cloudpods/comfyui-boot:cu128-slim.20260324.0
   description: ComfyUI Boot cu128-slim 默认镜像
