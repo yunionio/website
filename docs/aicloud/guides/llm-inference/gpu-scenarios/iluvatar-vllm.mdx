@@ -1,0 +1,150 @@
+---
+sidebar_position: 3
+edition: ce
+title: 天数智芯 GPU 运行 vLLM
+---
+
+# 天数智芯 GPU 运行 vLLM
+
+## 概念介绍
+
+本文说明如何在已安装 **天数智芯（Iluvatar）CoreX** 驱动的容器节点上，用平台 vLLM 路径部署本地模型。平台发现 GPU 后，按调度结果向容器注入 `IX_VISIBLE_DEVICES`（卡号索引），并传入 `/dev/itrctl`、`/dev/iluvatar{N}`，同时只读挂载宿主机 CoreX 目录（默认 `/usr/local/corex-4.4.0`，并额外挂到容器 `/usr/local/corex`）。`--tensor-parallel-size` 等于模板中的 GPU 数量。天数专用量化、图编译等参数通过模板环境变量与自定义参数传入，不写死在引擎里。
+
+平台落地路径为：**推理镜像** → **推理模板**（从本地路径导入）→ **推理部署**。字段与通用操作见 [推理镜像](../image)、[推理模板/从本地路径导入](../template#import-local-path)、[推理部署](../deployment)。
+
+## 节点前置
+
+目标宿主机须已纳管为容器计算节点，并满足：
+
+- 已安装 Iluvatar Driver 与 CoreX，默认路径 `/usr/local/corex-4.4.0`。节点上应存在 `/dev/itrctl` 与 `/dev/iluvatar{N}`。
+- 已安装 [ix-container-toolkit](https://github.com/Deep-Spark/ix-container-toolkit) 时，可将 containerd 默认 runtime 设为 `iluvatar`；**平台创建 Pod 时不单独指定 runtime**。即使未走 toolkit hook，hostman 也会传入字符设备并挂载 CoreX。
+- hostman 探测 `ixsmi` 时会带上 `LD_LIBRARY_PATH`（默认 `$COREX_HOME/lib64`）。可用下列命令在宿主机上自检：
+
+```bash
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/corex-4.4.0/lib64
+/usr/local/corex-4.4.0/bin/ixsmi
+/usr/local/corex-4.4.0/bin/ixsmi -L
+```
+
+hostman 选项（一般无需改）：`enable_container_iluvatar_gpu`（默认开启）、`iluvatar_corex_home`（默认 `/usr/local/corex-4.4.0`）、`iluvatar_ixsmi_path`（默认 `$iluvatar_corex_home/bin/ixsmi`）。二进制不存在则跳过探测。
+
+模型权重须已落盘到该宿主机（示例：`/data/model/Qwen3.5-122B-A10B-w4a8`）。
+
+## 对照：裸机 Docker 启动 {#bare-metal-docker}
+
+下列命令用于对照裸机启动方式。平台侧等价关系：
+
+- `--runtime iluvatar`：由节点 containerd 默认 runtime 提供，无需在模板中填写。
+- `-e IX_VISIBLE_DEVICES=0,1,2,3`：由 hostman 按已绑定 GPU 的 **index** 注入；同时设置 `COREX_HOME`、`LD_LIBRARY_PATH=<COREX_HOME>/lib64`。
+- 字符设备 `/dev/itrctl`、`/dev/iluvatar{N}`：由 hostman 按探测结果传入。
+- `-v /usr/local/corex:/usr/local/corex:ro`：由 hostman 把 `IluvatarCorexHome`（默认 `/usr/local/corex-4.4.0`）只读挂到容器同路径，并再挂一份到 `/usr/local/corex`。
+- `--tensor-parallel-size 4`：由模板 GPU 数量生成。
+- `-v /data:/data`：由模板 **host_paths** 挂载。
+- 天数专用 `VLLM_*` 环境变量与 `vllm serve` 附加参数：写在模板 **环境变量** / **自定义参数** 中。
+
+```bash
+docker run -it --rm \
+  --runtime iluvatar \
+  -e IX_VISIBLE_DEVICES=0,1,2,3 \
+  --network=host \
+  -v /data:/data \
+  registry.iluvatar.com.cn:10443/customer/sz/vllm0.11.2-4.4.0-x86:v9 \
+  /bin/bash -c "
+ixsmi
+
+export VLLM_ENFORCE_CUDA_GRAPH=1
+export VLLM_W8A8_MOE_USE_W4A8=1
+export VLLM_KV_DISABLE_CROSS_GROUP_SHARE=1
+
+vllm serve /data/model/Qwen3.5-122B-A10B-w4a8 \
+  --trust-remote-code \
+  --tensor-parallel-size 4 \
+  --pipeline-parallel-size 1 \
+  --max-num-seqs 64 \
+  --enable-chunked-prefill \
+  --max-model-len 16384 \
+  --host 0.0.0.0 \
+  --port 1234 \
+  --gpu-memory-utilization 0.90 \
+  --compilation-config \"{\\\"cudagraph_mode\\\":\\\"FULL_DECODE_ONLY\\\",\\\"level\\\":0}\"
+"
+```
+
+平台 vLLM 默认监听端口为 **8000**，与上方 Docker 示例的 `1234` 不同；调用时以部署实际端口为准。
+
+## 常用操作
+
+控制台入口为 **人工智能 → 推理**。也可使用 climc；位置参数与通用字段见 [推理镜像](../image)、[推理模板](../template)、[推理部署](../deployment)。
+
+### 登记推理镜像
+
+```bash
+climc llm-image-create \
+  iluvatar-vllm \
+  registry.iluvatar.com.cn:10443/customer/sz/vllm0.11.2-4.4.0-x86 \
+  v9 \
+  vllm
+```
+
+镜像名、标签按实际仓库替换。若仓库需认证，创建时指定 `--credential-id`。
+
+### 创建推理模板
+
+示例：4 张天数 GPU、本地模型路径、厂商示例中的环境变量与自定义参数。`tensor-parallel-size` 不要手写，平台按 `--device` 条数生成。
+
+```bash
+climc llm-sku-create \
+  qwen-iluvatar-4gpu \
+  16 \
+  65536 \
+  102400 \
+  iluvatar-vllm \
+  vllm \
+  --source local_path \
+  --local-path /data/model/Qwen3.5-122B-A10B-w4a8 \
+  --host-path 'path=/data,type=directory,container_index=0,mount_path=/data' \
+  --device 'Iluvatar BI-V150S::GPU:EXCLUSIVE:ILUVATAR' \
+  --device 'Iluvatar BI-V150S::GPU:EXCLUSIVE:ILUVATAR' \
+  --device 'Iluvatar BI-V150S::GPU:EXCLUSIVE:ILUVATAR' \
+  --device 'Iluvatar BI-V150S::GPU:EXCLUSIVE:ILUVATAR' \
+  --env VLLM_ENFORCE_CUDA_GRAPH=1 \
+  --env VLLM_W8A8_MOE_USE_W4A8=1 \
+  --env VLLM_KV_DISABLE_CROSS_GROUP_SHARE=1 \
+  --vllm-arg trust-remote-code= \
+  --vllm-arg pipeline-parallel-size=1 \
+  --vllm-arg max-num-seqs=64 \
+  --vllm-arg enable-chunked-prefill= \
+  --vllm-arg max-model-len=16384 \
+  --vllm-arg gpu-memory-utilization=0.90 \
+  --vllm-arg 'compilation-config={"cudagraph_mode":"FULL_DECODE_ONLY","level":0}' \
+  --categories llm
+```
+
+`--device` 格式为 `型号[:路径[:类型[:共享模式[:厂商]]]]`。天数卡使用 `Vendor=ILUVATAR`（PCI vendor `1e3e`）；型号须与节点上报的 isolated device 型号一致（示例为 `Iluvatar BI-V150S`）。
+
+### 创建推理实例
+
+```bash
+climc llm-create \
+  qwen-iluvatar-llm \
+  qwen-iluvatar-4gpu \
+  --prefer-host <container-host-id> \
+  --net <network-id> \
+  --auto-start
+```
+
+`--prefer-host` 指定已落盘模型、且已识别天数 GPU 的容器节点。验证方式见 [AI 推理/快速开始](../quickstart)。
+
+## 常见问题
+
+### 节点未发现天数 GPU
+
+在宿主机执行上文 `ixsmi` / `ixsmi -L`；确认 `LD_LIBRARY_PATH` 含 `/usr/local/corex-4.4.0/lib64`。hostman 日志中应出现 `iluvatar gpu` 探测记录。若 CoreX 不在默认路径，修改 `iluvatar_corex_home` / `iluvatar_ixsmi_path` 后重启 host。
+
+### 容器内看不到指定卡或无法执行 ixsmi
+
+查看容器环境变量 `IX_VISIBLE_DEVICES`、`COREX_HOME`、`LD_LIBRARY_PATH`；确认存在 `/dev/itrctl`、`/dev/iluvatar{N}`，以及 `$COREX_HOME/bin/ixsmi` 或 `/usr/local/corex/bin/ixsmi`。不要在自定义参数里再写 `--runtime`。若 CoreX 不在默认路径，修改 `iluvatar_corex_home` 后重启 host。
+
+### 启动参数与 Docker 示例不一致
+
+天数专用 `VLLM_*` 与 `compilation-config` 等须写在模板环境变量 / `--vllm-arg` 中；`tensor-parallel-size` 由卡数决定，勿与 `--device` 条数冲突。
