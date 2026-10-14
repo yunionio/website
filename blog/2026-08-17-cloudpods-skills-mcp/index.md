@@ -43,9 +43,9 @@ MCP 地址只走 Gateway，路径固定，只换主机：
 https://<主机>/api/s/mcp-server/sse
 ```
 
-**SK 本身已经是 base64，不要再解码，也不要再包一层 `base64(ak:sk)`。** 智能体会把 AK / SK 原样写进请求 Header。若你手头已有一整串现成的 `X-API-Key`，也可以直接给，不要改它。
+v4.0以后，Access Key/Secret Key 可以通过Web控制台获取。路径为：控制台右上角用户菜单-访问凭证-API AccessKey。
 
-Access Key 需要用 climc 生成。请先在控制台打开 [CloudShell](/docs/cmp/introduction/login#cloudshell)（已注入当前登录用户的认证，不必再 `source` rc），再按 [API 调用过程](/docs/cmp/development/apisdk/api) 创建并查出密钥。
+v4.0之前，Access Key 需要用 climc 生成。请先在控制台打开 [CloudShell](/docs/cmp/introduction/login#cloudshell)（已注入当前登录用户的认证，不必再 `source` rc），再按 [API 调用过程](/docs/cmp/development/apisdk/api) 创建并查出密钥。
 
 ```bash
 $ climc credential-create-aksk
