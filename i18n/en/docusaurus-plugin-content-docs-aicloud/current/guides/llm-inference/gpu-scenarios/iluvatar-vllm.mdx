@@ -1,0 +1,146 @@
+---
+sidebar_position: 3
+edition: ce
+title: Run vLLM on Iluvatar GPU
+---
+
+# Run vLLM on Iluvatar GPU
+
+## Overview
+
+This page describes how to run vLLM on a container host that already has the **Iluvatar CoreX** driver. After the host discovers GPUs, the platform injects `IX_VISIBLE_DEVICES` (device indexes), passes `/dev/itrctl` and `/dev/iluvatar{N}`, and bind-mounts the host CoreX directory read-only (default `/usr/local/corex-4.4.0`, plus `/usr/local/corex` in the container). `--tensor-parallel-size` equals the number of GPUs on the inference template. Vendor-specific quantization and graph-compilation flags are supplied via template environment variables and custom args, not hardcoded in the engine.
+
+Flow: **inference image** → **inference template** (import from local path) → **inference deployment**. See [Inference Image](../image), [Inference Template/Import from local path](../template#import-local-path), and [Inference Deployment](../deployment).
+
+## Host prerequisites
+
+The target host must be a managed container compute node with:
+
+- Iluvatar Driver and CoreX installed. Default path: `/usr/local/corex-4.4.0`. The host should have `/dev/itrctl` and `/dev/iluvatar{N}`.
+- If [ix-container-toolkit](https://github.com/Deep-Spark/ix-container-toolkit) is installed, containerd `default_runtime_name` may be `iluvatar`. The platform does not pass a per-pod runtime handler. hostman still injects character devices and mounts CoreX even when the toolkit hook does not run.
+- hostman probes `ixsmi` with `LD_LIBRARY_PATH` (default `$COREX_HOME/lib64`). Verify on the host:
+
+```bash
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/corex-4.4.0/lib64
+/usr/local/corex-4.4.0/bin/ixsmi
+/usr/local/corex-4.4.0/bin/ixsmi -L
+```
+
+hostman options (usually unchanged): `enable_container_iluvatar_gpu` (default true), `iluvatar_corex_home` (default `/usr/local/corex-4.4.0`), `iluvatar_ixsmi_path` (default `$iluvatar_corex_home/bin/ixsmi`). Probe is skipped if the binary is missing.
+
+Model weights must already exist on that host (example: `/data/model/Qwen3.5-122B-A10B-w4a8`).
+
+## Bare-metal Docker equivalent {#bare-metal-docker}
+
+Use the following command only as a mapping reference:
+
+- `--runtime iluvatar` comes from the node’s default containerd runtime.
+- `-e IX_VISIBLE_DEVICES=0,1,2,3` is injected by hostman from bound GPU **indexes**, along with `COREX_HOME` and `LD_LIBRARY_PATH=<COREX_HOME>/lib64`.
+- Character devices `/dev/itrctl` and `/dev/iluvatar{N}` are passed by hostman from probe results.
+- `-v /usr/local/corex:/usr/local/corex:ro` is implemented by bind-mounting `IluvatarCorexHome` (default `/usr/local/corex-4.4.0`) into the container at the same path and again at `/usr/local/corex`.
+- `--tensor-parallel-size 4` is generated from the template GPU count.
+- `-v /data:/data` is the template **host_paths** mount.
+- Iluvatar-specific `VLLM_*` env vars and extra `vllm serve` flags belong on the template.
+
+```bash
+docker run -it --rm \
+  --runtime iluvatar \
+  -e IX_VISIBLE_DEVICES=0,1,2,3 \
+  --network=host \
+  -v /data:/data \
+  registry.iluvatar.com.cn:10443/customer/sz/vllm0.11.2-4.4.0-x86:v9 \
+  /bin/bash -c "
+ixsmi
+
+export VLLM_ENFORCE_CUDA_GRAPH=1
+export VLLM_W8A8_MOE_USE_W4A8=1
+export VLLM_KV_DISABLE_CROSS_GROUP_SHARE=1
+
+vllm serve /data/model/Qwen3.5-122B-A10B-w4a8 \
+  --trust-remote-code \
+  --tensor-parallel-size 4 \
+  --pipeline-parallel-size 1 \
+  --max-num-seqs 64 \
+  --enable-chunked-prefill \
+  --max-model-len 16384 \
+  --host 0.0.0.0 \
+  --port 1234 \
+  --gpu-memory-utilization 0.90 \
+  --compilation-config \"{\\\"cudagraph_mode\\\":\\\"FULL_DECODE_ONLY\\\",\\\"level\\\":0}\"
+"
+```
+
+The platform vLLM default listen port is **8000**, not `1234` from the Docker example.
+
+## Operations
+
+Console path: **AI → Inference**. climc examples:
+
+### Register an inference image
+
+```bash
+climc llm-image-create \
+  iluvatar-vllm \
+  registry.iluvatar.com.cn:10443/customer/sz/vllm0.11.2-4.4.0-x86 \
+  v9 \
+  vllm
+```
+
+### Create an inference template
+
+Do not set `tensor-parallel-size` by hand; the platform uses the number of `--device` entries.
+
+```bash
+climc llm-sku-create \
+  qwen-iluvatar-4gpu \
+  16 \
+  65536 \
+  102400 \
+  iluvatar-vllm \
+  vllm \
+  --source local_path \
+  --local-path /data/model/Qwen3.5-122B-A10B-w4a8 \
+  --host-path 'path=/data,type=directory,container_index=0,mount_path=/data' \
+  --device 'Iluvatar BI-V150S::GPU:EXCLUSIVE:ILUVATAR' \
+  --device 'Iluvatar BI-V150S::GPU:EXCLUSIVE:ILUVATAR' \
+  --device 'Iluvatar BI-V150S::GPU:EXCLUSIVE:ILUVATAR' \
+  --device 'Iluvatar BI-V150S::GPU:EXCLUSIVE:ILUVATAR' \
+  --env VLLM_ENFORCE_CUDA_GRAPH=1 \
+  --env VLLM_W8A8_MOE_USE_W4A8=1 \
+  --env VLLM_KV_DISABLE_CROSS_GROUP_SHARE=1 \
+  --vllm-arg trust-remote-code= \
+  --vllm-arg pipeline-parallel-size=1 \
+  --vllm-arg max-num-seqs=64 \
+  --vllm-arg enable-chunked-prefill= \
+  --vllm-arg max-model-len=16384 \
+  --vllm-arg gpu-memory-utilization=0.90 \
+  --vllm-arg 'compilation-config={"cudagraph_mode":"FULL_DECODE_ONLY","level":0}' \
+  --categories llm
+```
+
+`--device` format: `model[:path[:dev_type[:sharing_mode[:vendor]]]]`. Use `Vendor=ILUVATAR` (PCI vendor `1e3e`). The model string must match the isolated device model reported by the host (example: `Iluvatar BI-V150S`).
+
+### Create an inference instance
+
+```bash
+climc llm-create \
+  qwen-iluvatar-llm \
+  qwen-iluvatar-4gpu \
+  --prefer-host <container-host-id> \
+  --net <network-id> \
+  --auto-start
+```
+
+## FAQ
+
+### GPUs are not discovered
+
+Run `ixsmi` / `ixsmi -L` on the host with `LD_LIBRARY_PATH` including `/usr/local/corex-4.4.0/lib64`. Check hostman logs for `iluvatar gpu`. If CoreX is not at the default path, set `iluvatar_corex_home` / `iluvatar_ixsmi_path` and restart hostman.
+
+### The container cannot see the assigned GPUs or run ixsmi
+
+Check `IX_VISIBLE_DEVICES`, `COREX_HOME`, and `LD_LIBRARY_PATH`. Confirm `/dev/itrctl`, `/dev/iluvatar{N}`, and `$COREX_HOME/bin/ixsmi` or `/usr/local/corex/bin/ixsmi` exist. Do not pass `--runtime` in custom args. If CoreX is not at the default path, set `iluvatar_corex_home` and restart hostman.
+
+### Startup flags differ from the Docker example
+
+Put Iluvatar `VLLM_*` env vars and `compilation-config` on the template. `tensor-parallel-size` must match the number of `--device` entries.
