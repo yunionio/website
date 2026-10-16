@@ -55,10 +55,11 @@ $ sudo systemctl enable --now docker
 
 Docker Compose 环境准备好后，就可以使用 https://github.com/yunionio/ocboot 里面的 docker-compose.yml 配置文件启动服务了，步骤如下：
 
-```bash
-# 下载 ocboot 工具到本地
-$ git clone -b release/3.11 https://github.com/yunionio/ocboot && cd ./ocboot
+import OcbootClone from '@site/src/components/OcbootClone';
 
+<OcbootClone />
+
+```bash
 # 进入 compose 目录
 $ cd compose
 $ ls -alh docker-compose.yml
