@@ -55,10 +55,11 @@ $ sudo systemctl enable --now docker
 
 After the Docker Compose environment is ready, you can use the docker-compose.yml configuration file in https://github.com/yunionio/ocboot to start the service, as follows:
 
-```bash
-# Download the OCBoot tool to the local environment
-$ git clone -b release/3.11 https://github.com/yunionio/ocboot && cd ./ocboot
+import OcbootClone from '@site/src/components/OcbootClone';
 
+<OcbootClone />
+
+```bash
 # Enter the compose directory
 $ cd compose
 $ ls -alh docker-compose.yml
