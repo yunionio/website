@@ -154,6 +154,13 @@
   url: https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-arm64.img
 - distribution: Ubuntu Server
   os_name: Linux
+  os_arch: riscv64
+  os_version: 24.04(Noble)
+  build: current
+  source: cloud-images.ubuntu.com
+  url: https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-riscv64.img
+- distribution: Ubuntu Server
+  os_name: Linux
   os_arch: x86_64
   os_version: 23.10(Mantic)
   build: current
