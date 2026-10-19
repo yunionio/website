@@ -334,6 +334,12 @@
   build: 1907
   source: cloud.centos.org
   url: https://cloud.centos.org/centos/6/images/CentOS-6-x86_64-GenericCloud-1907.qcow2c
+- distribution: openRuyi
+  os_name: Linux
+  os_arch: riscv64
+  os_version: Creek 2026.09 RVA23
+  source: openruyi
+  url: https://releases.openruyi.cn/creek/2026.09/rva23/openRuyi-2026.09-Server-cloud.qcow2
 - distribution: openEuler
   os_name: Linux
   os_arch: x86_64
