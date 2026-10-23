@@ -33,7 +33,7 @@ cd ocboot-master-v4.1.0-preview
 
 即将一套all-in-one的cloudpods部署在 RISC-V 硬件上，控制面和计算节点都可以在 RISC-V 物理机上拉起。由于做了Cloudpods当前使用的k3s和calico 版本的 RISC-V 移植，因此也可以将 RISC-V 节点加入存量的cloudpods集群，也可以将x86或arm节点加入 RISC-V 的集群，实现三种异构架构的混合部署。
 
-目前, Cloudpods RISC-V 适配版本为 v4.1.0-20261021.0，支持的操作系统版本包括：
+目前, Cloudpods RISC-V 适配版本为 v4.1.0-20261022.0，支持的操作系统版本包括：
 
 | Operating system and Arch | 4.1.0-preview |
 | --- | --- |
