@@ -341,6 +341,35 @@ model_sets:
     backend_parameters:
     - --mm-encoder-tp-mode=data
     - --max-model-len=65536
+- name: Qwen3.8-27B
+  description: Qwen3.8-27B is a dense vision-language model with 27B language-model parameters, hybrid
+    attention, a native 256K context window, and support for image and video understanding, coding, and
+    tool use.
+  home: https://qwen.ai
+  icon: /static/catalog_icons/qwen.png
+  size: 27
+  categories:
+  - llm
+  capabilities:
+  - context/256K
+  - vision
+  - tools
+  licenses:
+  - apache-2.0
+  release_date: '2026-08-14'
+  specs:
+  - mode: standard
+    quantization: BF16
+    gpu_filters:
+      vendor: nvidia
+    source: model_scope
+    model_scope_model_id: Qwen/Qwen3.8-27B
+    backend: vLLM
+    backend_parameters:
+    - --max-model-len=65536
+    - --reasoning-parser=qwen3
+    - --tool-call-parser=qwen3_coder
+    - --enable-auto-tool-choice
 - name: Qwen3.6-27B
   description: Qwen3.6-27B is a dense 27B image-text-to-text model in Alibaba's Qwen3.6 series, with the
     qwen3_5 architecture.
@@ -752,6 +781,86 @@ model_sets:
     backend_parameters:
     - --reasoning-parser=glm45
     - --max-model-len=65536
+- name: GLM-5.3-Flash
+  description: GLM-5.3-Flash is Z.ai's multimodal MoE model with 320B total parameters, 18B activated
+    parameters, hybrid sparse and linear attention, native FP8 weights, and a 1M-token context window
+    for coding and tool use.
+  home: https://z.ai
+  icon: /static/catalog_icons/zai.png
+  size: 320
+  activated_size: 18
+  categories:
+  - llm
+  capabilities:
+  - context/1M
+  - vision
+  - tools
+  licenses:
+  - mit
+  release_date: '2026-08-26'
+  specs:
+  - mode: standard
+    quantization: FP8
+    gpu_filters:
+      vendor: nvidia
+      compute_capability: '>=9.0,<10.0'
+    source: model_scope
+    model_scope_model_id: ZhipuAI/GLM-5.3-Flash
+    backend: vLLM
+    env:
+      VLLM_ENGINE_READY_TIMEOUT_S: '3600'
+    backend_parameters:
+    - --max-model-len=65536
+    - --reasoning-parser=glm47
+    - --tool-call-parser=glm47
+    - --enable-auto-tool-choice
+    - --no-enable-flashinfer-autotune
+  - mode: standard
+    quantization: FP8
+    gpu_filters:
+      vendor: nvidia
+      compute_capability: '>=10.0'
+    source: model_scope
+    model_scope_model_id: ZhipuAI/GLM-5.3-Flash
+    backend: vLLM
+    env:
+      VLLM_ENGINE_READY_TIMEOUT_S: '3600'
+    backend_parameters:
+    - --max-model-len=65536
+    - --reasoning-parser=glm47
+    - --tool-call-parser=glm47
+    - --enable-auto-tool-choice
+    - --kv-cache-dtype=fp8
+- name: GLM-5.3
+  description: GLM-5.3 is Z.ai's MoE language model with a 1M-token context window, native FP8 weights,
+    and improved coding, reasoning, and long-horizon tool use.
+  home: https://z.ai
+  icon: /static/catalog_icons/zai.png
+  size: 743
+  activated_size: 39
+  categories:
+  - llm
+  capabilities:
+  - context/1M
+  - tools
+  licenses:
+  - glm-5.3
+  release_date: '2026-08-28'
+  specs:
+  - mode: standard
+    quantization: FP8
+    gpu_filters:
+      vendor: nvidia
+      compute_capability: '>=9.0'
+    source: model_scope
+    model_scope_model_id: ZhipuAI/GLM-5.3
+    backend: vLLM
+    backend_parameters:
+    - --reasoning-parser=glm47
+    - --tool-call-parser=glm47
+    - --enable-auto-tool-choice
+    - --max-model-len=65536
+    - --kv-cache-dtype=fp8
 - name: GLM-5.2
   description: GLM-5.2 is Z.ai's flagship Mixture-of-Experts model built on the glm_moe_dsa architecture
     (DeepSeek Sparse Attention), with strong agentic, reasoning, and coding capabilities and a 1M-token
@@ -1040,6 +1149,39 @@ model_sets:
     - --tokenizer-mode=deepseek_v4
     - --reasoning-parser=deepseek_v4
     - --tool-call-parser=deepseek_v4
+    - --enable-auto-tool-choice
+- name: DeepSeek-V4.1-Flash-1017
+  description: DeepSeek-V4.1-Flash-1017 is a vision-language MoE model with a 552B-parameter backbone
+    and 196B of Engram memory, activating 8B parameters per prompt token and 16B per output token. It
+    supports a 1M-token context window and tool calling.
+  home: https://www.deepseek.com
+  icon: /static/catalog_icons/deepseek.png
+  size: 552
+  activated_size: 16
+  categories:
+  - llm
+  capabilities:
+  - context/1M
+  - vision
+  - tools
+  licenses:
+  - mit
+  release_date: '2026-10-17'
+  specs:
+  - mode: standard
+    quantization: MXFP4
+    gpu_filters:
+      vendor: nvidia
+      compute_capability: '>=9.0'
+    source: model_scope
+    model_scope_model_id: deepseek-ai/DeepSeek-V4.1-Flash-1017
+    backend: vLLM
+    backend_parameters:
+    - --max-model-len=65536
+    - --trust-remote-code
+    - --tokenizer-mode=deepseek_v41
+    - --reasoning-parser=deepseek_v41
+    - --tool-call-parser=deepseek_v41
     - --enable-auto-tool-choice
 - name: DeepSeek-V4-Flash
   description: DeepSeek-V4-Flash is a smaller, faster variant in the DeepSeek-V4 family with the deepseek_v4
